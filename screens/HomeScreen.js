@@ -23,11 +23,7 @@ export default class HomeScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
+              source={require('../assets/images/sh-logo.png')}
               style={styles.welcomeImage}
             />
           </View>
@@ -119,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
+    width: 200,
     height: 80,
     resizeMode: 'contain',
     marginTop: 3,

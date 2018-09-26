@@ -3,7 +3,8 @@ import {
   Image,
   StyleSheet,
   Text,
-  View
+  View,
+  ToastAndroid
 } from 'react-native';
 import {
   Button,
@@ -21,10 +22,26 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
 
+    
+
     this.state = {
       login: '',
       password: '',
     }
+
+    this.onPressSignIn = this.onPressSignIn.bind(this)
+    this.onPressSignUp = this.onPressSignUp.bind(this)
+    
+  }
+
+  onPressSignIn(){
+    const { navigate } = this.props.navigation;
+    ToastAndroid.show('Fazendo login...', ToastAndroid.SHORT);
+    navigate('Dashboard');
+  }
+
+  onPressSignUp(){
+    ToastAndroid.show('Fazendo cadastro...', ToastAndroid.SHORT);
   }
 
   render() {
@@ -49,10 +66,10 @@ export default class HomeScreen extends React.Component {
           </Item>
 
           <View style={styles.buttonContainer}>
-            <Button block primary style={styles.signinButton}>
+            <Button onPress={this.onPressSignIn} block primary style={styles.signinButton}>
               <Text style={styles.buttonText}>Entrar</Text>
             </Button>
-            <Button block success style={styles.signupButton}>
+            <Button onPress={this.onPressSignUp} block success style={styles.signupButton}>
               <Text style={styles.buttonText}>Cadastrar</Text>
             </Button>
           </View>

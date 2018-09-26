@@ -8,13 +8,6 @@ export default class App extends React.Component {
     isLoadingComplete: false,
   };
 
-  async componentWillMount() {
-    await Expo.Font.loadAsync({
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    });
-  }  
-
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -28,6 +21,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          {Platform.OS === 'android' && <StatusBar backgroundColor="blue" style={{ paddingBottom: 10 }} />}
           <AppNavigator />
         </View>
       );
@@ -44,7 +38,8 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'Roboto': require('native-base/Fonts/Roboto.ttf'),
+        'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
       }),
     ]);
   };

@@ -22,8 +22,8 @@ export default class HomeScreen extends React.Component {
     super(props);
 
     this.state = {
-      login: '999.999.999-99',
-      password: '*******',
+      login: '',
+      password: '',
     }
   }
 
@@ -40,11 +40,11 @@ export default class HomeScreen extends React.Component {
 
         <Content contentContainerStyle={styles.halfHeight}>
           <Item floatingLabel style={{width: '80%'}}>
-            <Label style={{color: '#fff'}}>Username</Label>
+            <Label style={{color: '#666'}}>Username</Label>
             <Input  style={styles.credentialsInput}/>
           </Item>
           <Item floatingLabel style={{width: '80%'}}>
-            <Label style={{color: '#fff'}}>Password</Label>
+            <Label style={{color: '#666'}}>Password</Label>
             <Input  style={styles.credentialsInput}/>
           </Item>
 

@@ -35,13 +35,15 @@ export default class HomeScreen extends React.Component {
   }
 
   onPressSignIn(){
-    const { navigate } = this.props.navigation;
     ToastAndroid.show('Fazendo login...', ToastAndroid.SHORT);
-    navigate('Dashboard');
+    this.props.navigation.navigate('Dashboard');
+    
   }
 
   onPressSignUp(){
+    const { navigate } = this.props.navigation;
     ToastAndroid.show('Fazendo cadastro...', ToastAndroid.SHORT);
+    navigate('SignUpCPF');
   }
 
   render() {

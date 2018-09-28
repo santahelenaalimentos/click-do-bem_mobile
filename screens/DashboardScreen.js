@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  View
+  View,
+  BackHandler,
 } from 'react-native';
 import {
   Container,
@@ -19,8 +20,21 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
 
+    // this.handleBackPress = this.handleBackPress.bind(this)
   }
 
+  // componentDidMount() {
+  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  // }
+
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  // }
+
+  // handleBackPress = () => {
+  //   this.props.navigation.popToTop(); // works best when the goBack is async
+  //   return true;
+  // }
 
   render() {
     return (
@@ -33,6 +47,11 @@ export default class HomeScreen extends React.Component {
                 </Title>
               </Body>
             </Header>
+            <View style={styles.container}>
+              <View style={styles.box}/>
+              <View style={styles.box}/>
+              <View style={styles.box}/>
+            </View>
           </Content>
         </Container>
     );
@@ -40,6 +59,14 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  },
+  box: {
+    height: 50,
+    width: 50,
+    backgroundColor: '#e76e63',
+    margin: 10,
+  }
   
 });

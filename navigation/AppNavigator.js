@@ -13,10 +13,10 @@ export default createStackNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
   Login: LoginScreen,
-  Dashboard: {screen: DashBoardScreen},
-  SignUpCPF: {screen: CpfScreen},
-  SignUpPersonal: {screen: PersonalDataScreen},
-  SignUpAddress: {screen: AddressScreen},
-  SignUpPhone: {screen: PhoneScreen},
-  SignUpCredentials: {screen: CredentialsScreen},
+  Dashboard: DashBoardScreen,
+  SignUpCPF: CpfScreen,
+  SignUpPersonal: PersonalDataScreen,
+  SignUpAddress: AddressScreen,
+  SignUpPhone: PhoneScreen,
+  SignUpCredentials: CredentialsScreen,
 });

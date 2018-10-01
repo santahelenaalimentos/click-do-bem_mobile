@@ -13,6 +13,7 @@ import {
   Input,
   Content
 } from 'native-base';
+import { Colors } from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -31,7 +32,6 @@ export default class HomeScreen extends React.Component {
 
     this.onPressSignIn = this.onPressSignIn.bind(this)
     this.onPressSignUp = this.onPressSignUp.bind(this)
-    
   }
 
   onPressSignIn(){
@@ -50,29 +50,38 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         
-        <View style={styles.halfHeight}>
+        <View style={{height: 40}}/>
+
+        <View >
           <Image
             source={require('../assets/images/sh-logo.png')}
             style={styles.welcomeImage}
           /> 
         </View>
 
-        <Content contentContainerStyle={styles.halfHeight}>
-          <Item floatingLabel style={{width: '80%'}}>
-            <Label style={{color: '#666'}}>Username</Label>
-            <Input  style={styles.credentialsInput}/>
-          </Item>
-          <Item floatingLabel style={{width: '80%'}}>
-            <Label style={{color: '#666'}}>Password</Label>
-            <Input  style={styles.credentialsInput}/>
-          </Item>
+        <View style={{height: 20}}/>
+        
+        <Content >
+          <View style={styles.credentialsContainer}>
+            <Item floatingLabel >
+              <Label >CPF</Label>
+              <Input style={styles.credentialsInput} />
+            </Item>
+            <Item floatingLabel >
+              <Label >Senha</Label>
+              <Input style={styles.credentialsInput} />
+            </Item>
+          </View>
 
+          <View style={{height: 40}}/>
+          
           <View style={styles.buttonContainer}>
-            <Button onPress={this.onPressSignIn} block primary style={styles.signinButton}>
+            <Button onPress={this.onPressSignIn} block primary >
               <Text style={styles.buttonText}>Entrar</Text>
             </Button>
-            <Button onPress={this.onPressSignUp} block success style={styles.signupButton}>
-              <Text style={styles.buttonText}>Cadastrar</Text>
+            <View style={{height: 20}}/>
+            <Button onPress={this.onPressSignUp} block success >
+              <Text style={styles.buttonText}>Cadastar</Text>
             </Button>
           </View>
         </Content>
@@ -86,33 +95,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-  },
-  halfHeight: {
-    flex: .5,
     alignItems: 'center',
-    justifyContent: 'center'
   },
   welcomeImage: {
     width: 300,
     height: 200,
     resizeMode: 'contain'
   },
+  credentialsContainer: {
+    minWidth: '80%',
+  },
   credentialsInput: {
-    width: '85%',
+    minWidth: '80%',
     height: 50,
     color: '#333',
   },
   buttonContainer:{
-    flex: 1,
-    flexDirection: 'row',
-    marginTop: 15
-  },
-  signinButton: {
-    marginRight: 10,
-    width: '20%'
-  },
-  signupButton: {
-    width: '20%'
+    minWidth: '80%',
+    flexDirection: 'column',
   },
   buttonText: {
     color: '#fff'

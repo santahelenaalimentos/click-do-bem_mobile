@@ -19,7 +19,8 @@ export default (props) => {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    padding: 25,
+    paddingTop: 25,
+    paddingBottom: 25,
   },
   title: {
     fontSize: 32,

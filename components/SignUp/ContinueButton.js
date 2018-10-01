@@ -39,8 +39,10 @@ const styles = StyleSheet.create({
     padding: 7
   },
   buttonContainer: {
+    flex: 0.1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100
+    minHeight: 80,
+    maxHeight: 80,
   }
 })

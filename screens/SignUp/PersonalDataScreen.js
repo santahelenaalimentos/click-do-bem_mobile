@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   StyleSheet,
-  KeyboardAvoidingView,
   View,
 } from 'react-native';
 import {
@@ -9,9 +8,7 @@ import {
   Item,
   Label,
   Input,
-  Header,
-  Body,
-  Title,
+  Content,
 } from 'native-base';
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -35,53 +32,41 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
-        <KeyboardAvoidingView style={styles.content}>
-
-          <Header style={styles.header}>
-            <Body>
-              <Title>
-                Cadastro
-              </Title>
-            </Body>
-          </Header>
-
-          <Instructions
-            title="Informe seus"
-            subtitle="Dados Pessoais"
-            colors={{ title: Colors.dark, subtitle: Colors.lemonGreen }} />
-
+        <Content>
           <View style={styles.inputsContainer}>
-            <Item floatingLabel>
-              <Label >Nome</Label>
-              <Input />
+            <View style={{height: 40}} />
+            <Instructions
+              title="Informe seus"
+              subtitle="Dados Pessoais"
+              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+            <Item floatingLabel >
+              <Label>Nome</Label>
+              <Input/>
             </Item>
             <Item floatingLabel>
-              <Label >Data de Nascimento</Label>
-              <Input />
+              <Label>Data de Nascimento</Label>
+              <Input/>
             </Item>
           </View>
-
-        </KeyboardAvoidingView>
-
+        </Content>
         <ContinueButton
           handler={this.handleNext}
           colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
-
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-  },
   header: {
     backgroundColor: 'white',
   },
   inputsContainer: {
+    flex: 1,
     width: '89%',
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 20,
+    marginBottom: 10,
   }
 });
+

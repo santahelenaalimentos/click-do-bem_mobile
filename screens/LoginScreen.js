@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ToastAndroid
 } from 'react-native';
 import {
   Button,
@@ -13,7 +12,7 @@ import {
   Input,
   Content
 } from 'native-base';
-import { Colors } from '../constants/Colors';
+import Colors from '../constants/Colors';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -35,34 +34,29 @@ export default class HomeScreen extends React.Component {
   }
 
   onPressSignIn(){
-    ToastAndroid.show('Fazendo login...', ToastAndroid.SHORT);
     this.props.navigation.navigate('Dashboard');
     
   }
 
   onPressSignUp(){
-    const { navigate } = this.props.navigation;
-    ToastAndroid.show('Fazendo cadastro...', ToastAndroid.SHORT);
-    navigate('SignUpCPF');
+    this.props.navigation.navigate('SignUpCPF');
   }
 
   render() {
     return (
       <View style={styles.container}>
         
-        <View style={{height: 40}}/>
-
-        <View >
+        <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/images/sh-logo.png')}
+            source={require('../assets/images/cb-logo.png')}
             style={styles.welcomeImage}
           /> 
         </View>
 
         <View style={{height: 20}}/>
         
-        <Content >
-          <View style={styles.credentialsContainer}>
+        <Content style={styles.credentialsContainer}>
+          <View >
             <Item floatingLabel >
               <Label >CPF</Label>
               <Input style={styles.credentialsInput} />
@@ -75,12 +69,14 @@ export default class HomeScreen extends React.Component {
 
           <View style={{height: 40}}/>
           
-          <View style={styles.buttonContainer}>
-            <Button onPress={this.onPressSignIn} block primary >
+          <View >
+            <Button style={styles.signInButton} onPress={this.onPressSignIn} block >
               <Text style={styles.buttonText}>Entrar</Text>
             </Button>
-            <View style={{height: 20}}/>
-            <Button onPress={this.onPressSignUp} block success >
+            <View style={styles.ou}>
+              <Text> ou </Text>
+            </View>
+            <Button style={styles.signUpButton} onPress={this.onPressSignUp} block >
               <Text style={styles.buttonText}>Cadastar</Text>
             </Button>
           </View>
@@ -97,25 +93,35 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  logoContainer: {
+    minWidth: '100%',
+  },
   welcomeImage: {
-    width: 300,
-    height: 200,
-    resizeMode: 'contain'
+    minWidth: '100%',
+    height: 260,
+    resizeMode: 'contain',
+    marginTop: -20,
   },
   credentialsContainer: {
-    minWidth: '80%',
+    minWidth: '85%',
   },
   credentialsInput: {
     minWidth: '80%',
     height: 50,
     color: '#333',
   },
-  buttonContainer:{
-    minWidth: '80%',
-    flexDirection: 'column',
-  },
   buttonText: {
     color: '#fff'
-  }
-  
+  },
+  signInButton: {
+    backgroundColor: Colors.lemonGreen
+  },
+  signUpButton: {
+    backgroundColor: Colors.weirdGreen
+  },
+  ou:{
+    alignSelf: 'center',
+    height: 25,
+
+  },
 });

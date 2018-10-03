@@ -2,58 +2,40 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  BackHandler,
+  Text,
 } from 'react-native';
 import {
   Container,
-  Content,
-  Header,
-  Body,
-  Title,
+  Button,
 } from 'native-base';
+import Colors from '../constants/Colors'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
-    // this.handleBackPress = this.handleBackPress.bind(this)
   }
-
-  // componentDidMount() {
-  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-  // }
-
-  // componentWillUnmount() {
-  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-  // }
-
-  // handleBackPress = () => {
-  //   this.props.navigation.popToTop(); // works best when the goBack is async
-  //   return true;
-  // }
 
   render() {
     return (
-        <Container>
-          <Content>
-            <Header>
-              <Body>
-                <Title>
-                  Dashboard
-                </Title>
-              </Body>
-            </Header>
-            <View style={styles.container}>
-              <View style={styles.box}/>
-              <View style={styles.box}/>
-              <View style={styles.box}/>
-            </View>
-          </Content>
-        </Container>
+      <Container style={styles.container}>
+        <View>
+          <Button style={styles.button} onPress={() => this.props.navigation.navigate('CreateDonation')}>
+            <Text style={styles.buttonText}>
+              Criar Nova Doação
+            </Text>
+          </Button>
+          <Button style={styles.button} >
+            <Text style={styles.buttonText}>
+              Criar Nova Necessidade
+            </Text>
+          </Button>
+        </View>
+      </Container>
     );
   }
 }
@@ -61,12 +43,19 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  box: {
-    height: 50,
-    width: 50,
-    backgroundColor: '#e76e63',
+  button:{
+    backgroundColor: Colors.lemonGreen,
+    minWidth: '60%',
+    padding: 15,
     margin: 10,
-  }
-  
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 14,
+  },
+
 });

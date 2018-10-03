@@ -10,7 +10,8 @@ import {
   Item,
   Label,
   Input,
-  Content
+  Content,
+  Header,
 } from 'native-base';
 import Colors from '../constants/Colors';
 
@@ -45,7 +46,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        {Platform.OS === 'ios' && <Header androidStatusBarColor='#cccccc'></Header>}
         <View style={styles.logoContainer}>
           <Image
             source={require('../assets/images/cb-logo.png')}
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     minWidth: '100%',
     height: 260,
     resizeMode: 'contain',
-    marginTop: -20,
+    marginTop: 30,
   },
   credentialsContainer: {
     minWidth: '85%',

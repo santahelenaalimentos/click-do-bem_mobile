@@ -22,7 +22,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />}
+          {/* {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />} */}
           <AppNavigator />
         </View>
       );

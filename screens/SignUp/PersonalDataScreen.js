@@ -9,6 +9,9 @@ import {
   Label,
   Input,
   Content,
+  Header,
+  Body,
+  Title,
 } from 'native-base';
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -32,6 +35,11 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
+        <Header style={styles.header} androidStatusBarColor={Colors.lemonGreen}>
+          <Body>
+            <Title>Cadastro</Title>
+          </Body>
+        </Header>
         <Content>
           <View style={styles.inputsContainer}>
             <View style={{height: 40}} />

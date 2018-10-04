@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  Platform,
 } from 'react-native';
 import {
   Container,
@@ -9,10 +10,8 @@ import {
   Label,
   Input,
   Content,
-  Header,
-  Body,
-  Title,
 } from 'native-base';
+import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -35,14 +34,13 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Header style={styles.header} androidStatusBarColor={Colors.lemonGreen}>
-          <Body>
-            <Title>Cadastro</Title>
-          </Body>
-        </Header>
+        <MyHeader 
+          buttonColor={Colors.weirdGreen}
+          goBack={() => this.props.navigation.goBack()}
+          cancel={() => this.props.navigation.navigate('Login')}/>
         <Content>
           <View style={styles.inputsContainer}>
-            <View style={{height: 40}} />
+            <View style={{height: 20}} />
             <Instructions
               title="Informe seus"
               subtitle="Dados Pessoais"
@@ -66,9 +64,6 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-  },
   inputsContainer: {
     flex: 1,
     width: '89%',

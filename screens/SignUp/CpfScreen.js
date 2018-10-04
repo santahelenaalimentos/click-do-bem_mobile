@@ -18,6 +18,7 @@ import {
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
+import MyHeader from '../../components/MyHeader'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -37,11 +38,10 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Header style={styles.header} androidStatusBarColor={Colors.weirdGreen}>
-          <Body>
-            <Title>Cadastro</Title>
-          </Body>
-        </Header>
+        <MyHeader 
+          buttonColor={Colors.weirdGreen}
+          goBack={() => this.props.navigation.goBack()}
+          cancel={() => this.props.navigation.navigate('Login')}/>
         <Content>
           <View style={styles.inputsContainer}>
             <View style={{height: 10}} />
@@ -64,16 +64,6 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    ...Platform.select({
-      ios: {
-
-      },
-      android: {
-        backgroundColor: '#aaaaaa',
-      }
-    }),
-  },
   inputsContainer: {
     flex: 1,
     width: '89%',

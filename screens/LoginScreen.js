@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform,
 } from 'react-native';
 import {
   Button,
@@ -14,6 +15,7 @@ import {
   Header,
 } from 'native-base';
 import Colors from '../constants/Colors';
+import NoHeader from '../components/NoHeader'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -46,7 +48,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <Header androidStatusBarColor='#cccccc'></Header>}
+        <NoHeader />
         <View style={styles.logoContainer}>
           <Image
             source={require('../assets/images/cb-logo.png')}
@@ -78,7 +80,7 @@ export default class HomeScreen extends React.Component {
               <Text> ou </Text>
             </View>
             <Button style={styles.signUpButton} onPress={this.onPressSignUp} block >
-              <Text style={styles.buttonText}>Cadastar</Text>
+              <Text style={styles.buttonText}>Criar nova conta</Text>
             </Button>
           </View>
         </Content>
@@ -115,10 +117,12 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   signInButton: {
-    backgroundColor: Colors.lemonGreen
+    backgroundColor: Colors.lemonGreen,
+    elevation: 3,
   },
   signUpButton: {
-    backgroundColor: Colors.weirdGreen
+    backgroundColor: Colors.weirdGreen,
+    elevation: 3,
   },
   ou:{
     alignSelf: 'center',

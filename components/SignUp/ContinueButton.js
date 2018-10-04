@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 import {
 
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 80,
-    maxHeight: 80,
+    minHeight: Platform.OS === 'ios' ? 100 : 80,
+    maxHeight: Platform.OS === 'ios' ? 100 : 80,
   }
 })

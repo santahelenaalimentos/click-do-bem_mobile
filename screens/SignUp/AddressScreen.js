@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StyleSheet,
   View,
+  Platform,
 } from 'react-native';
 import {
   Container,
@@ -9,7 +10,11 @@ import {
   Label,
   Input,
   Content,
+  Header,
+  Body,
+  Title,
 } from 'native-base';
+import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -32,6 +37,10 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <Container>
+        <MyHeader 
+          buttonColor={Colors.weirdGreen}
+          goBack={() => this.props.navigation.goBack()}
+          cancel={() => this.props.navigation.navigate('Login')}/>
         <Content>
           <View style={styles.inputsContainer}>
             <Instructions

@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Platform,
-
 } from 'react-native';
 import {
   Container,
@@ -14,6 +13,7 @@ import {
   Header,
   Title,
   Body,
+  Toast,
 } from 'native-base';
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -28,11 +28,51 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      cpf: '',
+    }
+
     this.handleNext = this.handleNext.bind(this)
   }
 
   handleNext(){
-    this.props.navigation.navigate('SignUpPersonal');
+    console.log(cpf)
+    let { cpf } = this.state;
+    if(cpf.length != 11){
+      Toast.show({
+        text: 'O CPF digitado não é válido',
+        buttonText: 'OK',
+        type: 'warning',
+        style: {
+          marginBottom: 100,
+        },
+        duration: 10000,
+      })
+      return;
+    }
+    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/verificadocumento/${cpf}`, 
+    {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then((data) => {
+      console.log('passei por aqui')
+      console.log(data.situacao)
+      if(data.situacao === 'inexistente') {
+        Toast.show({
+          text: 'Cadastro autorizado...',
+          buttonText: 'OK',
+          type: 'success',
+          style: {
+            marginBottom: 100,
+          },
+          duration: 3000,
+        })
+        this.props.navigation.navigate('SignUpPersonal')
+      }
+      console.log('passei por aqui')
+    })
+    .catch((err) => alert(err))
   }
 
   render() {
@@ -41,7 +81,9 @@ export default class HomeScreen extends React.Component {
         <MyHeader 
           buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
-          cancel={() => this.props.navigation.navigate('Login')}/>
+          cancel={() => this.props.navigation.navigate('Login')}
+          headerAndroid={Colors.dark}
+          statusBarAndroid={Colors.lighterDark}/>
         <Content>
           <View style={styles.inputsContainer}>
             <View style={{height: 10}} />
@@ -51,7 +93,9 @@ export default class HomeScreen extends React.Component {
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
             <Item floatingLabel >
               <Label>CPF</Label>
-              <Input/>
+              <Input 
+              value={this.state.cpf}
+              onChangeText={(cpf) => this.setState({ cpf })}/>
             </Item>
           </View>
         </Content>

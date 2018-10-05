@@ -17,12 +17,12 @@ import {
 
 export default function MyHeader (props) {
 
-  let { buttonColor, goBack, cancel } = props;
+  let { buttonColor, goBack, cancel, headerAndroid, statusBarAndroid } = props;
   return (
     <View>
       {
         Platform.OS === 'ios'
-        &&
+        ?
         <Header>
           <Left>
             <Button transparent onPress={goBack}>
@@ -35,6 +35,22 @@ export default function MyHeader (props) {
           </Body>
           <Right>
             <Text style={{color: buttonColor}} onPress={cancel}>Cancelar</Text>
+          </Right>
+        </Header>
+        :
+        <Header  androidStatusBarColor={statusBarAndroid} style={{backgroundColor: headerAndroid}}>
+          <Left>
+            <Button transparent onPress={goBack}>
+              <Icon name='arrow-back'/>
+            </Button>
+          </Left>
+          <Body>
+            <Title>Cadastro</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={cancel}>
+              <Icon type="MaterialIcons" name="clear" />
+            </Button>
           </Right>
         </Header>
       }

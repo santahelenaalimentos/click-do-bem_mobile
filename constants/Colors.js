@@ -6,4 +6,5 @@ export default {
   weirdGreen: '#86bbb5',
   highlight: '#c2e03c',
   dark: '#1c2f23',
+  lighterDark: '#2a4735',
 };

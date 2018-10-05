@@ -1,5 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Root } from 'native-base'
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import Colors from './constants/Colors'
@@ -20,11 +21,11 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
+        <Root style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {/* {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />} */}
           <AppNavigator />
-        </View>
+        </Root>
       );
     }
   }

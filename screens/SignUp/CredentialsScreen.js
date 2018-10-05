@@ -40,7 +40,9 @@ export default class HomeScreen extends React.Component {
         <MyHeader 
           buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
-          cancel={() => this.props.navigation.navigate('Login')}/>        
+          cancel={() => this.props.navigation.navigate('Login')}
+          headerAndroid={Colors.dark}
+          statusBarAndroid={Colors.lighterDark}/>        
         <Content>
           <View style={styles.inputsContainer}>
             <Instructions

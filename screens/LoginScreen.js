@@ -55,8 +55,6 @@ export default class HomeScreen extends React.Component {
             style={styles.welcomeImage}
           /> 
         </View>
-
-        <View style={{height: 20}}/>
         
         <Content style={styles.credentialsContainer}>
           <View >
@@ -95,15 +93,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: '#fff',
   },
   logoContainer: {
-    minWidth: '100%',
+    minWidth: '80%',
+    minWidth: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   welcomeImage: {
-    minWidth: '100%',
-    height: 260,
+    height: 200,
     resizeMode: 'contain',
-    marginTop: 30,
+    marginTop:  Platform.OS === 'ios' ? 80 : 30,
+    marginLeft: 15,
   },
   credentialsContainer: {
     minWidth: '85%',
@@ -111,18 +113,19 @@ const styles = StyleSheet.create({
   credentialsInput: {
     minWidth: '80%',
     height: 50,
-    color: '#333',
   },
   buttonText: {
     color: '#fff'
   },
   signInButton: {
     backgroundColor: Colors.lemonGreen,
-    elevation: 3,
+    elevation: 1, 
+    marginBottom: 4,
   },
   signUpButton: {
     backgroundColor: Colors.weirdGreen,
-    elevation: 3,
+    elevation: 1, 
+    marginBottom: 4,
   },
   ou:{
     alignSelf: 'center',

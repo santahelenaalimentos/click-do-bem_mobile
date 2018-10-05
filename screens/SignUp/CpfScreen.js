@@ -36,11 +36,11 @@ export default class HomeScreen extends React.Component {
   }
 
   handleNext(){
-    console.log(cpf)
     let { cpf } = this.state;
+    console.log(cpf)
     if(cpf.length != 11){
       Toast.show({
-        text: 'O CPF digitado não é válido',
+        text: 'O CPF digitado não é válido.',
         buttonText: 'OK',
         type: 'warning',
         style: {
@@ -56,9 +56,7 @@ export default class HomeScreen extends React.Component {
     })
     .then(res => res.json())
     .then((data) => {
-      console.log('passei por aqui')
-      console.log(data.situacao)
-      if(data.situacao === 'inexistente') {
+      if(data.situacao === 'ativo') {
         Toast.show({
           text: 'Cadastro autorizado...',
           buttonText: 'OK',
@@ -70,7 +68,6 @@ export default class HomeScreen extends React.Component {
         })
         this.props.navigation.navigate('SignUpPersonal')
       }
-      console.log('passei por aqui')
     })
     .catch((err) => alert(err))
   }
@@ -114,6 +111,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 10,
+    backgroundColor: 'white',
   }
 });
 

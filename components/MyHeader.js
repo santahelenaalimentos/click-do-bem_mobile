@@ -38,7 +38,7 @@ export default function MyHeader (props) {
           </Right>
         </Header>
         :
-        <Header  androidStatusBarColor={statusBarAndroid} style={{backgroundColor: headerAndroid}}>
+        <Header  androidStatusBarColor={statusBarAndroid} style={{backgroundColor: headerAndroid, elevation: 7, marginBottom: 10}}>
           <Left>
             <Button transparent onPress={goBack}>
               <Icon name='arrow-back'/>

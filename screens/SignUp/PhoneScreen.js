@@ -49,11 +49,11 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="Telefone"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label>Telefone</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Celular</Label>
               <Input/>
             </Item>

@@ -58,11 +58,11 @@ export default class HomeScreen extends React.Component {
         
         <Content style={styles.credentialsContainer}>
           <View >
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label >CPF</Label>
               <Input style={styles.credentialsInput} />
             </Item>
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label >Senha</Label>
               <Input style={styles.credentialsInput} />
             </Item>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   credentialsInput: {
     minWidth: '80%',
-    height: 50,
+    height: 40,
   },
   buttonText: {
     color: '#fff'

@@ -49,31 +49,31 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="Endereço"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label>CEP</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Estado</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Cidade</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Endereço</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Número</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Bairro</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Complemento</Label>
               <Input/>
             </Item>

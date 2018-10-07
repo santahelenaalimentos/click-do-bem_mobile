@@ -49,19 +49,19 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="E-mail e senha"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label>E-mail</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Confirme o e-mail</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Senha</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Confirme a senha</Label>
               <Input/>
             </Item>

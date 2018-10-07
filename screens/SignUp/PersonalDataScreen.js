@@ -24,11 +24,25 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      nome: '',
+      nascimento: ''
+    }
     this.handleNext = this.handleNext.bind(this)
   }
 
   handleNext(){
     this.props.navigation.navigate('SignUpAddress');
+  }
+
+  _storeData = async () => {
+    let { nome, nascimento } = this.state;
+    let data = { nome, nascimento }
+    try {
+      await AsyncStorage.setItem('personalData', JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -47,11 +61,11 @@ export default class HomeScreen extends React.Component {
               title="Informe seus"
               subtitle="Dados Pessoais"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label>Nome</Label>
               <Input/>
             </Item>
-            <Item floatingLabel>
+            <Item stackedLabel>
               <Label>Data de Nascimento</Label>
               <Input/>
             </Item>

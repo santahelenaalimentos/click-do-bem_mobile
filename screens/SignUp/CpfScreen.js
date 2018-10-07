@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Platform,
+  AsyncStorage,
 } from 'react-native';
 import {
   Container,
@@ -35,6 +36,18 @@ export default class HomeScreen extends React.Component {
     this.handleNext = this.handleNext.bind(this)
   }
 
+  _storeData = async () => {
+    let { cpf } = this.state;
+    let data = {
+      cpf
+    }
+    try {
+      await AsyncStorage.setItem('cpfData', JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   handleNext(){
     let { cpf } = this.state;
     console.log(cpf)
@@ -56,20 +69,45 @@ export default class HomeScreen extends React.Component {
     })
     .then(res => res.json())
     .then((data) => {
-      if(data.situacao === 'ativo') {
-        Toast.show({
-          text: 'Cadastro autorizado...',
-          buttonText: 'OK',
-          type: 'success',
-          style: {
-            marginBottom: 100,
-          },
-          duration: 3000,
-        })
-        this.props.navigation.navigate('SignUpPersonal')
+      if(data.cadastrado){
+        this.toastWarning('Você já está cadastrado...')
+        return
       }
+      if(data.situacao === 'ativo') {
+        this.toastSuccess('Cadastro autorizado...')
+        console.log('guardando dados')
+        this._storeData();
+        console.log('dados guardados')
+        this.props.navigation.navigate('SignUpPersonal')
+        return
+      }
+      this.toastWarning('Acesso não permitido.')
     })
-    .catch((err) => alert(err))
+    .catch((err) => console.log(err))
+  }
+
+  toastSuccess(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'success',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
+  }
+
+  toastWarning(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'warning',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
   }
 
   render() {
@@ -88,7 +126,7 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="CPF"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item floatingLabel >
+            <Item stackedLabel >
               <Label>CPF</Label>
               <Input 
               value={this.state.cpf}

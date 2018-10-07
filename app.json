@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "cuidaBem",
+    "name": "cuidaBem2",
     "description": "Versão alpha do app click do bem.",
-    "slug": "cuidabem",
+    "slug": "cuidabem2",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

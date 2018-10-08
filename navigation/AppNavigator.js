@@ -13,13 +13,13 @@ import CreateNeedScreen from '../screens/Donation/CreateNeedScreen';
 export default createStackNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-  SignUpAddress: AddressScreen,
   Login: LoginScreen,
   Dashboard: DashBoardScreen,
   CreateDonation: CreateDonationScreen,
   CreateNeed: CreateNeedScreen,
   SignUpCPF: CpfScreen,
   SignUpPersonal: PersonalDataScreen,
+  SignUpAddress: AddressScreen,
   SignUpPhone: PhoneScreen,
   SignUpCredentials: CredentialsScreen,
 });

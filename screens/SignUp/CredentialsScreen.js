@@ -49,12 +49,13 @@ export default class HomeScreen extends React.Component {
     if(senha !== confirmaSenha) errs.push('As senhas informadas não coincidem')
     if(email !== confirmaEmail) errs.push('Os emails informados não coincidem')
     if(!senha || !email || !confirmaEmail || !confirmaSenha) errs.push('É preciso preencher todos os campos')
+    if(!(email.indexOf('@') > -1) || (email.indexOf(' ') > -1) || !(email.indexOf('.') > -1)) errs.push('Insira um e-mail válido')
     if(errs.length > 0){
       this.toastWarning(errs.map(err => `${err}\n`))
       return
     }
 
-    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/colaborador/cadastrar`, 
+    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/colaborador`, 
     {
       method: 'POST',
       body: JSON.stringify(data),
@@ -81,9 +82,6 @@ export default class HomeScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'success',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }
@@ -121,7 +119,8 @@ export default class HomeScreen extends React.Component {
             <TextInput 
               style={styles.input}
               value = {this.state.email}
-              onChangeText = {(email) => this.setState({email})}/>
+              onChangeText = {(email) => this.setState({email})}
+              textContentType={'emailAddress'}/>
 
             <Text style={styles.label}>Confirme o e-mail</Text>
             <TextInput 

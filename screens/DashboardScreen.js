@@ -44,6 +44,13 @@ export default class HomeScreen extends React.Component {
               Criar Nova Necessidade
             </Text>
           </Button>
+          <Button 
+          style={styles.button} 
+          onPress={() => this.props.navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>
+              Sair
+            </Text>
+          </Button>
         </View>
       </Container>
     );

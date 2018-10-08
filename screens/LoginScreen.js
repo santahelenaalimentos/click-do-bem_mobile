@@ -56,7 +56,6 @@ export default class HomeScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.sucesso) {
-        this.toastSuccess('Login efetuado com sucesso!')
         this.props.navigation.navigate('Dashboard',{
           token: data.token
         })
@@ -78,9 +77,6 @@ export default class HomeScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'success',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }
@@ -90,9 +86,6 @@ export default class HomeScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }

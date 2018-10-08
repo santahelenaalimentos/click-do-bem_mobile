@@ -15,6 +15,7 @@ import {
   Header,
   Body,
   Title,
+  Toast,
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text'
 import ContinueButton from '../../components/SignUp/ContinueButton';
@@ -40,9 +41,30 @@ export default class HomeScreen extends React.Component {
 
   handleNext(){
     const { telefoneCelular, telefoneFixo } = this.state;
+    
+    let errs = [];
+    if(!telefoneCelular) errs.push('É necessário informar um número de celular.');
+    if(telefoneCelular.length !== 15) errs.push('É necessário informar um número de celular válido.');
+    if(errs.length){
+      this.toastWarning(errs.map(err => `${err}\n`))
+      return
+    }
+    
     this.props.navigation.navigate('SignUpCredentials', {
       telefoneCelular, telefoneFixo, ...this.props.navigation.state.params
     });
+  }
+
+  toastWarning(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'warning',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
   }
 
   render() {
@@ -61,19 +83,7 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="Telefone"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-
-            <Text style={styles.label}>Telefone</Text>
-            <TextInputMask
-            maxLength={14}
-            style={styles.input}
-            type = {'cel-phone'}
-            value={this.state.telefoneFixo}
-            onChangeText={(telefoneFixo) => this.setState({ telefoneFixo })}
-            options = {{
-              withDDD: true,
-            }}
-            />
-
+              
             <Text style={styles.label}>Celular</Text>
             <TextInputMask
             maxLength={15}
@@ -81,6 +91,19 @@ export default class HomeScreen extends React.Component {
             type = {'cel-phone'}
             value={this.state.telefoneCelular}
             onChangeText={(telefoneCelular) => this.setState({ telefoneCelular })}
+            options = {{
+              withDDD: true,
+            }}
+            />
+
+            <Text style={styles.label}>Telefone</Text>
+            <TextInputMask
+            placeholder='Opcional'
+            maxLength={14}
+            style={styles.input}
+            type = {'cel-phone'}
+            value={this.state.telefoneFixo}
+            onChangeText={(telefoneFixo) => this.setState({ telefoneFixo })}
             options = {{
               withDDD: true,
             }}

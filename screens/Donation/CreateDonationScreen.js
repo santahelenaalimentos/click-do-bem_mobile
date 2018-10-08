@@ -48,7 +48,7 @@ export default class CreateDonationScreen extends React.Component {
   }
   
   componentWillMount(){
-    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/categoria/listar', {
+    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/categoria', {
       method: 'GET',
       headers: {
         "Authorization": `bearer ${this.token}`,
@@ -88,9 +88,6 @@ export default class CreateDonationScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'success',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }
@@ -100,9 +97,6 @@ export default class CreateDonationScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }

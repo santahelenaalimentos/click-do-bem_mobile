@@ -91,15 +91,7 @@ export default class HomeScreen extends React.Component {
               subtitle="Endereço"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
 
-            <Text style={styles.label}>CEP</Text>
-            <TextInputMask 
-              style={styles.input}
-              type='zip-code'
-              value = {this.state.cep}
-              maxLength={9}
-              onChangeText = {(cep) => this.setState({cep})}/>
-
-            <Item style={[styles.item, styles.input]}>
+            <Item style={[styles.item, styles.inputEstado]}>
               <Left>
                 <Text style={styles.labelUf}>Estado</Text>
               </Left>
@@ -113,6 +105,7 @@ export default class HomeScreen extends React.Component {
                   style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
                   selectedValue={this.state.uf}
                   onValueChange={(uf) => this.setState({ uf })}>
+                  { Platform.OS === 'android' && <Picker.Item key='1'label='Selecione' value='0' />}
                   { ufList.map(uf => <Picker.Item key={uf} label={uf} value={uf}/>) }
                 </Picker>
               </Right>
@@ -123,6 +116,14 @@ export default class HomeScreen extends React.Component {
               style={styles.input}
               value = {this.state.cidade}
               onChangeText = {(cidade) => this.setState({cidade})}/>
+
+            <Text style={styles.label}>CEP</Text>
+            <TextInputMask 
+              style={styles.input}
+              type='zip-code'
+              value = {this.state.cep}
+              maxLength={9}
+              onChangeText = {(cep) => this.setState({cep})}/>
 
             <Text style={styles.label}>Endereço</Text>
             <TextInput 
@@ -149,6 +150,7 @@ export default class HomeScreen extends React.Component {
               value = {this.state.complemento}
               onChangeText = {(complemento) => this.setState({complemento})}/>
 
+            <View style={{height: 40}}/>
           </View>
         </Content>
         <ContinueButton
@@ -184,6 +186,11 @@ const styles = StyleSheet.create({
     height: 45,
     borderBottomColor: '#999999',
     borderBottomWidth:  Platform.OS === 'ios' ? 1 : 0,
+  },
+  inputEstado: {
+    height: 45,
+    borderBottomColor: '#999999',
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
   },
   item: {
     minHeight: 70,

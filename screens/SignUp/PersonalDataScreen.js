@@ -12,6 +12,7 @@ import {
   Label,
   Input,
   Content,
+  Toast,
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text'
 import MyHeader from '../../components/MyHeader'
@@ -36,10 +37,34 @@ export default class HomeScreen extends React.Component {
 
   handleNext(){
     const { nome, dataNascimento } = this.state;
+
+    let errs = [];
+    if(!nome || !dataNascimento) errs.push('É obrigatório informar todos os campos');
+    let nasc = dataNascimento.split('/');
+    let today = new Date();
+    if(nasc[0] > 31 || nasc[1] > 12 || nasc[2] > today.getFullYear() || dataNascimento.length !== 10)
+    errs.push('A data de nascimento deve ser válida')
+    if(errs.length){
+      this.toastWarning(errs.map(err => `${err}\n`))
+      return
+    }
+
     this.props.navigation.navigate('SignUpAddress', {
       nome, dataNascimento: dataNascimento.split("/").reverse().join("-"), 
       ...this.props.navigation.state.params
     });
+  }
+
+  toastWarning(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'warning',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
   }
 
   render() {

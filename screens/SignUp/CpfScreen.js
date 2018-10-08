@@ -106,7 +106,8 @@ export default class HomeScreen extends React.Component {
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Login')}
           headerAndroid={Colors.dark}
-          statusBarAndroid={Colors.lighterDark}/>
+          statusBarAndroid={Colors.lighterDark}
+          title='Cadastro'/>
         <Content>
           <View style={styles.inputsContainer}>
             <View style={{height: 10}} />

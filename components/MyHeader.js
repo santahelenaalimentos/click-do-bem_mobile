@@ -17,7 +17,7 @@ import {
 
 export default function MyHeader (props) {
 
-  let { buttonColor, goBack, cancel, headerAndroid, statusBarAndroid } = props;
+  let { buttonColor, goBack, cancel, headerAndroid, statusBarAndroid, title } = props;
   return (
     <View>
       {
@@ -31,7 +31,7 @@ export default function MyHeader (props) {
             </Button>
           </Left>
           <Body>
-            <Title>Cadastro</Title>
+            <Title>{title}</Title>
           </Body>
           <Right>
             <Text style={{color: buttonColor}} onPress={cancel}>Cancelar</Text>

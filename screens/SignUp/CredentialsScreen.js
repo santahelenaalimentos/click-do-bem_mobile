@@ -40,12 +40,19 @@ export default class HomeScreen extends React.Component {
   }
 
   handleNext(){
-    const { email, senha } = this.state;
+    const { email, senha, confirmaEmail, confirmaSenha } = this.state;
     let data = {
       email, senha, ...this.props.navigation.state.params
     }
-    // console.log('data:', data);
-    console.log(JSON.stringify(data));
+
+    let errs = [];
+    if(senha !== confirmaSenha) errs.push('As senhas informadas não coincidem')
+    if(email !== confirmaEmail) errs.push('Os emails informados não coincidem')
+    if(!senha || !email || !confirmaEmail || !confirmaSenha) errs.push('É preciso preencher todos os campos')
+    if(errs.length > 0){
+      this.toastWarning(errs.map(err => `${err}\n`))
+      return
+    }
 
     fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/colaborador/cadastrar`, 
     {

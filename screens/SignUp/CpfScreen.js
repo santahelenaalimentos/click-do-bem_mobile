@@ -60,11 +60,10 @@ export default class HomeScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.cadastrado){
-        this.toastWarning('Você já está cadastrado...')
+        this.toastWarning('CPF já cadastrado')
       }
       else if(data.situacao === 'ativo') {
         const cpf = documento.replace(".","").replace(".","").replace("-","");
-        this.toastSuccess('Cadastro autorizado...')
         this.props.navigation.navigate('SignUpPersonal', {
           documento: cpf
         })

@@ -4,7 +4,6 @@ import {
   View,
   Platform,
   Text,
-  Picker,
   TextInput,
 } from 'react-native';
 import {
@@ -16,12 +15,19 @@ import {
   Header,
   Body,
   Title,
+  Toast,
+  Picker,
+  Left,
+  Right,
+  Icon,
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text';
 import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
+
+const ufList = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -46,10 +52,26 @@ export default class HomeScreen extends React.Component {
 
   handleNext(){
     const { logradouro, numero, complemento, bairro, cidade, uf, cep } = this.state;
+    if(!logradouro || !numero || !bairro || !cidade || !uf || !cep){
+      this.toastWarning('Favor preencher os campos obrigatórios')
+      return
+    }
     this.props.navigation.navigate('SignUpPhone', {
       endereco: {logradouro, numero, complemento, bairro, cidade, uf, cep: cep.replace("-","") },
       ...this.props.navigation.state.params
     });
+  }
+
+  toastWarning(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'warning',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
   }
 
   render() {
@@ -77,11 +99,24 @@ export default class HomeScreen extends React.Component {
               maxLength={9}
               onChangeText = {(cep) => this.setState({cep})}/>
 
-            <Text style={styles.label}>Estado</Text>
-            <TextInput 
-              style={styles.input}
-              value = {this.state.uf}
-              onChangeText = {(uf) => this.setState({uf})}/>
+            <Item style={[styles.item, styles.input]}>
+              <Left>
+                <Text style={styles.labelUf}>Estado</Text>
+              </Left>
+              <Right>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="ios-arrow-down-outline" />}
+                  placeholder="Selecione"
+                  placeholderStyle={{ color: "#bfc6ea" }}
+                  placeholderIconColor="#007aff"
+                  style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
+                  selectedValue={this.state.uf}
+                  onValueChange={(uf) => this.setState({ uf })}>
+                  { ufList.map(uf => <Picker.Item key={uf} label={uf} value={uf}/>) }
+                </Picker>
+              </Right>
+            </Item>
 
             <Text style={styles.label}>Cidade</Text>
             <TextInput 
@@ -109,6 +144,7 @@ export default class HomeScreen extends React.Component {
 
             <Text style={styles.label}>Complemento</Text>
             <TextInput 
+              placeholder='Opcional'
               style={styles.input}
               value = {this.state.complemento}
               onChangeText = {(complemento) => this.setState({complemento})}/>
@@ -140,10 +176,17 @@ const styles = StyleSheet.create({
     marginBottom: -5,
     marginTop: 15
   },
+  labelUf: {
+    fontSize: 14,
+    color: '#999999',
+  },
   input: {
     height: 45,
     borderBottomColor: '#999999',
     borderBottomWidth:  Platform.OS === 'ios' ? 1 : 0,
+  },
+  item: {
+    minHeight: 70,
   },
 });
 

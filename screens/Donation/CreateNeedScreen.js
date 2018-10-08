@@ -36,7 +36,7 @@ export default class CreateDonationScreen extends React.Component {
 
       titulo: '',
       descricao: '',
-      tipoItem: 2, //doação???
+      tipoItem: 1, //necessidade???
       categoria: '',
       anonimo: false
     }
@@ -117,7 +117,7 @@ export default class CreateDonationScreen extends React.Component {
           cancel={() => this.props.navigation.navigate('Dashboard')}
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
-          title='Nova Doação'/>
+          title='Necessidade'/>
         <View style={styles.inputContainer}>
           <Item stackedLabel>
             <Label style={styles.label}>Título</Label>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     minHeight: 70,
   },
   textArea: {
-    minHeight: 200,
+    minHeight: 120,
   },
   label: {
     color: '#666666'

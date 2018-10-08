@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   input: {
     height: 45,
     borderBottomColor: '#999999',
-    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 0,
   },
 });
 

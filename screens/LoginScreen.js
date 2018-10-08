@@ -32,8 +32,8 @@ export default class HomeScreen extends React.Component {
     
 
     this.state = {
-      nome: '',
-      senha: '',
+      nome: '25195505896',
+      senha: 'a1b2c3d4',
     }
 
     this.onPressSignIn = this.onPressSignIn.bind(this)
@@ -57,7 +57,9 @@ export default class HomeScreen extends React.Component {
     .then((data) => {
       if(data.sucesso) {
         this.toastSuccess('Login efetuado com sucesso!')
-        this.props.navigation.navigate('Dashboard')
+        this.props.navigation.navigate('Dashboard',{
+          token: data.token
+        })
       }
       else {
         console.log(data);
@@ -200,6 +202,6 @@ const styles = StyleSheet.create({
   input: {
     height: 45,
     borderBottomColor: '#999999',
-    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 0,
   },
 });

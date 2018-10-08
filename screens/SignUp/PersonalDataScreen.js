@@ -3,6 +3,8 @@ import {
   StyleSheet,
   View,
   Platform,
+  Text,
+  TextInput,
 } from 'react-native';
 import {
   Container,
@@ -11,6 +13,7 @@ import {
   Input,
   Content,
 } from 'native-base';
+import { TextInputMask } from 'react-native-masked-text'
 import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -26,23 +29,17 @@ export default class HomeScreen extends React.Component {
 
     this.state = {
       nome: '',
-      nascimento: ''
+      dataNascimento: ''
     }
     this.handleNext = this.handleNext.bind(this)
   }
 
   handleNext(){
-    this.props.navigation.navigate('SignUpAddress');
-  }
-
-  _storeData = async () => {
-    let { nome, nascimento } = this.state;
-    let data = { nome, nascimento }
-    try {
-      await AsyncStorage.setItem('personalData', JSON.stringify(data));
-    } catch (error) {
-      console.log(error);
-    }
+    const { nome, dataNascimento } = this.state;
+    this.props.navigation.navigate('SignUpAddress', {
+      nome, dataNascimento: dataNascimento.split("/").reverse().join("-"), 
+      ...this.props.navigation.state.params
+    });
   }
 
   render() {
@@ -61,14 +58,24 @@ export default class HomeScreen extends React.Component {
               title="Informe seus"
               subtitle="Dados Pessoais"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item stackedLabel >
-              <Label>Nome</Label>
-              <Input/>
-            </Item>
-            <Item stackedLabel>
-              <Label>Data de Nascimento</Label>
-              <Input/>
-            </Item>
+
+            <Text style={styles.label}>Nome</Text>
+            <TextInput autoCapitalize='words'
+            style={styles.input}
+            value = {this.state.nome}
+            onChangeText = {(nome) => this.setState({nome})}/>
+
+            <Text style={styles.label}>Data de nascimento</Text>
+            <TextInputMask
+              style={styles.input}
+              type={'datetime'}
+              value={this.state.dataNascimento}
+              options={{
+                format: 'DD/MM/YYYY'
+              }}
+              maxLength={10}
+              onChangeText={(dataNascimento) => this.setState({ dataNascimento })}/>
+
           </View>
         </Content>
         <ContinueButton
@@ -86,6 +93,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 10,
-  }
+  },
+  label: {
+    fontSize: 14,
+    color: '#999999',
+    marginBottom: -5,
+    marginTop: 15
+  },
+  input: {
+    height: 45,
+    borderBottomColor: '#999999',
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
+  },
 });
 

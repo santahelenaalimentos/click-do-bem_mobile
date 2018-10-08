@@ -3,6 +3,8 @@ import {
   StyleSheet,
   View,
   Platform,
+  Text,
+  TextInput
 } from 'react-native';
 import {
   Container,
@@ -14,6 +16,7 @@ import {
   Body,
   Title,
 } from 'native-base';
+import { TextInputMask } from 'react-native-masked-text'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -27,11 +30,19 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      telefoneFixo: '',
+      telefoneCelular: '',
+    }
+
     this.handleNext = this.handleNext.bind(this)
   }
 
   handleNext(){
-    this.props.navigation.navigate('SignUpCredentials');
+    const { telefoneCelular, telefoneFixo } = this.state;
+    this.props.navigation.navigate('SignUpCredentials', {
+      telefoneCelular, telefoneFixo, ...this.props.navigation.state.params
+    });
   }
 
   render() {
@@ -49,14 +60,31 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="Telefone"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item stackedLabel >
-              <Label>Telefone</Label>
-              <Input/>
-            </Item>
-            <Item stackedLabel>
-              <Label>Celular</Label>
-              <Input/>
-            </Item>
+
+            <Text style={styles.label}>Telefone</Text>
+            <TextInputMask
+            maxLength={14}
+            style={styles.input}
+            type = {'cel-phone'}
+            value={this.state.telefoneFixo}
+            onChangeText={(telefoneFixo) => this.setState({ telefoneFixo })}
+            options = {{
+              withDDD: true,
+            }}
+            />
+
+            <Text style={styles.label}>Celular</Text>
+            <TextInputMask
+            maxLength={15}
+            style={styles.input}
+            type = {'cel-phone'}
+            value={this.state.telefoneCelular}
+            onChangeText={(telefoneCelular) => this.setState({ telefoneCelular })}
+            options = {{
+              withDDD: true,
+            }}
+            />
+
           </View>
         </Content>
         <ContinueButton
@@ -77,5 +105,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 20,
     marginBottom: 10,
-  }
+  },
+  label: {
+    fontSize: 14,
+    color: '#999999',
+    marginBottom: -5,
+    marginTop: 15
+  },
+  input: {
+    height: 45,
+    borderBottomColor: '#999999',
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
+  },
 });

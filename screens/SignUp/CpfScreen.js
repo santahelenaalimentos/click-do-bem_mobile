@@ -4,6 +4,7 @@ import {
   View,
   Platform,
   AsyncStorage,
+  Text,
 } from 'react-native';
 import {
   Container,
@@ -16,6 +17,7 @@ import {
   Body,
   Toast,
 } from 'native-base';
+import { TextInputMask } from 'react-native-masked-text'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -30,28 +32,16 @@ export default class HomeScreen extends React.Component {
     super(props);
 
     this.state = {
-      cpf: '',
+      documento: '',
     }
 
     this.handleNext = this.handleNext.bind(this)
   }
 
-  _storeData = async () => {
-    let { cpf } = this.state;
-    let data = {
-      cpf
-    }
-    try {
-      await AsyncStorage.setItem('cpfData', JSON.stringify(data));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   handleNext(){
-    let { cpf } = this.state;
-    console.log(cpf)
-    if(cpf.length != 11){
+    const { documento } = this.state;
+    console.log(documento)
+    if(documento.length != 14){
       Toast.show({
         text: 'O CPF digitado não é válido.',
         buttonText: 'OK',
@@ -63,7 +53,7 @@ export default class HomeScreen extends React.Component {
       })
       return;
     }
-    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/verificadocumento/${cpf}`, 
+    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/verificadocumento/${documento.replace(".","").replace(".","").replace("-","")}`, 
     {
       method: 'GET',
     })
@@ -71,17 +61,15 @@ export default class HomeScreen extends React.Component {
     .then((data) => {
       if(data.cadastrado){
         this.toastWarning('Você já está cadastrado...')
-        return
       }
-      if(data.situacao === 'ativo') {
+      else if(data.situacao === 'ativo') {
+        const cpf = documento.replace(".","").replace(".","").replace("-","");
         this.toastSuccess('Cadastro autorizado...')
-        console.log('guardando dados')
-        this._storeData();
-        console.log('dados guardados')
-        this.props.navigation.navigate('SignUpPersonal')
-        return
+        this.props.navigation.navigate('SignUpPersonal', {
+          documento: cpf
+        })
       }
-      this.toastWarning('Acesso não permitido.')
+      else this.toastWarning('Acesso não permitido.')
     })
     .catch((err) => console.log(err))
   }
@@ -126,12 +114,15 @@ export default class HomeScreen extends React.Component {
               title="Informe seu"
               subtitle="CPF"
               colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
-            <Item stackedLabel >
-              <Label>CPF</Label>
-              <Input 
-              value={this.state.cpf}
-              onChangeText={(cpf) => this.setState({ cpf })}/>
-            </Item>
+
+            <Text style={styles.label}>CPF</Text>
+            <TextInputMask
+              style={styles.maskedInput}
+              type={'cpf'}
+              value={this.state.documento}
+              maxLength={14}
+              onChangeText={(documento) => this.setState({ documento })}/>
+
           </View>
         </Content>
         <ContinueButton
@@ -150,6 +141,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: 'white',
-  }
+  },
+  label: {
+    fontSize: 14,
+    color: '#999999',
+    marginBottom: -5,
+  },
+  maskedInput: {
+    height: 45,
+    borderBottomColor: '#999999',
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
+  },
 });
 

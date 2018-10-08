@@ -76,7 +76,7 @@ export default class CreateDonationScreen extends React.Component {
         this.toastSuccess('Item cadastrado com sucesso');
         this.props.navigation.navigate('Dashboard');
       } else {
-        this.toastWarning(data.mensagem);
+        this.toastWarning(data.mensagem.map(msg => `${msg}\n`));
       }
     })
     .catch(err => console.log(err))

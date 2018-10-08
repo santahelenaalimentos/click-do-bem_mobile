@@ -63,8 +63,7 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate('Login')
       }
       else {
-        console.log(data);
-        this.toastWarning('Ocorreu um erro inesperado.');
+        this.toastWarning(data.mensagem.map(msg => `${msg}\n`));
       }
     })
     .catch((err) => console.log(err))

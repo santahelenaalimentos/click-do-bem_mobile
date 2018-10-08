@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Platform,
+  TextInput,
 } from 'react-native';
 import {
   Button,
@@ -13,7 +14,10 @@ import {
   Input,
   Content,
   Header,
+  Toast,
 } from 'native-base';
+import md5 from 'md5';
+import { TextInputMask } from 'react-native-masked-text'
 import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
 
@@ -28,8 +32,8 @@ export default class HomeScreen extends React.Component {
     
 
     this.state = {
-      login: '',
-      password: '',
+      nome: '',
+      senha: '',
     }
 
     this.onPressSignIn = this.onPressSignIn.bind(this)
@@ -37,12 +41,58 @@ export default class HomeScreen extends React.Component {
   }
 
   onPressSignIn(){
-    this.props.navigation.navigate('Dashboard');
-    
+    const { nome, senha } = this.state;
+    const data = { nome: nome.replace(".","").replace(".","").replace("-",""), senha: md5(senha) };
+
+    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/autenticar`, 
+    {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      }
+    })
+    .then(res => res.json())
+    .then((data) => {
+      if(data.sucesso) {
+        this.toastSuccess('Login efetuado com sucesso!')
+        this.props.navigation.navigate('Dashboard')
+      }
+      else {
+        console.log(data);
+        this.toastWarning(data.mensagem);
+      }
+    })
+    .catch((err) => console.log(err))    
   }
 
   onPressSignUp(){
     this.props.navigation.navigate('SignUpCPF');
+  }
+
+  toastSuccess(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'success',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
+  }
+
+  toastWarning(msg){
+    Toast.show({
+      text: msg,
+      buttonText: 'OK',
+      type: 'warning',
+      style: {
+        marginBottom: 100,
+      },
+      duration: 3000,
+    })
   }
 
   render() {
@@ -58,14 +108,23 @@ export default class HomeScreen extends React.Component {
         
         <Content style={styles.credentialsContainer}>
           <View >
-            <Item stackedLabel >
-              <Label >CPF</Label>
-              <Input style={styles.credentialsInput} />
-            </Item>
-            <Item stackedLabel >
-              <Label >Senha</Label>
-              <Input style={styles.credentialsInput} />
-            </Item>
+
+            <Text style={styles.label}>CPF</Text>
+            <TextInputMask
+              style={styles.input}
+              type={'cpf'}
+              value={this.state.nome}
+              maxLength={14}
+              onChangeText={(nome) => this.setState({ nome })}/>
+
+            <Text style={styles.label}>Senha</Text>
+            <TextInput
+              secureTextEntry={true}
+              style={styles.input}
+              value={this.state.senha}
+              maxLength={8}
+              onChangeText={(senha) => this.setState({ senha })}/>
+
           </View>
 
           <View style={{height: 40}}/>
@@ -131,5 +190,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 25,
 
+  },
+  label: {
+    fontSize: 14,
+    color: '#999999',
+    marginBottom: -5,
+    marginTop: 15
+  },
+  input: {
+    height: 45,
+    borderBottomColor: '#999999',
+    borderBottomWidth:  Platform.OS === 'ios' ? 1 : 1,
   },
 });

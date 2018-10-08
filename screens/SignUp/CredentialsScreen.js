@@ -124,6 +124,7 @@ export default class HomeScreen extends React.Component {
 
             <Text style={styles.label}>Senha</Text>
             <TextInput 
+              maxLength={8}
               secureTextEntry = {true}
               style={styles.input}
               value = {this.state.senha}
@@ -131,6 +132,7 @@ export default class HomeScreen extends React.Component {
 
             <Text style={styles.label}>Confirme a senha</Text>
             <TextInput 
+              maxLength={8}
               secureTextEntry = {true}
               style={styles.input}
               value = {this.state.confirmaSenha}

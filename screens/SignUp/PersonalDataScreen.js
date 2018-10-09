@@ -42,8 +42,12 @@ export default class HomeScreen extends React.Component {
     if(!nome || !dataNascimento) errs.push('É obrigatório informar todos os campos');
     let nasc = dataNascimento.split('/');
     let today = new Date();
-    if(nasc[0] > 31 || nasc[1] > 12 || nasc[2] > today.getFullYear() || dataNascimento.length !== 10)
-    errs.push('A data de nascimento deve ser válida')
+    if( nasc[0] < 1 || nasc[0] > 31 || 
+        nasc[1] < 1 || nasc[1] > 12 || 
+        nasc[2] < 1900 || nasc[2] > today.getFullYear() || 
+        dataNascimento.length !== 10){
+      errs.push('A data de nascimento deve ser válida')
+    }
     if(errs.length){
       this.toastWarning(errs.map(err => `${err}\n`))
       return

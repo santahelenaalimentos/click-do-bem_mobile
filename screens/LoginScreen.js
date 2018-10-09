@@ -72,18 +72,11 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.navigate('SignUpCPF');
   }
 
-  toastSuccess(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'success',
-      duration: 3000,
-    })
-  }
-
   toastWarning(msg){
     Toast.show({
       text: msg,
+      position: 'top',
+      style: {marginTop: 20},
       buttonText: 'OK',
       type: 'warning',
       duration: 3000,

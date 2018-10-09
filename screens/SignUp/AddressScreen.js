@@ -43,7 +43,7 @@ export default class HomeScreen extends React.Component {
       complemento: '',
       bairro: '',
       cidade: '',
-      uf: '',
+      uf: null,
       cep: '',
     }
 
@@ -56,6 +56,11 @@ export default class HomeScreen extends React.Component {
       this.toastWarning('Favor preencher os campos obrigatórios')
       return
     }
+    if(uf.length > 2) {
+      this.toastWarning('Favor preencher o estado');
+      return;
+    }
+
     this.props.navigation.navigate('SignUpPhone', {
       endereco: {logradouro, numero, complemento, bairro, cidade, uf, cep: cep.replace("-","") },
       ...this.props.navigation.state.params
@@ -99,13 +104,12 @@ export default class HomeScreen extends React.Component {
                 <Picker
                   mode="dropdown"
                   iosIcon={<Icon name="ios-arrow-down-outline" />}
-                  placeholder="Selecione"
                   placeholderStyle={{ color: "#bfc6ea" }}
                   placeholderIconColor="#007aff"
                   style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
                   selectedValue={this.state.uf}
                   onValueChange={(uf) => this.setState({ uf })}>
-                  { Platform.OS === 'android' && <Picker.Item key='1'label='Selecione' value='0' />}
+                  <Picker.Item key='0' label='Selecione' value={null} />
                   { ufList.map(uf => <Picker.Item key={uf} label={uf} value={uf}/>) }
                 </Picker>
               </Right>

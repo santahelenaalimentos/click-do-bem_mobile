@@ -37,7 +37,7 @@ export default class CreateDonationScreen extends React.Component {
       titulo: '',
       descricao: '',
       tipoItem: 1, //necessidade???
-      categoria: '',
+      categoria: null,
       anonimo: false
     }
 
@@ -88,9 +88,6 @@ export default class CreateDonationScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'success',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }
@@ -100,9 +97,6 @@ export default class CreateDonationScreen extends React.Component {
       text: msg,
       buttonText: 'OK',
       type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
       duration: 3000,
     })
   }
@@ -126,9 +120,10 @@ export default class CreateDonationScreen extends React.Component {
             value={titulo}
             onChangeText={value => this.setState({titulo: value})}/>
           </Item>
-          <Item stackedLabel style={styles.textArea}>
+          <Item stackedLabel style={styles.textAreaContainer}>
             <Label style={styles.label}>Descrição</Label>
             <Input 
+            style={styles.textArea}
             maxLength={255}
             value={descricao}
             onChangeText={value => this.setState({descricao: value})}
@@ -143,12 +138,12 @@ export default class CreateDonationScreen extends React.Component {
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="ios-arrow-down-outline" />}
-                placeholder="Selecione"
                 placeholderStyle={{ color: "#bfc6ea" }}
                 placeholderIconColor="#007aff"
                 style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
                 selectedValue={categoria}
                 onValueChange={(cat) => this.setState({ categoria: cat })}>
+                <Picker.Item key='0' label='Selecione' value={null} />
                 { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
               </Picker>
             </Right>
@@ -164,47 +159,49 @@ export default class CreateDonationScreen extends React.Component {
             </Right>
           </Item>
         </View>
-        <Button 
-        style={styles.button}
-        onPress={this.handleCreateDonation}>
-          <Text style={styles.buttonText}>Salvar</Text>
-        </Button>
+        <View style={styles.buttonContainer}>
+            <Button 
+              style={styles.button}
+              onPress={this.handleCreateDonation}>
+              <Text style={styles.buttonText}>Salvar</Text>
+            </Button>
+          </View>
       </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-    minHeight: '100%',
-  },
   inputContainer: {
     maxWidth: '85%',
     minWidth: '85%',
     alignSelf: 'center',
   },
+  buttonContainer:{
+    alignSelf: 'center',
+    maxWidth: '85%',
+  },
   button:{
     backgroundColor: Colors.lemonGreen,
-    minWidth: '85%',
-    padding: 15,
-    margin: 10,
+    minWidth: '100%',
+    marginTop: 35,
     alignSelf: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25,
   },
   buttonText: {
-    color: 'white',
+    alignSelf: 'center',
     textAlign: 'center',
+    color: 'white',
     fontSize: 14,
   },
   item: {
     minHeight: 70,
   },
-  textArea: {
+  textAreaContainer: {
     minHeight: 120,
+  },
+  textArea: {
+    textAlignVertical: 'top',
   },
   label: {
     color: '#666666'

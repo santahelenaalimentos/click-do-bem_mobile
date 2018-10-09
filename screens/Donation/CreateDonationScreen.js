@@ -17,6 +17,7 @@ import {
   Left,
   Right,
   Container,
+  Content,
   Picker,
   Icon,
   Toast,
@@ -37,7 +38,7 @@ export default class CreateDonationScreen extends React.Component {
       titulo: '',
       descricao: '',
       tipoItem: 2, //doação???
-      categoria: '',
+      categoria: null,
       anonimo: false
     }
 
@@ -104,7 +105,7 @@ export default class CreateDonationScreen extends React.Component {
   render() {
     const { categorias, titulo, descricao, categoria, anonimo } = this.state;
     return (
-      <Container style={styles.container}>
+      <Container>
         <MyHeader 
           buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
@@ -112,93 +113,99 @@ export default class CreateDonationScreen extends React.Component {
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
           title='Nova Doação'/>
-        <View style={styles.inputContainer}>
-          <Item stackedLabel>
-            <Label style={styles.label}>Título</Label>
-            <Input 
-            maxLength={50}
-            value={titulo}
-            onChangeText={value => this.setState({titulo: value})}/>
-          </Item>
-          <Item stackedLabel style={styles.textArea}>
-            <Label style={styles.label}>Descrição</Label>
-            <Input 
-            maxLength={255}
-            value={descricao}
-            onChangeText={value => this.setState({descricao: value})}
-            multiline={true}
-            numberOfLines={6}/>
-          </Item>
-          <Item style={styles.item}>
-            <Left>
-              <Text style={styles.label}>Categoria</Text>
-            </Left>
-            <Right>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                placeholder="Selecione"
-                placeholderStyle={{ color: "#bfc6ea" }}
-                placeholderIconColor="#007aff"
-                style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
-                selectedValue={categoria}
-                onValueChange={(cat) => this.setState({ categoria: cat })}>
-                { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
-              </Picker>
-            </Right>
-          </Item>
-          <Item style={styles.item}>
-            <Left>
-              <Text style={styles.label}>Anônimo</Text>
-            </Left>
-            <Right>
-              <Switch 
-                value={anonimo} 
-                onValueChange={value => this.setState({ anonimo: value })}/>
-            </Right>
-          </Item>
-        </View>
-        <Button 
-        style={styles.button}
-        onPress={this.handleCreateDonation}>
-          <Text style={styles.buttonText}>Salvar</Text>
-        </Button>
+
+          <View style={styles.inputContainer}>
+            <Item stackedLabel>
+              <Label style={styles.label}>Título</Label>
+              <Input 
+              maxLength={50}
+              value={titulo}
+              onChangeText={value => this.setState({titulo: value})}/>
+            </Item>
+            <Item stackedLabel style={styles.textAreaContainer}>
+              <Label style={styles.label}>Descrição</Label>
+              <Input 
+              style={styles.textArea}
+              maxLength={255}
+              value={descricao}
+              onChangeText={value => this.setState({descricao: value})}
+              multiline={true}
+              numberOfLines={6}/>
+            </Item>
+            <Item style={styles.item}>
+              <Left>
+                <Text style={styles.label}>Categoria</Text>
+              </Left>
+              <Right>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="ios-arrow-down-outline" />}
+                  placeholderStyle={{ color: "#bfc6ea" }}
+                  placeholderIconColor="#007aff"
+                  style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
+                  selectedValue={categoria}
+                  onValueChange={(cat) => this.setState({ categoria: cat })}>
+                  <Picker.Item key='0' label='Selecione' value={null} />
+                  { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
+                </Picker>
+              </Right>
+            </Item>
+            <Item style={styles.item}>
+              <Left>
+                <Text style={styles.label}>Anônimo</Text>
+              </Left>
+              <Right>
+                <Switch 
+                  value={anonimo} 
+                  onValueChange={value => this.setState({ anonimo: value })}/>
+              </Right>
+            </Item>
+
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button 
+              style={styles.button}
+              onPress={this.handleCreateDonation}>
+              <Text style={styles.buttonText}>Salvar</Text>
+            </Button>
+          </View>
+
       </Container>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'stretch',
-    minHeight: '100%',
-  },
   inputContainer: {
     maxWidth: '85%',
     minWidth: '85%',
     alignSelf: 'center',
   },
+  buttonContainer:{
+    alignSelf: 'center',
+    maxWidth: '85%',
+  },
   button:{
     backgroundColor: Colors.lemonGreen,
-    minWidth: '85%',
-    padding: 15,
-    margin: 10,
+    minWidth: '100%',
+    marginTop: 35,
     alignSelf: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25,
   },
   buttonText: {
-    color: 'white',
+    alignSelf: 'center',
     textAlign: 'center',
+    color: 'white',
     fontSize: 14,
   },
   item: {
     minHeight: 70,
   },
+  textAreaContainer: {
+    minHeight: 120,
+  },
   textArea: {
-    minHeight: 200,
+    textAlignVertical: 'top',
   },
   label: {
     color: '#666666'

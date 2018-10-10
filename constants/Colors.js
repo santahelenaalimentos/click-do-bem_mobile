@@ -7,4 +7,10 @@ export default {
   highlight: '#c2e03c',
   dark: '#1c2f23',
   lighterDark: '#2a4735',
+
+  blue: '#00BCD4',
+  purple: '#673AB7',
+  lighterPurple: '#734db7',
+  grey: '#424242',
+  greyPlaceholder: '717171',
 };

@@ -216,6 +216,6 @@ const styles = StyleSheet.create({
     color: '#666666'
   },
   picker:{ 
-    width: Platform.OS === 'android' ? '130%' : undefined 
+    width: Platform.OS === 'android' ? '150%' : undefined 
   }
 });

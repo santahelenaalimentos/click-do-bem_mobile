@@ -14,6 +14,7 @@ import {
   Icon,
   Button,
 } from 'native-base'
+import Colors from '../constants/Colors'
 
 export default function MyHeader (props) {
 
@@ -42,7 +43,7 @@ export default function MyHeader (props) {
           }
         </Header>
         :
-        <Header  androidStatusBarColor={statusBarAndroid} style={{backgroundColor: headerAndroid, elevation: 7, marginBottom: 10}}>
+        <Header  androidStatusBarColor={ Colors.lighterPurple } style={{backgroundColor: Colors.purple, elevation: 7, marginBottom: 10}}>
           {goBack &&
           <Left>
             <Button transparent onPress={goBack}>

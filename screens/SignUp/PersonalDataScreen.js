@@ -86,8 +86,7 @@ export default class PersonalDataScreen extends React.Component {
             <View style={{height: 20}} />
             <Instructions
               title="Informe seus"
-              subtitle="Dados Pessoais"
-              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+              subtitle="Dados Pessoais" />
 
             <Text style={styles.label}>Nome</Text>
             <TextInput autoCapitalize='words'
@@ -109,8 +108,7 @@ export default class PersonalDataScreen extends React.Component {
           </View>
         </Content>
         <ContinueButton
-          handler={this.handleNext}
-          colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
+          handler={this.handleNext} />
       </Container>
     );
   }

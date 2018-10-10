@@ -89,7 +89,7 @@ export default class LoginScreen extends React.Component {
         <NoHeader />
         <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/images/cb-logo.png')}
+            source={require('../assets/images/cbem-logo.png')}
             style={styles.welcomeImage}
           /> 
         </View>
@@ -119,13 +119,13 @@ export default class LoginScreen extends React.Component {
           
           <View >
             <Button style={styles.signInButton} onPress={this.onPressSignIn} block >
-              <Text style={styles.buttonText}>Entrar</Text>
+              <Text style={styles.signInText}>Entrar</Text>
             </Button>
             <View style={styles.ou}>
-              <Text> ou </Text>
+              <Text></Text>
             </View>
             <Button style={styles.signUpButton} onPress={this.onPressSignUp} block >
-              <Text style={styles.buttonText}>Criar nova conta</Text>
+              <Text style={styles.signUpText}>Criar nova conta</Text>
             </Button>
           </View>
         </Content>
@@ -149,10 +149,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   welcomeImage: {
-    height: 200,
+    height: 250,
     resizeMode: 'contain',
-    marginTop:  Platform.OS === 'ios' ? 80 : 30,
-    marginLeft: 15,
+    marginTop:  Platform.OS === 'ios' ? '10%' : '0%',
   },
   credentialsContainer: {
     minWidth: '85%',
@@ -161,22 +160,27 @@ const styles = StyleSheet.create({
     minWidth: '80%',
     height: 40,
   },
-  buttonText: {
+  signInText: {
     color: '#fff'
   },
+  signUpText: {
+    color: Colors.blue,
+  },
   signInButton: {
-    backgroundColor: Colors.lemonGreen,
+    backgroundColor: Colors.purple,
     elevation: 1, 
     marginBottom: 4,
   },
   signUpButton: {
-    backgroundColor: Colors.weirdGreen,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.blue,
     elevation: 1, 
     marginBottom: 4,
   },
   ou:{
     alignSelf: 'center',
-    height: 25,
+    height: 15,
 
   },
   label: {

@@ -101,19 +101,18 @@ export default class CpfScreen extends React.Component {
     return (
       <Container>
         <MyHeader 
-          buttonColor={Colors.weirdGreen}
+          buttonColor={Colors.blue}
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Login')}
-          headerAndroid={Colors.dark}
-          statusBarAndroid={Colors.lighterDark}
+          headerAndroid={Colors.purple}
+          statusBarAndroid={Colors.lighterPurple}
           title='Cadastro'/>
         <Content>
           <View style={styles.inputsContainer}>
             <View style={{height: 10}} />
             <Instructions
               title="Informe seu"
-              subtitle="CPF"
-              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+              subtitle="CPF" />
 
             <Text style={styles.label}>CPF</Text>
             <TextInputMask
@@ -125,9 +124,7 @@ export default class CpfScreen extends React.Component {
 
           </View>
         </Content>
-        <ContinueButton
-          handler={this.handleNext}
-          colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
+        <ContinueButton handler={this.handleNext} />
       </Container>
     );
   }

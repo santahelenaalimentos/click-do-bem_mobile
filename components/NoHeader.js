@@ -7,7 +7,7 @@ export default class NoHeader extends Component {
   render() {
     return (
       <View>
-        {Platform.OS === 'android' && <Header androidStatusBarColor={Colors.dark} style={{display: 'none'}}></Header>}      
+        {Platform.OS === 'android' && <Header androidStatusBarColor={Colors.purple} style={{display: 'none'}}></Header>}      
       </View>
     )
   }

@@ -3,25 +3,23 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
   Platform,
 } from 'react-native';
 import {
-
+  Button,
 } from 'native-base';
+import Colors from '../../constants/Colors';
 
 export default (props) => {
-  const { colors } = props;
   return (
-    <View style={[styles.buttonContainer, { backgroundColor: colors.container }]}>
-      <TouchableHighlight
+    <View style={[styles.buttonContainer, { backgroundColor: Colors.purple }]}>
+      <Button
         onPress={props.handler}
-        style={[styles.button, { backgroundColor: colors.button }]}
-        underlayColor={colors.highlight} >
+        style={[styles.button, { backgroundColor: Colors.blue }]} >
         <Text style={styles.text}>
           Continuar
-            </Text>
-      </TouchableHighlight>
+        </Text>
+      </Button>
     </View>
   )
 }
@@ -29,20 +27,19 @@ export default (props) => {
 const styles = StyleSheet.create({
   button: {
     width: '80%',
-    height: 50,
-    borderRadius: 3,
+    height: 45,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   text: {
     fontWeight: '500',
     fontSize: 24,
     color: 'white',
-    textAlign: 'center',
-    padding: 7
   },
   buttonContainer: {
     flex: 0.1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     minHeight: Platform.OS === 'ios' ? 100 : 80,
     maxHeight: Platform.OS === 'ios' ? 100 : 80,
   }

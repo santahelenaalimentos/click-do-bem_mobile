@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "click-do-bem003",
+    "name": "click-do-bem005",
     "description": "Versão alpha do app click do bem.",
-    "slug": "click-do-bem003",
+    "slug": "click-do-bem005",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [
@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/cbem-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

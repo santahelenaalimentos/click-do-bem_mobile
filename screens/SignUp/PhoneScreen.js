@@ -81,8 +81,7 @@ export default class PhoneScreen extends React.Component {
           <View style={styles.inputsContainer}>
             <Instructions
               title="Informe seu"
-              subtitle="Telefone"
-              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+              subtitle="Telefone" />
               
             <Text style={styles.label}>Celular</Text>
             <TextInputMask
@@ -112,8 +111,7 @@ export default class PhoneScreen extends React.Component {
           </View>
         </Content>
         <ContinueButton
-          handler={this.handleNext}
-          colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
+          handler={this.handleNext} />
       </Container>
     );
   }

@@ -93,8 +93,7 @@ export default class AddressScreen extends React.Component {
           <View style={styles.inputsContainer}>
             <Instructions
               title="Informe seu"
-              subtitle="Endereço"
-              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+              subtitle="Endereço" />
 
             <Item style={[styles.item, styles.inputEstado]}>
               <Left>
@@ -158,8 +157,7 @@ export default class AddressScreen extends React.Component {
           </View>
         </Content>
         <ContinueButton
-          handler={this.handleNext}
-          colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
+          handler={this.handleNext} />
       </Container>
     );
   }

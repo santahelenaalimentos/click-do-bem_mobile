@@ -112,8 +112,7 @@ export default class CredentialsScreen extends React.Component {
           <View style={styles.inputsContainer}>
             <Instructions
               title="Informe seu"
-              subtitle="E-mail e senha"
-              colors={{ title: Colors.dark, subtitle: Colors.weirdGreen }} />
+              subtitle="E-mail e senha" />
 
             <Text style={styles.label}>E-mail</Text>
             <TextInput 
@@ -147,8 +146,7 @@ export default class CredentialsScreen extends React.Component {
           </View>
         </Content>
         <ContinueButton
-          handler={this.handleNext}
-          colors={{ button: Colors.lemonGreen, container: Colors.dark }} />
+          handler={this.handleNext} />
       </Container>
     );
   }

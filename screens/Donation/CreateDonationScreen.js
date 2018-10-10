@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Switch,
   Platform,
+  Image,
 } from 'react-native';
 import {
   Button,
@@ -20,8 +21,11 @@ import {
   Content,
   Picker,
   Icon,
-  Toast,
 } from 'native-base';
+import {
+  ImagePicker
+} from 'expo'
+import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader';
 import Colors from '../../constants/Colors';
 
@@ -39,13 +43,12 @@ export default class CreateDonationScreen extends React.Component {
       descricao: '',
       tipoItem: 2, //doação???
       categoria: null,
-      anonimo: false
+      anonimo: false,
+      image: null,
     }
 
     this.token = props.navigation.state.params.token;
     this.handleCreateDonation = this.handleCreateDonation.bind(this)
-    this.toastSuccess = this.toastSuccess.bind(this)
-    this.toastWarning = this.toastWarning.bind(this)
   }
   
   componentWillMount(){
@@ -74,35 +77,30 @@ export default class CreateDonationScreen extends React.Component {
     .then(res => res.json())
     .then(data => {
       if(data.sucesso){
-        this.toastSuccess('Item cadastrado com sucesso');
+        Utils.toast('Item cadastrado com sucesso', 0);
         this.props.navigation.navigate('Dashboard');
       } else {
-        this.toastWarning(data.mensagem.map(msg => `${msg}\n`));
+        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0);
       }
     })
     .catch(err => console.log(err))
   }
 
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
 
-  toastSuccess(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'success',
-      duration: 3000,
-    })
-  }
+    console.log(result);
 
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      duration: 3000,
-    })
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
   }
 
   render() {
+    let { image } = this.state;
     const { categorias, titulo, descricao, categoria, anonimo } = this.state;
     return (
       <Container>
@@ -132,6 +130,21 @@ export default class CreateDonationScreen extends React.Component {
               onChangeText={value => this.setState({descricao: value})}
               multiline={true}
               numberOfLines={6}/>
+            </Item>
+            <Item style={styles.imagesItem}>
+              <View style={styles.imagesTopContainer}>
+                <Left>
+                  <Text style={styles.label}>Fotos</Text>
+                </Left>
+                <Right>
+                  <Button onPress={this._pickImage} style={styles.secondaryButton}>
+                    <Text style={styles.buttonText}>Adicionar...</Text>
+                  </Button>
+                </Right>
+              </View>
+              <View style={styles.imagesBottomContainer}>
+                {image && <Image source={{ uri: image }} style={styles.thumbnail} />}
+              </View>
             </Item>
             <Item style={styles.item}>
               <Left>
@@ -170,6 +183,8 @@ export default class CreateDonationScreen extends React.Component {
               <Text style={styles.buttonText}>Salvar</Text>
             </Button>
           </View>
+
+          <View style ={{height: 20}}/>
         </Content>
       </Container>
     )
@@ -185,6 +200,11 @@ const styles = StyleSheet.create({
   buttonContainer:{
     alignSelf: 'center',
     maxWidth: '85%',
+  },
+  secondaryButton:{
+    backgroundColor: Colors.blue,
+    minWidth: '50%',
+    justifyContent: 'center'
   },
   button:{
     backgroundColor: Colors.purple,
@@ -217,5 +237,20 @@ const styles = StyleSheet.create({
   },
   picker:{ 
     width: Platform.OS === 'android' ? '150%' : undefined 
-  }
+  },
+  thumbnail:{ 
+    width: 160, 
+    height: 120, 
+  },
+  imagesItem: {
+    height: 200,
+    alignItems: 'stretch',
+    width: '100%',
+  },
+  imagesTopContainer:{
+    height: 70,
+  },
+  imagesBottomContainer:{
+    height: 130,
+  },
 });

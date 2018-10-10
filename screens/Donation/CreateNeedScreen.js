@@ -20,8 +20,8 @@ import {
   Content,
   Picker,
   Icon,
-  Toast,
 } from 'native-base';
+import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader';
 import Colors from '../../constants/Colors';
 
@@ -44,8 +44,6 @@ export default class CreateNeedScreen extends React.Component {
 
     this.token = props.navigation.state.params.token;
     this.handleCreateDonation = this.handleCreateDonation.bind(this)
-    this.toastSuccess = this.toastSuccess.bind(this)
-    this.toastWarning = this.toastWarning.bind(this)
   }
   
   componentWillMount(){
@@ -74,32 +72,13 @@ export default class CreateNeedScreen extends React.Component {
     .then(res => res.json())
     .then(data => {
       if(data.sucesso){
-        this.toastSuccess('Item cadastrado com sucesso');
+        Utils.toast('Item cadastrado com sucesso', 0);
         this.props.navigation.navigate('Dashboard');
       } else {
-        this.toastWarning(data.mensagem.map(msg => `${msg}\n`));
+        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0);
       }
     })
     .catch(err => console.log(err))
-  }
-
-
-  toastSuccess(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'success',
-      duration: 3000,
-    })
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      duration: 3000,
-    })
   }
 
   render() {

@@ -15,13 +15,13 @@ import {
   Header,
   Body,
   Title,
-  Toast,
   Picker,
   Left,
   Right,
   Icon,
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text';
+import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -53,11 +53,11 @@ export default class AddressScreen extends React.Component {
   handleNext(){
     const { logradouro, numero, complemento, bairro, cidade, uf, cep } = this.state;
     if(!logradouro || !numero || !bairro || !cidade || !uf || !cep){
-      this.toastWarning('Favor preencher os campos obrigatórios')
+      Utils.toast('Favor preencher os campos obrigatórios')
       return
     }
     if(uf.length > 2) {
-      this.toastWarning('Favor preencher o estado');
+      Utils.toast('Favor preencher o estado');
       return;
     }
 
@@ -65,18 +65,6 @@ export default class AddressScreen extends React.Component {
       endereco: {logradouro, numero, complemento, bairro, cidade, uf, cep: cep.replace("-","") },
       ...this.props.navigation.state.params
     });
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
   }
 
   render() {

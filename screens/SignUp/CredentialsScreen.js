@@ -15,8 +15,8 @@ import {
   Header,
   Body,
   Title,
-  Toast,
 } from 'native-base';
+import Utils from '../../utils/Utils'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -51,7 +51,7 @@ export default class CredentialsScreen extends React.Component {
     if(!senha || !email || !confirmaEmail || !confirmaSenha) errs.push('É preciso preencher todos os campos')
     if(!(email.indexOf('@') > -1) || (email.indexOf(' ') > -1) || !(email.indexOf('.') > -1)) errs.push('Insira um e-mail válido')
     if(errs.length > 0){
-      this.toastWarning(errs.map(err => `${err}\n`))
+      Utils.toast(errs.map(err => `${err}\n`))
       return
     }
 
@@ -67,35 +67,14 @@ export default class CredentialsScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.sucesso) {
-        this.toastSuccess('Cadastro efetuado com sucesso!')
+        Utils.toast('Cadastro efetuado com sucesso!')
         this.props.navigation.navigate('Login')
       }
       else {
-        this.toastWarning(data.mensagem.map(msg => `${msg}\n`));
+        Utils.toast(data.mensagem.map(msg => `${msg}\n`));
       }
     })
     .catch((err) => console.log(err))
-  }
-
-  toastSuccess(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'success',
-      duration: 3000,
-    })
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
   }
 
   render() {

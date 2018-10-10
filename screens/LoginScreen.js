@@ -14,9 +14,9 @@ import {
   Input,
   Content,
   Header,
-  Toast,
 } from 'native-base';
 import md5 from 'md5';
+import Utils from '../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
 import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
@@ -62,7 +62,7 @@ export default class LoginScreen extends React.Component {
       }
       else {
         console.log(data);
-        this.toastWarning(data.mensagem);
+        Utils.toast(data.mensagem);
       }
     })
     .catch((err) => console.log(err))    
@@ -70,17 +70,6 @@ export default class LoginScreen extends React.Component {
 
   onPressSignUp(){
     this.props.navigation.navigate('SignUpCPF');
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      position: 'top',
-      style: {marginTop: 20},
-      buttonText: 'OK',
-      type: 'warning',
-      duration: 3000,
-    })
   }
 
   render() {

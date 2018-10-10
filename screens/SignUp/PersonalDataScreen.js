@@ -12,8 +12,8 @@ import {
   Label,
   Input,
   Content,
-  Toast,
 } from 'native-base';
+import Utils from '../../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
 import MyHeader from '../../components/MyHeader'
 import ContinueButton from '../../components/SignUp/ContinueButton';
@@ -49,7 +49,7 @@ export default class PersonalDataScreen extends React.Component {
       errs.push('A data de nascimento deve ser válida')
     }
     if(errs.length){
-      this.toastWarning(errs.map(err => `${err}\n`))
+      Utils.toast(errs.map(err => `${err}\n`))
       return
     }
 
@@ -57,18 +57,6 @@ export default class PersonalDataScreen extends React.Component {
       nome, dataNascimento: dataNascimento.split("/").reverse().join("-"), 
       ...this.props.navigation.state.params
     });
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
   }
 
   render() {

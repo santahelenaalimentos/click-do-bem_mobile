@@ -12,10 +12,10 @@ import Colors from '../../constants/Colors';
 
 export default (props) => {
   return (
-    <View style={[styles.buttonContainer, { backgroundColor: Colors.purple }]}>
+    <View style={[styles.buttonContainer, { backgroundColor: 'transparent' }]}>
       <Button
         onPress={props.handler}
-        style={[styles.button, { backgroundColor: Colors.blue }]} >
+        style={[styles.button, { backgroundColor: Colors.purple }]} >
         <Text style={styles.text}>
           Continuar
         </Text>
@@ -26,13 +26,13 @@ export default (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: '80%',
-    height: 45,
+    width: '70%',
+    height: 40,
     justifyContent: 'center',
     alignSelf: 'center',
   },
   text: {
-    fontWeight: '500',
+    fontWeight: Platform.OS === 'ios' ? '500' : '300',
     fontSize: 24,
     color: 'white',
   },

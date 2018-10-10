@@ -15,8 +15,8 @@ import {
   Header,
   Body,
   Title,
-  Toast,
 } from 'native-base';
+import Utils from '../../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
@@ -46,25 +46,13 @@ export default class PhoneScreen extends React.Component {
     if(!telefoneCelular) errs.push('É necessário informar um número de celular.');
     if(telefoneCelular.length !== 15) errs.push('É necessário informar um número de celular válido.');
     if(errs.length){
-      this.toastWarning(errs.map(err => `${err}\n`))
+      Utils.toast(errs.map(err => `${err}\n`))
       return
     }
     
     this.props.navigation.navigate('SignUpCredentials', {
       telefoneCelular, telefoneFixo, ...this.props.navigation.state.params
     });
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
   }
 
   render() {

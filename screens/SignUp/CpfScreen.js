@@ -15,9 +15,10 @@ import {
   Header,
   Title,
   Body,
-  Toast,
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text'
+
+import Utils from '../../utils/Utils'
 import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
@@ -42,15 +43,7 @@ export default class CpfScreen extends React.Component {
     const { documento } = this.state;
     console.log(documento)
     if(documento.length != 14){
-      Toast.show({
-        text: 'O CPF digitado não é válido.',
-        buttonText: 'OK',
-        type: 'warning',
-        style: {
-          marginBottom: 100,
-        },
-        duration: 10000,
-      })
+      Utils.toast('O CPF digitado não é válido.')
       return;
     }
     fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/verificadocumento/${documento.replace(".","").replace(".","").replace("-","")}`, 
@@ -60,7 +53,7 @@ export default class CpfScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.cadastrado){
-        this.toastWarning('CPF já cadastrado')
+        Utils.toast('CPF já cadastrado')
       }
       else if(data.situacao === 'ativo') {
         const cpf = documento.replace(".","").replace(".","").replace("-","");
@@ -68,33 +61,9 @@ export default class CpfScreen extends React.Component {
           documento: cpf
         })
       }
-      else this.toastWarning('Entre em contato com o RH.')
+      else Utils.toast('CPF não encontrado! Entre em contato com RH')
     })
     .catch((err) => console.log(err))
-  }
-
-  toastSuccess(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'success',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
-  }
-
-  toastWarning(msg){
-    Toast.show({
-      text: msg,
-      buttonText: 'OK',
-      type: 'warning',
-      style: {
-        marginBottom: 100,
-      },
-      duration: 3000,
-    })
   }
 
   render() {

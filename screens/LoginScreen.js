@@ -21,7 +21,7 @@ import { TextInputMask } from 'react-native-masked-text'
 import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
 
-export default class HomeScreen extends React.Component {
+export default class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };

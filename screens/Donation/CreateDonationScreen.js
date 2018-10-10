@@ -113,13 +113,14 @@ export default class CreateDonationScreen extends React.Component {
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
           title='Nova Doação'/>
-
+        <Content>
           <View style={styles.inputContainer}>
             <Item stackedLabel>
               <Label style={styles.label}>Título</Label>
               <Input 
               maxLength={50}
               value={titulo}
+              style={styles.regularInput}
               onChangeText={value => this.setState({titulo: value})}/>
             </Item>
             <Item stackedLabel style={styles.textAreaContainer}>
@@ -142,7 +143,7 @@ export default class CreateDonationScreen extends React.Component {
                   iosIcon={<Icon name="ios-arrow-down-outline" />}
                   placeholderStyle={{ color: "#bfc6ea" }}
                   placeholderIconColor="#007aff"
-                  style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
+                  style={styles.picker}
                   selectedValue={categoria}
                   onValueChange={(cat) => this.setState({ categoria: cat })}>
                   <Picker.Item key='0' label='Selecione' value={null} />
@@ -169,7 +170,7 @@ export default class CreateDonationScreen extends React.Component {
               <Text style={styles.buttonText}>Salvar</Text>
             </Button>
           </View>
-
+        </Content>
       </Container>
     )
   }
@@ -206,8 +207,15 @@ const styles = StyleSheet.create({
   },
   textArea: {
     textAlignVertical: 'top',
+    maxWidth: '100%',
+  },
+  regularInput: {
+    maxWidth: '100%',
   },
   label: {
     color: '#666666'
+  },
+  picker:{ 
+    width: Platform.OS === 'android' ? '130%' : undefined 
   }
 });

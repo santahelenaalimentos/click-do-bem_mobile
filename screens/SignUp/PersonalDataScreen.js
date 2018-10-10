@@ -20,7 +20,7 @@ import ContinueButton from '../../components/SignUp/ContinueButton';
 import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
 
-export default class HomeScreen extends React.Component {
+export default class PersonalDataScreen extends React.Component {
   static navigationOptions = {
     header: null
   };

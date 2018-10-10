@@ -17,6 +17,7 @@ import {
   Left,
   Right,
   Container,
+  Content,
   Picker,
   Icon,
   Toast,
@@ -24,7 +25,7 @@ import {
 import MyHeader from '../../components/MyHeader';
 import Colors from '../../constants/Colors';
 
-export default class CreateDonationScreen extends React.Component {
+export default class CreateNeedScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -112,60 +113,63 @@ export default class CreateDonationScreen extends React.Component {
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
           title='Necessidade'/>
-        <View style={styles.inputContainer}>
-          <Item stackedLabel>
-            <Label style={styles.label}>Título</Label>
-            <Input 
-            maxLength={50}
-            value={titulo}
-            onChangeText={value => this.setState({titulo: value})}/>
-          </Item>
-          <Item stackedLabel style={styles.textAreaContainer}>
-            <Label style={styles.label}>Descrição</Label>
-            <Input 
-            style={styles.textArea}
-            maxLength={255}
-            value={descricao}
-            onChangeText={value => this.setState({descricao: value})}
-            multiline={true}
-            numberOfLines={6}/>
-          </Item>
-          <Item style={styles.item}>
-            <Left>
-              <Text style={styles.label}>Categoria</Text>
-            </Left>
-            <Right>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                placeholderStyle={{ color: "#bfc6ea" }}
-                placeholderIconColor="#007aff"
-                style={{ width: Platform.OS === 'android' ? '100%' : undefined }}
-                selectedValue={categoria}
-                onValueChange={(cat) => this.setState({ categoria: cat })}>
-                <Picker.Item key='0' label='Selecione' value={null} />
-                { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
-              </Picker>
-            </Right>
-          </Item>
-          <Item style={styles.item}>
-            <Left>
-              <Text style={styles.label}>Anônimo</Text>
-            </Left>
-            <Right>
-              <Switch 
-                value={anonimo} 
-                onValueChange={value => this.setState({ anonimo: value })}/>
-            </Right>
-          </Item>
-        </View>
-        <View style={styles.buttonContainer}>
+        <Content>
+          <View style={styles.inputContainer}>
+            <Item stackedLabel>
+              <Label style={styles.label}>Título</Label>
+              <Input 
+              maxLength={50}
+              value={titulo}
+              style={styles.regularInput}
+              onChangeText={value => this.setState({titulo: value})}/>
+            </Item>
+            <Item stackedLabel style={styles.textAreaContainer}>
+              <Label style={styles.label}>Descrição</Label>
+              <Input 
+              style={styles.textArea}
+              maxLength={255}
+              value={descricao}
+              onChangeText={value => this.setState({descricao: value})}
+              multiline={true}
+              numberOfLines={6}/>
+            </Item>
+            <Item style={styles.item}>
+              <Left>
+                <Text style={styles.label}>Categoria</Text>
+              </Left>
+              <Right>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="ios-arrow-down-outline" />}
+                  placeholderStyle={{ color: "#bfc6ea" }}
+                  placeholderIconColor="#007aff"
+                  style={styles.picker}
+                  selectedValue={categoria}
+                  onValueChange={(cat) => this.setState({ categoria: cat })}>
+                  <Picker.Item key='0' label='Selecione' value={null} />
+                  { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
+                </Picker>
+              </Right>
+            </Item>
+            <Item style={styles.item}>
+              <Left>
+                <Text style={styles.label}>Anônimo</Text>
+              </Left>
+              <Right>
+                <Switch 
+                  value={anonimo} 
+                  onValueChange={value => this.setState({ anonimo: value })}/>
+              </Right>
+            </Item>
+          </View>
+          <View style={styles.buttonContainer}>
             <Button 
               style={styles.button}
               onPress={this.handleCreateDonation}>
               <Text style={styles.buttonText}>Salvar</Text>
             </Button>
           </View>
+        </Content>
       </Container>
     )
   }
@@ -202,8 +206,15 @@ const styles = StyleSheet.create({
   },
   textArea: {
     textAlignVertical: 'top',
+    maxWidth: '100%'
+  },
+  regularInput: {
+    maxWidth: '100%',
   },
   label: {
     color: '#666666'
-  }
+  },
+  picker:{ 
+    width: Platform.OS === 'android' ? '130%' : undefined 
+  },
 });

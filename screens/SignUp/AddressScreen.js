@@ -29,7 +29,7 @@ import Colors from '../../constants/Colors';
 
 const ufList = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
 
-export default class HomeScreen extends React.Component {
+export default class AddressScreen extends React.Component {
   static navigationOptions = {
     header: null
   };

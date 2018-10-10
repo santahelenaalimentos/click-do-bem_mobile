@@ -23,7 +23,7 @@ import Instructions from '../../components/SignUp/Instructions';
 import Colors from '../../constants/Colors';
 import MyHeader from '../../components/MyHeader'
 
-export default class HomeScreen extends React.Component {
+export default class CpfScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -68,7 +68,7 @@ export default class HomeScreen extends React.Component {
           documento: cpf
         })
       }
-      else this.toastWarning('Acesso não permitido.')
+      else this.toastWarning('Entre em contato com o RH.')
     })
     .catch((err) => console.log(err))
   }

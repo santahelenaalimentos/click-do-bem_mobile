@@ -11,7 +11,7 @@ import {
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors'
 
-export default class HomeScreen extends React.Component {
+export default class DashboardScreen extends React.Component {
   static navigationOptions = {
     header: null
   };

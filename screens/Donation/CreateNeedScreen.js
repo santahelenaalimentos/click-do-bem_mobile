@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     maxWidth: '85%',
   },
   button:{
-    backgroundColor: Colors.lemonGreen,
+    backgroundColor: Colors.purple,
     minWidth: '100%',
     marginTop: 35,
     alignSelf: 'center',

@@ -38,7 +38,7 @@ export default function MyHeader (props) {
           </Body>
           {cancel &&
           <Right>
-            <Text style={{color: buttonColor}} onPress={cancel}>Cancelar</Text>
+            <Text style={{color: Colors.blue}} onPress={cancel}>Cancelar</Text>
           </Right>
           }
         </Header>

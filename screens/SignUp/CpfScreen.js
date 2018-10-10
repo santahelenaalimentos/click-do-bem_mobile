@@ -101,11 +101,8 @@ export default class CpfScreen extends React.Component {
     return (
       <Container>
         <MyHeader 
-          buttonColor={Colors.blue}
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Login')}
-          headerAndroid={Colors.purple}
-          statusBarAndroid={Colors.lighterPurple}
           title='Cadastro'/>
         <Content>
           <View style={styles.inputsContainer}>

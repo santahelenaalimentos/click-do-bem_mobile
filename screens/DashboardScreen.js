@@ -25,9 +25,6 @@ export default class DashboardScreen extends React.Component {
     return (
       <Container style={styles.container}>
         <MyHeader 
-          buttonColor={Colors.weirdGreen}
-          headerAndroid={Colors.dark}
-          statusBarAndroid={Colors.lighterDark}
           title='Dashboard'/>
         <View>
           <Button 
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button:{
-    backgroundColor: Colors.lemonGreen,
+    backgroundColor: Colors.purple,
     minWidth: '60%',
     padding: 15,
     margin: 10,

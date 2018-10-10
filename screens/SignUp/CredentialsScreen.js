@@ -102,11 +102,8 @@ export default class CredentialsScreen extends React.Component {
     return (
       <Container>
         <MyHeader 
-          buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Login')}
-          headerAndroid={Colors.dark}
-          statusBarAndroid={Colors.lighterDark}
           title='Cadastro'/>        
         <Content>
           <View style={styles.inputsContainer}>

@@ -44,7 +44,7 @@ export default class LoginScreen extends React.Component {
     const { nome, senha } = this.state;
     const data = { nome: nome.replace(".","").replace(".","").replace("-",""), senha: md5(senha) };
 
-    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/autenticar`, 
+    fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/usuario/autenticar`, 
     {
       method: 'POST',
       body: JSON.stringify(data),

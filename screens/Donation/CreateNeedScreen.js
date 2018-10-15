@@ -47,7 +47,7 @@ export default class CreateNeedScreen extends React.Component {
   }
   
   componentWillMount(){
-    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/categoria', {
+    fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
       headers: {
         "Authorization": `bearer ${this.token}`,
@@ -61,7 +61,7 @@ export default class CreateNeedScreen extends React.Component {
   handleCreateDonation(){
     let { titulo, descricao, tipoItem, categoria, anonimo } = this.state;
     let data = { titulo, descricao, tipoItem, categoria, anonimo };
-    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/item', {
+    fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

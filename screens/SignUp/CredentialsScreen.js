@@ -55,7 +55,7 @@ export default class CredentialsScreen extends React.Component {
       return
     }
 
-    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/colaborador`, 
+    fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/colaborador`, 
     {
       method: 'POST',
       body: JSON.stringify(data),

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "click-do-bem006",
-    "description": "Versão alpha do app click do bem.",
-    "slug": "click-do-bem006",
+    "name": "[Beta] Teste 001",
+    "description": "Release da sprint 01:\n- Cadastro do usuário PF no sistema a partir de checagem do CPF\n- Login do usuário no sistema, usando cpf e senha cadastrada\n- Cadastro de itens de doação e necessidade\n\nPróximos passos:\n- Cadastro de itens com imagens\n- Listagem de itens cadastrados\n- Melhoria de tela de dashboard",
+    "slug": "beta-teste-001",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

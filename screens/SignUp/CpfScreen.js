@@ -46,7 +46,7 @@ export default class CpfScreen extends React.Component {
       Utils.toast('O CPF digitado não é válido.')
       return;
     }
-    fetch(`http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/usuario/verificadocumento/${documento.replace(".","").replace(".","").replace("-","")}`, 
+    fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/usuario/verificadocumento/${documento.replace(".","").replace(".","").replace("-","")}`, 
     {
       method: 'GET',
     })

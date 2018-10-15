@@ -1,41 +1,39 @@
-import React from 'react';
+import React from 'react'
 import {
   Text,
   View,
   StyleSheet,
   Switch,
   Platform,
-  Image,
-} from 'react-native';
+} from 'react-native'
 import {
   Button,
-  Form,
   Item,
   Label,
   Input,
-  Header,
-  Body,
   Left,
   Right,
   Container,
   Content,
   Picker,
   Icon,
-} from 'native-base';
+} from 'native-base'
 import {
-  ImagePicker
+  ImagePicker,
+  ImageManipulator,
 } from 'expo'
 import Utils from '../../utils/Utils'
-import MyHeader from '../../components/MyHeader';
-import Colors from '../../constants/Colors';
+import MyHeader from '../../components/MyHeader'
+import Colors from '../../constants/Colors'
+import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
 
 export default class CreateDonationScreen extends React.Component {
   static navigationOptions = {
     header: null,
-  };
+  }
 
   constructor(props){
-    super(props);
+    super(props)
     this.state={
       categorias: [],
 
@@ -45,14 +43,23 @@ export default class CreateDonationScreen extends React.Component {
       categoria: null,
       anonimo: false,
       image: null,
+      images: [],
     }
 
-    this.token = props.navigation.state.params.token;
+    this.token = props.navigation.state.params.token
     this.handleCreateDonation = this.handleCreateDonation.bind(this)
+    this.removeImage = this.removeImage.bind(this)
   }
   
   componentWillMount(){
-    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/categoria', {
+    const { Permissions } = Expo
+    const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL)
+    if(Platform.OS === 'ios' && !status){
+      let result = Permissions.askAsync(Permissions.CAMERA_ROLL)
+      console.log(result)
+    }
+
+    fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
       headers: {
         "Authorization": `bearer ${this.token}`,
@@ -64,9 +71,9 @@ export default class CreateDonationScreen extends React.Component {
   }
 
   handleCreateDonation(){
-    let { titulo, descricao, tipoItem, categoria, anonimo } = this.state;
-    let data = { titulo, descricao, tipoItem, categoria, anonimo };
-    fetch('http://ec2-52-23-254-48.compute-1.amazonaws.com/api/v1/item', {
+    let { titulo, descricao, tipoItem, categoria, anonimo } = this.state
+    let data = { titulo, descricao, tipoItem, categoria, anonimo }
+    fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -77,31 +84,47 @@ export default class CreateDonationScreen extends React.Component {
     .then(res => res.json())
     .then(data => {
       if(data.sucesso){
-        Utils.toast('Item cadastrado com sucesso', 0);
-        this.props.navigation.navigate('Dashboard');
+        Utils.toast('Item cadastrado com sucesso', 0)
+        this.props.navigation.navigate('Dashboard')
       } else {
-        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0);
+        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0)
       }
     })
     .catch(err => console.log(err))
   }
 
   _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let image = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
+      mediaTypes: 'Images',
+      base64: false,
       aspect: [4, 3],
-    });
+      quality: 0,
+    })
 
-    console.log(result);
+    let result = await ImageManipulator.manipulate(
+      image.uri,
+      [{resize: { width: 640 } }],
+      { format: 'jpeg', compress: 0.5, base64: true }
+    )
+    console.log(result)
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      let { images } = this.state
+      images.push(result.uri)
+      this.setState({ images })
     }
   }
 
+  removeImage(uri){
+    const { images } = this.state;
+    this.setState({ images: images.filter((item) => item != uri) })
+    console.log('removendo')
+  }
+
   render() {
-    let { image } = this.state;
-    const { categorias, titulo, descricao, categoria, anonimo } = this.state;
+    let { images } = this.state
+    const { categorias, titulo, descricao, categoria, anonimo } = this.state
     return (
       <Container>
         <MyHeader 
@@ -131,8 +154,7 @@ export default class CreateDonationScreen extends React.Component {
               multiline={true}
               numberOfLines={6}/>
             </Item>
-            <Item style={styles.imagesItem}>
-              <View style={styles.imagesTopContainer}>
+            <Item style={styles.item}>
                 <Left>
                   <Text style={styles.label}>Fotos</Text>
                 </Left>
@@ -141,11 +163,14 @@ export default class CreateDonationScreen extends React.Component {
                     <Text style={styles.buttonText}>Adicionar...</Text>
                   </Button>
                 </Right>
-              </View>
-              <View style={styles.imagesBottomContainer}>
-                {image && <Image source={{ uri: image }} style={styles.thumbnail} />}
-              </View>
             </Item>
+            {images && 
+            <View style={styles.thumbnailsContainer}>
+            { images.map((image, index) => 
+              <ThumbnailWithIcon key={index} uri={image} remove={this.removeImage}/>
+            ) }
+            </View>
+            }
             <Item style={styles.item}>
               <Left>
                 <Text style={styles.label}>Categoria</Text>
@@ -238,19 +263,9 @@ const styles = StyleSheet.create({
   picker:{ 
     width: Platform.OS === 'android' ? '150%' : undefined 
   },
-  thumbnail:{ 
-    width: 160, 
-    height: 120, 
+  thumbnailsContainer:{
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
   },
-  imagesItem: {
-    height: 200,
-    alignItems: 'stretch',
-    width: '100%',
-  },
-  imagesTopContainer:{
-    height: 70,
-  },
-  imagesBottomContainer:{
-    height: 130,
-  },
-});
+})

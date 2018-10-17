@@ -18,7 +18,7 @@ import Colors from '../constants/Colors'
 
 export default function MyHeader (props) {
 
-  let { buttonColor, goBack, cancel, headerAndroid, statusBarAndroid, title } = props;
+  let { buttonColor, goBack, cancel, title } = props;
   return (
     <View>
       {

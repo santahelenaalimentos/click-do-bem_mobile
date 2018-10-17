@@ -56,7 +56,7 @@ export default class LoginScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.sucesso) {
-        this.props.navigation.navigate('Dashboard',{
+        this.props.navigation.navigate('Home',{
           token: data.token
         })
       }
@@ -69,7 +69,7 @@ export default class LoginScreen extends React.Component {
   }
 
   onPressSignUp(){
-    this.props.navigation.navigate('SignUpCPF');
+    this.props.navigation.navigate('SignUp');
   }
 
   render() {

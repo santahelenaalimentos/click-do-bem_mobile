@@ -32,9 +32,9 @@ export default class CreateDonationScreen extends React.Component {
     header: null,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state={
+    this.state = {
       categorias: [],
 
       titulo: '',
@@ -50,11 +50,11 @@ export default class CreateDonationScreen extends React.Component {
     this.handleCreateDonation = this.handleCreateDonation.bind(this)
     this.removeImage = this.removeImage.bind(this)
   }
-  
-  componentWillMount(){
+
+  componentWillMount() {
     const { Permissions } = Expo
     const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL)
-    if(Platform.OS === 'ios' && !status){
+    if (Platform.OS === 'ios' && !status) {
       let result = Permissions.askAsync(Permissions.CAMERA_ROLL)
       console.log(result)
     }
@@ -65,12 +65,12 @@ export default class CreateDonationScreen extends React.Component {
         "Authorization": `bearer ${this.token}`,
       },
     })
-    .then(res => res.json())
-    .then(categorias => this.setState({ categorias }))
-    .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(categorias => this.setState({ categorias }))
+      .catch(err => console.log(err))
   }
 
-  handleCreateDonation(){
+  handleCreateDonation() {
     let { titulo, descricao, tipoItem, categoria, anonimo } = this.state
     let data = { titulo, descricao, tipoItem, categoria, anonimo }
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
@@ -81,16 +81,16 @@ export default class CreateDonationScreen extends React.Component {
       },
       body: JSON.stringify(data)
     })
-    .then(res => res.json())
-    .then(data => {
-      if(data.sucesso){
-        Utils.toast('Item cadastrado com sucesso', 0)
-        this.props.navigation.navigate('Dashboard')
-      } else {
-        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0)
-      }
-    })
-    .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(data => {
+        if (data.sucesso) {
+          Utils.toast('Item cadastrado com sucesso', 0)
+          this.props.navigation.navigate('Dashboard')
+        } else {
+          Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0)
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   _pickImage = async () => {
@@ -104,7 +104,7 @@ export default class CreateDonationScreen extends React.Component {
 
     let result = await ImageManipulator.manipulate(
       image.uri,
-      [{resize: { width: 640 } }],
+      [{ resize: { width: 640 } }],
       { format: 'jpeg', compress: 0.5, base64: true }
     )
     console.log(result)
@@ -116,7 +116,7 @@ export default class CreateDonationScreen extends React.Component {
     }
   }
 
-  removeImage(uri){
+  removeImage(uri) {
     const { images } = this.state;
     this.setState({ images: images.filter((item) => item != uri) })
     console.log('removendo')
@@ -127,49 +127,49 @@ export default class CreateDonationScreen extends React.Component {
     const { categorias, titulo, descricao, categoria, anonimo } = this.state
     return (
       <Container>
-        <MyHeader 
+        <MyHeader
           buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Dashboard')}
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
-          title='Nova Doação'/>
+          title='Nova Doação' />
         <Content>
           <View style={styles.inputContainer}>
             <Item stackedLabel>
               <Label style={styles.label}>Título</Label>
-              <Input 
-              maxLength={50}
-              value={titulo}
-              style={styles.regularInput}
-              onChangeText={value => this.setState({titulo: value})}/>
+              <Input
+                maxLength={50}
+                value={titulo}
+                style={styles.regularInput}
+                onChangeText={value => this.setState({ titulo: value })} />
             </Item>
             <Item stackedLabel style={styles.textAreaContainer}>
               <Label style={styles.label}>Descrição</Label>
-              <Input 
-              style={styles.textArea}
-              maxLength={255}
-              value={descricao}
-              onChangeText={value => this.setState({descricao: value})}
-              multiline={true}
-              numberOfLines={6}/>
+              <Input
+                style={styles.textArea}
+                maxLength={255}
+                value={descricao}
+                onChangeText={value => this.setState({ descricao: value })}
+                multiline={true}
+                numberOfLines={6} />
             </Item>
             <Item style={styles.item}>
-                <Left>
-                  <Text style={styles.label}>Fotos</Text>
-                </Left>
-                <Right>
-                  <Button onPress={this._pickImage} style={styles.secondaryButton}>
-                    <Text style={styles.buttonText}>Adicionar...</Text>
-                  </Button>
-                </Right>
+              <Left>
+                <Text style={styles.label}>Fotos</Text>
+              </Left>
+              <Right>
+                <Button onPress={this._pickImage} style={styles.secondaryButton}>
+                  <Text style={styles.buttonText}>Adicionar...</Text>
+                </Button>
+              </Right>
             </Item>
-            {images && 
-            <View style={styles.thumbnailsContainer}>
-            { images.map((image, index) => 
-              <ThumbnailWithIcon key={index} uri={image} remove={this.removeImage}/>
-            ) }
-            </View>
+            {images &&
+              <View style={styles.thumbnailsContainer}>
+                {images.map((image, index) =>
+                  <ThumbnailWithIcon key={index} uri={image} remove={this.removeImage} />
+                )}
+              </View>
             }
             <Item style={styles.item}>
               <Left>
@@ -185,7 +185,7 @@ export default class CreateDonationScreen extends React.Component {
                   selectedValue={categoria}
                   onValueChange={(cat) => this.setState({ categoria: cat })}>
                   <Picker.Item key='0' label='Selecione' value={null} />
-                  { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
+                  {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao} />)}
                 </Picker>
               </Right>
             </Item>
@@ -194,22 +194,22 @@ export default class CreateDonationScreen extends React.Component {
                 <Text style={styles.label}>Anônimo</Text>
               </Left>
               <Right>
-                <Switch 
-                  value={anonimo} 
-                  onValueChange={value => this.setState({ anonimo: value })}/>
+                <Switch
+                  value={anonimo}
+                  onValueChange={value => this.setState({ anonimo: value })} />
               </Right>
             </Item>
 
           </View>
           <View style={styles.buttonContainer}>
-            <Button 
+            <Button
               style={styles.button}
               onPress={this.handleCreateDonation}>
               <Text style={styles.buttonText}>Salvar</Text>
             </Button>
           </View>
 
-          <View style ={{height: 20}}/>
+          <View style={{ height: 20 }} />
         </Content>
       </Container>
     )
@@ -222,16 +222,16 @@ const styles = StyleSheet.create({
     minWidth: '85%',
     alignSelf: 'center',
   },
-  buttonContainer:{
+  buttonContainer: {
     alignSelf: 'center',
     maxWidth: '85%',
   },
-  secondaryButton:{
+  secondaryButton: {
     backgroundColor: Colors.blue,
     minWidth: '50%',
     justifyContent: 'center'
   },
-  button:{
+  button: {
     backgroundColor: Colors.purple,
     minWidth: '100%',
     marginTop: 35,
@@ -260,10 +260,10 @@ const styles = StyleSheet.create({
   label: {
     color: '#666666'
   },
-  picker:{ 
-    width: Platform.OS === 'android' ? '150%' : undefined 
+  picker: {
+    width: Platform.OS === 'android' ? '150%' : undefined
   },
-  thumbnailsContainer:{
+  thumbnailsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',

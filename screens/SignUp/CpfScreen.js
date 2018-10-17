@@ -70,7 +70,7 @@ export default class CpfScreen extends React.Component {
     return (
       <Container>
         <MyHeader 
-          goBack={() => this.props.navigation.goBack()}
+          goBack={() => this.props.navigation.navigate('Login')}
           cancel={() => this.props.navigation.navigate('Login')}
           title='Cadastro'/>
         <Content>

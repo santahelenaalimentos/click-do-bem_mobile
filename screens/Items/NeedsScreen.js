@@ -97,7 +97,7 @@ class NeedsScreen extends Component {
                 </Body>
                 <Right>
                   <Button transparent
-                    onPress={() => this.props.navigation.navigate('ItemDetails')}>
+                    onPress={() => this.props.navigation.navigate('ItemDetails', { item })}>
                     <Text style={{color: Colors.blue}}>Detalhes</Text>
                   </Button>
                 </Right>

@@ -6,6 +6,7 @@ import {
   createBottomTabNavigator,
   createStackNavigator,
 } from 'react-navigation'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import DonationsScreen from '../screens/Items/DonationsScreen'
 import NeedsScreen from '../screens/Items/NeedsScreen'
 import CreateDonationScreen from '../screens/Items/CreateDonationScreen'
@@ -13,6 +14,7 @@ import CreateNeedScreen from '../screens/Items/CreateNeedScreen'
 import DashboardScreen from '../screens/DashboardScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
 import TabBarIcon from '../components/TabBarIcon'
+import Colors from '../constants/Colors'
 
 
 const DashboardStack = createStackNavigator({
@@ -24,13 +26,10 @@ const DashboardStack = createStackNavigator({
 DashboardStack.navigationOptions = {
   tabBarLabel: 'Dashboard',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+    <MaterialCommunityIcons
+      name="plus-circle"
+      size={24}
+      color= {focused ? Colors.purple : Colors.grey}
     />
   ),
 }
@@ -43,13 +42,10 @@ const NeedsStack = createStackNavigator({
 NeedsStack.navigationOptions = {
   tabBarLabel: 'Necesidades',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+    <MaterialCommunityIcons
+      name="emoticon-happy"
+      size={24}
+      color= {focused ? Colors.purple : Colors.grey}
     />
   ),
 }
@@ -62,13 +58,10 @@ const DonationsStack = createStackNavigator({
 DonationsStack.navigationOptions = {
   tabBarLabel: 'Doações',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+    <MaterialCommunityIcons
+      name="emoticon"
+      size={24}
+      color= {focused ? Colors.purple : Colors.grey}
     />
   ),
 }
@@ -80,6 +73,9 @@ export default createBottomTabNavigator({
 },
 {
   initialRouteName: 'DonationsStack',
-  order: ['DonationsStack', 'NeedsStack', 'DashboardStack'],
-
+  order: ['DonationsStack', 'DashboardStack', 'NeedsStack'],
+  tabBarOptions: {
+    activeTintColor: Colors.purple,
+    inactiveTintColor: Colors.grey,
+  }
 })

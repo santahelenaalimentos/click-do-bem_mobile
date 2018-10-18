@@ -22,6 +22,7 @@ import {
   ImagePicker,
   ImageManipulator,
 } from 'expo'
+import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
@@ -52,10 +53,9 @@ class CreateDonationScreen extends React.Component {
 
   componentWillMount() {
     const { Permissions } = Expo
-    const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL)
-    if (Platform.OS === 'ios' && !status) {
-      let result = Permissions.askAsync(Permissions.CAMERA_ROLL)
-    }
+    const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
+    if (Platform.OS === 'ios' && !status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
+    else Permissions.askAsync(Permissions.CAMERA)
 
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
@@ -70,7 +70,7 @@ class CreateDonationScreen extends React.Component {
 
   handleCreateDonation = () => {
     const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
-    const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }) )
+    const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
     const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
     console.log('request: ', data)
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
@@ -94,15 +94,22 @@ class CreateDonationScreen extends React.Component {
       .catch(err => console.log(err))
   }
 
-  _pickImage = async () => {
-    let image = await ImagePicker.launchImageLibraryAsync({
+  _pickImage = async (camera) => {
+    const { images } = this.state
+    if(images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
+
+    const imgProperties = {
       allowsEditing: true,
       mediaTypes: 'Images',
       base64: false,
       aspect: [4, 3],
       quality: 0,
-    })
+    };
 
+    let image = camera 
+    ? await ImagePicker.launchCameraAsync(imgProperties) 
+    : await ImagePicker.launchImageLibraryAsync(imgProperties);
+    
     let result = await ImageManipulator.manipulate(
       image.uri,
       [{ resize: { width: 640 } }],
@@ -110,8 +117,7 @@ class CreateDonationScreen extends React.Component {
     )
 
     if (!result.cancelled) {
-      let { images } = this.state
-      images.push({uri: result.uri, base64: result.base64 })
+      images.push({ uri: result.uri, base64: result.base64 })
       this.setState({ images })
     }
   }
@@ -159,9 +165,22 @@ class CreateDonationScreen extends React.Component {
                 <Text style={styles.label}>Fotos</Text>
               </Left>
               <Right>
-                <Button onPress={this._pickImage} style={styles.secondaryButton}>
-                  <Text style={styles.buttonText}>Adicionar...</Text>
-                </Button>
+                <View style = {{flexDirection: 'row'}}>
+                  <Button onPress={() => this._pickImage(false)} transparent style={styles.iconButton}>
+                    <Ionicons
+                      name={Platform.OS === 'ios' ? 'ios-images' : 'md-images'}
+                      size={28}
+                      color={Colors.grey}
+                    />
+                  </Button>
+                  <Button onPress={() => this._pickImage(true)} transparent style={styles.iconButton}>
+                    <Ionicons
+                      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+                      size={28}
+                      color={Colors.grey}
+                    />
+                  </Button>
+                </View>
               </Right>
             </Item>
             {images &&
@@ -216,7 +235,7 @@ class CreateDonationScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return { token: state.token }
 }
 
@@ -232,10 +251,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     maxWidth: '85%',
   },
-  secondaryButton: {
-    backgroundColor: Colors.blue,
-    minWidth: '50%',
-    justifyContent: 'center'
+  iconButton: {
+    marginHorizontal: 10,
   },
   button: {
     backgroundColor: Colors.purple,

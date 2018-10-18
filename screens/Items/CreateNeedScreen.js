@@ -1,66 +1,78 @@
-import React from 'react';
+import React from 'react'
 import {
   Text,
   View,
   StyleSheet,
   Switch,
   Platform,
-} from 'react-native';
+} from 'react-native'
 import {
   Button,
-  Form,
   Item,
   Label,
   Input,
-  Header,
-  Body,
   Left,
   Right,
   Container,
   Content,
   Picker,
   Icon,
-} from 'native-base';
+} from 'native-base'
+import {
+  ImagePicker,
+  ImageManipulator,
+} from 'expo'
+import { Ionicons } from '@expo/vector-icons'
+import { connect } from 'react-redux'
 import Utils from '../../utils/Utils'
-import MyHeader from '../../components/MyHeader';
-import Colors from '../../constants/Colors';
+import MyHeader from '../../components/MyHeader'
+import Colors from '../../constants/Colors'
+import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
 
-export default class CreateNeedScreen extends React.Component {
+class CreateNeedScreen extends React.Component {
   static navigationOptions = {
     header: null,
-  };
+  }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      categorias: [],
 
+    this.state = {
+      categorias: [],
       titulo: '',
       descricao: '',
       tipoItem: 1, //necessidade???
       categoria: null,
-      anonimo: false
+      anonimo: false,
+      image: null,
+      images: [],
     }
 
-    this.token = props.navigation.state.params.token;
-    this.handleCreateDonation = this.handleCreateDonation.bind(this)
+    this.token = props.token
   }
-  
-  componentWillMount(){
+
+  componentWillMount() {
+    const { Permissions } = Expo
+    const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
+    if (Platform.OS === 'ios' && !status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
+    else Permissions.askAsync(Permissions.CAMERA)
+
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
       headers: {
         "Authorization": `bearer ${this.token}`,
       },
     })
-    .then(res => res.json())
-    .then(categorias => this.setState({ categorias }))
-    .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(categorias => this.setState({ categorias }))
+      .catch(err => console.log(err))
   }
 
-  handleCreateDonation(){
-    let { titulo, descricao, tipoItem, categoria, anonimo } = this.state;
-    let data = { titulo, descricao, tipoItem, categoria, anonimo };
+  handleCreateNeed = () => {
+    const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
+    const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
+    const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
+    console.log('request: ', data)
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'POST',
       headers: {
@@ -69,20 +81,50 @@ export default class CreateNeedScreen extends React.Component {
       },
       body: JSON.stringify(data)
     })
-    .then(res => res.json())
-    .then(data => {
-      if(data.sucesso){
-        Utils.toast('Item cadastrado com sucesso', 0);
-        this.props.navigation.navigate('Dashboard');
-      } else {
-        Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0);
-      }
-    })
-    .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(body => {
+        console.log('response: ', body)
+        if (body.sucesso) {
+          Utils.toast('Item cadastrado com sucesso', 0)
+          this.props.navigation.navigate('Dashboard')
+        } else {
+          Utils.toast(body.mensagem.map(msg => `${msg}\n`), 0)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+
+  _pickImage = async (camera) => {
+    const { images } = this.state
+    if(images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
+
+    const imgProperties = {
+      allowsEditing: true,
+      mediaTypes: 'Images',
+      base64: false,
+      aspect: [4, 3],
+      quality: 0,
+    };
+
+    let image = camera 
+    ? await ImagePicker.launchCameraAsync(imgProperties) 
+    : await ImagePicker.launchImageLibraryAsync(imgProperties);
+    
+    let result = await ImageManipulator.manipulate(
+      image.uri,
+      [{ resize: { width: 640 } }],
+      { format: 'jpeg', compress: 0.5, base64: true }
+    )
+
+    if (!result.cancelled) {
+      images.push({ uri: result.uri, base64: result.base64 })
+      this.setState({ images })
+    }
   }
 
   render() {
-    const { categorias, titulo, descricao, categoria, anonimo } = this.state;
+    const { categorias, titulo, descricao, categoria, anonimo, images } = this.state;
     return (
       <Container style={styles.container}>
         <MyHeader 
@@ -112,6 +154,36 @@ export default class CreateNeedScreen extends React.Component {
               multiline={true}
               numberOfLines={6}/>
             </Item>
+            <Item style={styles.item}>
+              <Left>
+                <Text style={styles.label}>Fotos</Text>
+              </Left>
+              <Right>
+                <View style = {{flexDirection: 'row'}}>
+                  <Button onPress={() => this._pickImage(false)} transparent style={styles.iconButton}>
+                    <Ionicons
+                      name={Platform.OS === 'ios' ? 'ios-images' : 'md-images'}
+                      size={28}
+                      color={Colors.grey}
+                    />
+                  </Button>
+                  <Button onPress={() => this._pickImage(true)} transparent style={styles.iconButton}>
+                    <Ionicons
+                      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+                      size={28}
+                      color={Colors.grey}
+                    />
+                  </Button>
+                </View>
+              </Right>
+            </Item>
+            {images &&
+              <View style={styles.thumbnailsContainer}>
+                {images.map((image, index) =>
+                  <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
+                )}
+              </View>
+            }
             <Item style={styles.item}>
               <Left>
                 <Text style={styles.label}>Categoria</Text>
@@ -144,7 +216,7 @@ export default class CreateNeedScreen extends React.Component {
           <View style={styles.buttonContainer}>
             <Button 
               style={styles.button}
-              onPress={this.handleCreateDonation}>
+              onPress={this.handleCreateNeed}>
               <Text style={styles.buttonText}>Salvar</Text>
             </Button>
           </View>
@@ -154,17 +226,27 @@ export default class CreateNeedScreen extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { token: state.token }
+}
+
+export default connect(mapStateToProps, null)(CreateNeedScreen)
+
+
 const styles = StyleSheet.create({
   inputContainer: {
     maxWidth: '85%',
     minWidth: '85%',
     alignSelf: 'center',
   },
-  buttonContainer:{
+  buttonContainer: {
     alignSelf: 'center',
     maxWidth: '85%',
   },
-  button:{
+  iconButton: {
+    marginHorizontal: 10,
+  },
+  button: {
     backgroundColor: Colors.purple,
     minWidth: '100%',
     marginTop: 35,
@@ -185,7 +267,7 @@ const styles = StyleSheet.create({
   },
   textArea: {
     textAlignVertical: 'top',
-    maxWidth: '100%'
+    maxWidth: '100%',
   },
   regularInput: {
     maxWidth: '100%',
@@ -193,7 +275,12 @@ const styles = StyleSheet.create({
   label: {
     color: '#666666'
   },
-  picker:{ 
-    width: Platform.OS === 'android' ? '150%' : undefined 
+  picker: {
+    width: Platform.OS === 'android' ? '150%' : undefined
   },
-});
+  thumbnailsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+  },
+})

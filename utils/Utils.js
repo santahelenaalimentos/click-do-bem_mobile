@@ -14,5 +14,10 @@ toast = (msg, margin = 100, duration = 3000, color = Colors.blue) =>
     duration: duration,
   })
 
+
+
+  
 export default { toast };
+
+
 

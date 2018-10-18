@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import {
   Container,
+  Content,
   Button,
 } from 'native-base';
 import MyHeader from '../components/MyHeader'
@@ -23,22 +24,22 @@ export default class DashboardScreen extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <Container>
         <MyHeader 
           title='Dashboard'/>
-        <View>
+        <Content>
           <Button 
           style={styles.button} 
           onPress={() => this.props.navigation.navigate('CreateDonation', {...this.props.navigation.state.params})}>
             <Text style={styles.buttonText}>
-              Criar Nova Doação
+              Nova Doação
             </Text>
           </Button>
           <Button 
           style={styles.button} 
           onPress={() => this.props.navigation.navigate('CreateNeed', {...this.props.navigation.state.params})}>
             <Text style={styles.buttonText}>
-              Criar Nova Necessidade
+              Nova Necessidade
             </Text>
           </Button>
           <Button 
@@ -48,25 +49,23 @@ export default class DashboardScreen extends React.Component {
               Sair
             </Text>
           </Button>
-        </View>
+        </Content>
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   button:{
     backgroundColor: Colors.purple,
-    minWidth: '60%',
-    padding: 15,
+    minWidth: '80%',
+    minHeight: 45,
     margin: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   buttonText: {
     color: 'white',
-    textAlign: 'center',
     fontSize: 14,
   },
 

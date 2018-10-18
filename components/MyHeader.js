@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Platform,
-  StyleSheet,
 } from 'react-native'
 import {
   Header,

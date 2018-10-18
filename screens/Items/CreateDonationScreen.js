@@ -47,8 +47,6 @@ export default class CreateDonationScreen extends React.Component {
     }
 
     this.token = props.navigation.state.params.token
-    this.handleCreateDonation = this.handleCreateDonation.bind(this)
-    this.removeImage = this.removeImage.bind(this)
   }
 
   componentWillMount() {
@@ -56,13 +54,12 @@ export default class CreateDonationScreen extends React.Component {
     const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL)
     if (Platform.OS === 'ios' && !status) {
       let result = Permissions.askAsync(Permissions.CAMERA_ROLL)
-      console.log(result)
     }
 
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
       headers: {
-        "Authorization": `bearer ${this.token}`,
+        "Authorization": `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9oYXNoIjoiZmJlZWIyMmQtZTE0MS00NTQxLTk0M2YtYjVjYTAzMTM2OGMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IjI1MTk1NTA1ODk2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkpPQU8gREEgU0lMVkEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb2xhYm9yYWRvciIsIm5iZiI6MTUzODk2NTk5NiwiZXhwIjoxNzk4MTY1OTk2LCJpc3MiOiJQTUtBLkF1ZGl0b3JpYUltb2JpbGlhcmlhLlRva2VuU2VydmVyIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NDgyMiJ9.UP-NrKNWT6qDR0sHS04GTl84aID5WR-Gtk3XR2eDiqE`,
       },
     })
       .then(res => res.json())
@@ -70,24 +67,27 @@ export default class CreateDonationScreen extends React.Component {
       .catch(err => console.log(err))
   }
 
-  handleCreateDonation() {
-    let { titulo, descricao, tipoItem, categoria, anonimo } = this.state
-    let data = { titulo, descricao, tipoItem, categoria, anonimo }
+  handleCreateDonation = () => {
+    const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
+    const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }) )
+    const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
+    console.log('request: ', data)
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `bearer ${this.token}`
+        "Authorization": `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9oYXNoIjoiZmJlZWIyMmQtZTE0MS00NTQxLTk0M2YtYjVjYTAzMTM2OGMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IjI1MTk1NTA1ODk2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkpPQU8gREEgU0lMVkEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb2xhYm9yYWRvciIsIm5iZiI6MTUzODk2NTk5NiwiZXhwIjoxNzk4MTY1OTk2LCJpc3MiOiJQTUtBLkF1ZGl0b3JpYUltb2JpbGlhcmlhLlRva2VuU2VydmVyIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NDgyMiJ9.UP-NrKNWT6qDR0sHS04GTl84aID5WR-Gtk3XR2eDiqE`
       },
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(data => {
-        if (data.sucesso) {
+      .then(body => {
+        console.log('response: ', body)
+        if (body.sucesso) {
           Utils.toast('Item cadastrado com sucesso', 0)
           this.props.navigation.navigate('Dashboard')
         } else {
-          Utils.toast(data.mensagem.map(msg => `${msg}\n`), 0)
+          Utils.toast(body.mensagem.map(msg => `${msg}\n`), 0)
         }
       })
       .catch(err => console.log(err))
@@ -107,16 +107,15 @@ export default class CreateDonationScreen extends React.Component {
       [{ resize: { width: 640 } }],
       { format: 'jpeg', compress: 0.5, base64: true }
     )
-    console.log(result)
 
     if (!result.cancelled) {
       let { images } = this.state
-      images.push(result.uri)
+      images.push({uri: result.uri, base64: result.base64 })
       this.setState({ images })
     }
   }
 
-  removeImage(uri) {
+  removeImage = (uri) => {
     const { images } = this.state;
     this.setState({ images: images.filter((item) => item != uri) })
     console.log('removendo')
@@ -167,7 +166,7 @@ export default class CreateDonationScreen extends React.Component {
             {images &&
               <View style={styles.thumbnailsContainer}>
                 {images.map((image, index) =>
-                  <ThumbnailWithIcon key={index} uri={image} remove={this.removeImage} />
+                  <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
                 )}
               </View>
             }

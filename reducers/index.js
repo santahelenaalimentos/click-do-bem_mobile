@@ -5,7 +5,7 @@ function authReducer(state = {}, action) {
     case SIGN_IN:
       return {
         ...state,
-        ...action.token,
+        token: action.token,
       }
     case SIGN_OUT:
       return {

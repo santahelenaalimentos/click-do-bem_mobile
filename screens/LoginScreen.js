@@ -9,19 +9,17 @@ import {
 } from 'react-native';
 import {
   Button,
-  Item,
-  Label,
-  Input,
   Content,
-  Header,
 } from 'native-base';
 import md5 from 'md5';
+import { connect } from 'react-redux'
+import { signIn } from '../actions/index'
 import Utils from '../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
 import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -36,11 +34,9 @@ export default class LoginScreen extends React.Component {
       senha: 'a1b2c3d4',
     }
 
-    this.onPressSignIn = this.onPressSignIn.bind(this)
-    this.onPressSignUp = this.onPressSignUp.bind(this)
   }
 
-  onPressSignIn(){
+  onPressSignIn = () => {
     const { nome, senha } = this.state;
     const data = { nome: nome.replace(".","").replace(".","").replace("-",""), senha: md5(senha) };
 
@@ -56,9 +52,8 @@ export default class LoginScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.sucesso) {
-        this.props.navigation.navigate('Home',{
-          token: data.token
-        })
+        this.props.dispatch(signIn(data.token))
+        this.props.navigation.navigate('Home')
       }
       else {
         console.log(data);
@@ -68,7 +63,7 @@ export default class LoginScreen extends React.Component {
     .catch((err) => console.log(err))    
   }
 
-  onPressSignUp(){
+  onPressSignUp = () => {
     this.props.navigation.navigate('SignUp');
   }
 
@@ -123,6 +118,8 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
+
+export default connect ()(LoginScreen)
 
 const styles = StyleSheet.create({
   container: {

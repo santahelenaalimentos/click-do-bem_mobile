@@ -15,10 +15,11 @@ import {
   Text,
   Spinner,
 } from 'native-base'
+import { connect } from 'react-redux'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors';
 
-export default class NeedsScreen extends Component {
+class NeedsScreen extends Component {
   static navigationOptions = {
     header: null,
   };
@@ -42,7 +43,7 @@ export default class NeedsScreen extends Component {
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'GET',
       headers: {
-        "Authorization": `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9oYXNoIjoiZmJlZWIyMmQtZTE0MS00NTQxLTk0M2YtYjVjYTAzMTM2OGMxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IjI1MTk1NTA1ODk2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkpPQU8gREEgU0lMVkEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb2xhYm9yYWRvciIsIm5iZiI6MTUzODk2NTk5NiwiZXhwIjoxNzk4MTY1OTk2LCJpc3MiOiJQTUtBLkF1ZGl0b3JpYUltb2JpbGlhcmlhLlRva2VuU2VydmVyIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1NDgyMiJ9.UP-NrKNWT6qDR0sHS04GTl84aID5WR-Gtk3XR2eDiqE`,
+        "Authorization": `bearer ${this.props.token}`,
       },
     })
       .then(res => res.json())
@@ -116,3 +117,9 @@ export default class NeedsScreen extends Component {
     )
   }
 }
+
+function mapStateToProps(state){
+  return { token: state.token }
+}
+
+export default connect(mapStateToProps, null)(NeedsScreen)

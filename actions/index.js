@@ -1,5 +1,5 @@
-export default SIGN_IN = 'SIGN_IN'
-export default SIGN_OUT = 'SIGN_OUT'
+export const SIGN_IN = 'SIGN_IN'
+export const SIGN_OUT = 'SIGN_OUT'
 
 export function signIn(token){
     return {

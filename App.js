@@ -3,7 +3,9 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Root } from 'native-base'
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import Colors from './constants/Colors'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers/index'
 
 export default class App extends React.Component {
   state = {
@@ -21,11 +23,13 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <Root style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {/* {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />} */}
-          <AppNavigator />
-        </Root>
+        <Provider store={createStore(reducer)}>
+          <Root style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {/* {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />} */}
+            <AppNavigator />
+          </Root>
+        </Provider>
       );
     }
   }

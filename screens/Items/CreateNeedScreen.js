@@ -99,22 +99,28 @@ class CreateNeedScreen extends React.Component {
     const { images } = this.state
     if (images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
 
-    const imgProperties = {
+    const imageOptions = {
       allowsEditing: true,
       mediaTypes: 'Images',
       base64: false,
       aspect: [4, 3],
-      quality: 0,
+      quality: 1,
+    };
+
+    const manipulationOptions = { 
+      format: 'jpeg', 
+      compress: 0.5, 
+      base64: true 
     };
 
     let image = camera
-      ? await ImagePicker.launchCameraAsync(imgProperties)
-      : await ImagePicker.launchImageLibraryAsync(imgProperties);
+      ? await ImagePicker.launchCameraAsync(imageOptions)
+      : await ImagePicker.launchImageLibraryAsync(imageOptions);
 
     let result = await ImageManipulator.manipulate(
       image.uri,
       [{ resize: { width: 640 } }],
-      { format: 'jpeg', compress: 0.5, base64: true }
+      manipulationOptions
     )
 
     if (!result.cancelled) {

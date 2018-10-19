@@ -11,6 +11,7 @@ export default {
   blue: '#00BCD4',
   purple: '#673AB7',
   lighterPurple: '#734db7',
+  bitGrey: '#fcfcfc',
   grey: '#424242',
   greyPlaceholder: '717171',
 };

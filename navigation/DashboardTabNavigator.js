@@ -13,6 +13,7 @@ import CreateDonationScreen from '../screens/Items/CreateDonationScreen'
 import CreateNeedScreen from '../screens/Items/CreateNeedScreen'
 import DashboardScreen from '../screens/DashboardScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
+import FiltersScreen from '../screens/Items/FiltersScreen'
 import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 
@@ -37,6 +38,7 @@ DashboardStack.navigationOptions = {
 const NeedsStack = createStackNavigator({
   Needs: NeedsScreen,
   ItemDetails: ItemDetailsScreen,
+  Filters: FiltersScreen,
 })
 
 NeedsStack.navigationOptions = {
@@ -53,6 +55,7 @@ NeedsStack.navigationOptions = {
 const DonationsStack = createStackNavigator({
   Donations: DonationsScreen,
   ItemDetails: ItemDetailsScreen,
+  Filters: FiltersScreen,
 })
 
 DonationsStack.navigationOptions = {

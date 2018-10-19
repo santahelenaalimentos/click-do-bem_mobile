@@ -3,6 +3,8 @@ import {
   FlatList,
   View,
   RefreshControl,
+  StyleSheet,
+  Modal,
 } from 'react-native'
 import {
   Container,
@@ -17,6 +19,7 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import MyHeader from '../../components/MyHeader'
+import FiltersBar from '../../components/FiltersBar'
 import Colors from '../../constants/Colors';
 
 
@@ -32,6 +35,7 @@ class DonationsScreen extends Component {
       donations: [],
       loading: true,
       refreshing: false,
+      modalVisible: false,
     }
 
   }
@@ -40,7 +44,7 @@ class DonationsScreen extends Component {
     this.fetchDonations();
   }
 
-  fetchDonations = () => 
+  fetchDonations = () =>
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
       method: 'GET',
       headers: {
@@ -55,15 +59,17 @@ class DonationsScreen extends Component {
           loading: false
         }))
       .catch(err => console.log(err))
-  
+
 
   _onRefresh = () => {
     console.log('ATUALIZANDO')
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     this.fetchDonations().then(() => {
-      this.setState({refreshing: false});
+      this.setState({ refreshing: false });
     });
   }
+
+  openModal = () => this.setState({modalVisible: true})
 
   render() {
     const { donations, loading, refreshing } = this.state
@@ -82,8 +88,31 @@ class DonationsScreen extends Component {
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <MyHeader
-          title='Doações' />
+        
+        <MyHeader title='Doações' />
+        <FiltersBar open={this.openModal} />
+
+        <Modal
+          visible={this.state.modalVisible}
+          animationType={'slide'}
+          onRequestClose={() => this.setState({ modalVisible: false })}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.innerContainer}>
+              <Text style={{ fontSize: 50, color: Colors.purple }}>Filtros,</Text>
+              <Text style={{ fontSize: 50, color: Colors.purple }}>MUITOS</Text>
+              <Text style={{ fontSize: 50, color: Colors.purple }}>Filtros</Text>
+              <Button
+                transparent
+                style={{ alignSelf: 'center', justifyContent: 'center'}}
+                onPress={() => this.setState({ modalVisible: false })}
+              >
+                <Text>Fechar</Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
+
         <View>
           <FlatList
             data={donations}
@@ -98,29 +127,44 @@ class DonationsScreen extends Component {
                 </Body>
                 <Right>
                   <Button transparent
-                    onPress={() => this.props.navigation.navigate('ItemDetails', {item})}>
-                    <Text style={{color: Colors.blue}}>Detalhes</Text>
+                    onPress={() => this.props.navigation.navigate('ItemDetails', { item })}>
+                    <Text style={{ color: Colors.blue }}>Detalhes</Text>
                   </Button>
                 </Right>
               </ListItem>
             }
-            keyExtractor={(doacao) => doacao.id} 
-            refreshControl = {
-              <RefreshControl 
-                onRefresh = {this._onRefresh} 
-                refreshing = { refreshing }
-                colors = {[ Colors.purple, Colors.blue ]}
+            keyExtractor={(doacao) => doacao.id}
+            refreshControl={
+              <RefreshControl
+                onRefresh={this._onRefresh}
+                refreshing={refreshing}
+                colors={[Colors.purple, Colors.blue]}
               />
             }
-            />
+          />
         </View>
       </View>
     )
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return { token: state.token }
 }
 
-export default connect (mapStateToProps, null) (DonationsScreen)
+export default connect(mapStateToProps, null)(DonationsScreen)
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+});

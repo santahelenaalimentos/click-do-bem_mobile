@@ -5,12 +5,15 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native'
 import {
   Container,
+  Button,
 } from 'native-base'
 import MyHeader from '../../components/MyHeader';
 import Colors from '../../constants/Colors';
+
 
 export default class ItemDetails extends PureComponent {
   static navigationOptions = {
@@ -23,7 +26,7 @@ export default class ItemDetails extends PureComponent {
 
   render(){
     const {height, width} = Dimensions.get('window');
-    const { titulo, descricao, categoria, imagens} = this.props.navigation.getParam('item', {});
+    const { titulo, descricao, categoria, imagens, tipoItem } = this.props.navigation.getParam('item', {});
     return (
       <Container>
         <MyHeader
@@ -33,7 +36,7 @@ export default class ItemDetails extends PureComponent {
 
         <View style={{ flex: 1 }}>
           
-          <View style={{height: height/2, marginTop: -10, }}>
+          <View style={{height: height/2, marginTop: (Platform.OS === 'ios' ? 1 : -10) }}>
             <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -57,11 +60,21 @@ export default class ItemDetails extends PureComponent {
             </ScrollView>
           </View>
 
-          <View style={{ margin: 10}}>
-            <Text style={{fontSize: 24, fontWeight: '700', color: Colors.purple}}>{titulo}</Text>
-            <Text style={{fontSize: 14, fontWeight: '500', color: Colors.grey}}>{descricao}</Text>
+          <View style={{flex: 1}}>
+            <ScrollView>
+              <View style={{ margin: 10, alignItems: 'flex-start'}}>
+                <Text style={{fontSize: 24, fontWeight: '700', color: Colors.purple}}>{titulo}</Text>
+                <Text style={{fontSize: 12, fontWeight: '400', color: Colors.grey, marginBottom: 10, padding: 3,  borderWidth: 1, borderColor: Colors.grey, borderRadius: 3}}>{categoria.descricao}</Text>
+                <Text style={{fontSize: 14, fontWeight: '500', color: Colors.grey}}>{descricao}</Text>
+              </View>
+
+              <View style={{marginVertical: 30}}>
+                <Button style={{alignSelf: 'center', backgroundColor: Colors.purple, justifyContent: 'center', minWidth: '60%', height:45}}>
+                  <Text style={{ color: 'white'}}>{tipoItem === 'Necessidade' ? 'Oferecer Doação' : 'Solicitar Doação'}</Text>
+                </Button>
+              </View>
+            </ScrollView>
           </View>
-          {/* <Text style={{fontSize: 24, fontWeight: '700', color: Colors.purple}}>{categoria.descricao}</Text> */}
         </View>
 
       </Container>

@@ -97,7 +97,7 @@ class CreateNeedScreen extends React.Component {
 
   _pickImage = async (camera) => {
     const { images } = this.state
-    if(images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
+    if (images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
 
     const imgProperties = {
       allowsEditing: true,
@@ -107,10 +107,10 @@ class CreateNeedScreen extends React.Component {
       quality: 0,
     };
 
-    let image = camera 
-    ? await ImagePicker.launchCameraAsync(imgProperties) 
-    : await ImagePicker.launchImageLibraryAsync(imgProperties);
-    
+    let image = camera
+      ? await ImagePicker.launchCameraAsync(imgProperties)
+      : await ImagePicker.launchImageLibraryAsync(imgProperties);
+
     let result = await ImageManipulator.manipulate(
       image.uri,
       [{ resize: { width: 640 } }],
@@ -123,43 +123,50 @@ class CreateNeedScreen extends React.Component {
     }
   }
 
+  removeImage = (uri) => {
+    const { images } = this.state;
+    this.setState({ images: images.filter((item) => item.uri != uri) })
+  }
+
   render() {
     const { categorias, titulo, descricao, categoria, anonimo, images } = this.state;
     return (
       <Container style={styles.container}>
-        <MyHeader 
+        <MyHeader
           buttonColor={Colors.weirdGreen}
           goBack={() => this.props.navigation.goBack()}
           cancel={() => this.props.navigation.navigate('Dashboard')}
           headerAndroid={Colors.dark}
           statusBarAndroid={Colors.lighterDark}
-          title='Necessidade'/>
+          title='Necessidade' />
         <Content>
           <View style={styles.inputContainer}>
             <Item stackedLabel>
               <Label style={styles.label}>Título</Label>
-              <Input 
-              maxLength={50}
-              value={titulo}
-              style={styles.regularInput}
-              onChangeText={value => this.setState({titulo: value})}/>
+              <Input
+                autoCapitalize='sentences'
+                maxLength={50}
+                value={titulo}
+                style={styles.regularInput}
+                onChangeText={value => this.setState({ titulo: value })} />
             </Item>
             <Item stackedLabel style={styles.textAreaContainer}>
               <Label style={styles.label}>Descrição</Label>
-              <Input 
-              style={styles.textArea}
-              maxLength={255}
-              value={descricao}
-              onChangeText={value => this.setState({descricao: value})}
-              multiline={true}
-              numberOfLines={6}/>
+              <Input
+                autoCapitalize='sentences'
+                style={styles.textArea}
+                maxLength={255}
+                value={descricao}
+                onChangeText={value => this.setState({ descricao: value })}
+                multiline={true}
+                numberOfLines={6} />
             </Item>
             <Item style={styles.item}>
               <Left>
                 <Text style={styles.label}>Fotos</Text>
               </Left>
               <Right>
-                <View style = {{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Button onPress={() => this._pickImage(false)} transparent style={styles.iconButton}>
                     <Ionicons
                       name={Platform.OS === 'ios' ? 'ios-images' : 'md-images'}
@@ -198,7 +205,7 @@ class CreateNeedScreen extends React.Component {
                   selectedValue={categoria}
                   onValueChange={(cat) => this.setState({ categoria: cat })}>
                   <Picker.Item key='0' label='Selecione' value={null} />
-                  { categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao}/>) }
+                  {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao} />)}
                 </Picker>
               </Right>
             </Item>
@@ -207,14 +214,14 @@ class CreateNeedScreen extends React.Component {
                 <Text style={styles.label}>Anônimo</Text>
               </Left>
               <Right>
-                <Switch 
-                  value={anonimo} 
-                  onValueChange={value => this.setState({ anonimo: value })}/>
+                <Switch
+                  value={anonimo}
+                  onValueChange={value => this.setState({ anonimo: value })} />
               </Right>
             </Item>
           </View>
           <View style={styles.buttonContainer}>
-            <Button 
+            <Button
               style={styles.button}
               onPress={this.handleCreateNeed}>
               <Text style={styles.buttonText}>Salvar</Text>

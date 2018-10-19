@@ -54,8 +54,8 @@ class CreateDonationScreen extends React.Component {
   componentWillMount() {
     const { Permissions } = Expo
     const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
-    if (Platform.OS === 'ios' && !status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
-    else Permissions.askAsync(Permissions.CAMERA)
+    if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
+
 
     fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
       method: 'GET',
@@ -96,24 +96,30 @@ class CreateDonationScreen extends React.Component {
 
   _pickImage = async (camera) => {
     const { images } = this.state
-    if(images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
+    if (images.length == 5) return Utils.toast('Limite máximo de 5 imagens.')
 
-    const imgProperties = {
+    const imageOptions = {
       allowsEditing: true,
       mediaTypes: 'Images',
       base64: false,
       aspect: [4, 3],
-      quality: 0,
+      quality: 1,
     };
 
-    let image = camera 
-    ? await ImagePicker.launchCameraAsync(imgProperties) 
-    : await ImagePicker.launchImageLibraryAsync(imgProperties);
-    
+    const manipulationOptions = { 
+      format: 'jpeg', 
+      compress: 0.5, 
+      base64: true 
+    };
+
+    let image = camera
+      ? await ImagePicker.launchCameraAsync(imageOptions)
+      : await ImagePicker.launchImageLibraryAsync(imageOptions);
+
     let result = await ImageManipulator.manipulate(
       image.uri,
       [{ resize: { width: 640 } }],
-      { format: 'jpeg', compress: 0.5, base64: true }
+      manipulationOptions
     )
 
     if (!result.cancelled) {
@@ -124,8 +130,7 @@ class CreateDonationScreen extends React.Component {
 
   removeImage = (uri) => {
     const { images } = this.state;
-    this.setState({ images: images.filter((item) => item != uri) })
-    console.log('removendo')
+    this.setState({ images: images.filter((item) => item.uri != uri) })
   }
 
   render() {
@@ -145,6 +150,7 @@ class CreateDonationScreen extends React.Component {
             <Item stackedLabel>
               <Label style={styles.label}>Título</Label>
               <Input
+                autoCapitalize='sentences'
                 maxLength={50}
                 value={titulo}
                 style={styles.regularInput}
@@ -153,6 +159,7 @@ class CreateDonationScreen extends React.Component {
             <Item stackedLabel style={styles.textAreaContainer}>
               <Label style={styles.label}>Descrição</Label>
               <Input
+                autoCapitalize='sentences'
                 style={styles.textArea}
                 maxLength={255}
                 value={descricao}
@@ -165,7 +172,7 @@ class CreateDonationScreen extends React.Component {
                 <Text style={styles.label}>Fotos</Text>
               </Left>
               <Right>
-                <View style = {{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Button onPress={() => this._pickImage(false)} transparent style={styles.iconButton}>
                     <Ionicons
                       name={Platform.OS === 'ios' ? 'ios-images' : 'md-images'}

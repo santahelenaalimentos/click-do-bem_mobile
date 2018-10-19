@@ -3,16 +3,14 @@ import {
   Text,
   View,
   Image,
-  FlatList,
+  ScrollView,
+  Dimensions,
 } from 'react-native'
 import {
   Container,
-  Content,
-  DeckSwiper,
-  Card,
-  CardItem,
 } from 'native-base'
 import MyHeader from '../../components/MyHeader';
+import Colors from '../../constants/Colors';
 
 export default class ItemDetails extends PureComponent {
   static navigationOptions = {
@@ -24,39 +22,49 @@ export default class ItemDetails extends PureComponent {
   }
 
   render(){
+    const {height, width} = Dimensions.get('window');
     const { titulo, descricao, categoria, imagens} = this.props.navigation.getParam('item', {});
-    console.log(titulo, descricao, categoria, imagens)
-    console.log()
     return (
-      <View style={{flex:1}}>
+      <Container>
         <MyHeader
         title='Detalhes'
         goBack={() => this.props.navigation.goBack()}
         cancel={() => this.props.navigation.goBack()}/>
-        <View>
-          
-          <View 
-            style={{
-              minWidth: '100%',
-              flexDirection: 'column'}}>
-            <View style={{height: 150}}>
-              <FlatList
-              style={{ 
-                minWidth: '100%',
 
-              }}
-                renderItem={item =>
-                  <Text>{item.titulo}</Text>
-                }
-              />
-            </View>
+        <View style={{ flex: 1 }}>
+          
+          <View style={{height: height/2, marginTop: -10, }}>
+            <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled>
+              { 
+                imagens.length
+                ? 
+                imagens.map(img => 
+                <View style={{  height: height/2, width: width, flex: 1}} key={img.id}>
+                  <Image 
+                  source={{ uri: `http://dev-clickdobemapi.santahelena.com${img.arquivo}` }} 
+                  style={{flex: 1, width: width}}/>
+                </View>)
+                :
+                <View style={{  height: height/2, width: width, flex: 1}}>
+                  <Image 
+                  source={require('../../assets/images/tb-placeholder.png')} 
+                  style={{flex: 1, width: width}}/>
+                </View>
+              }
+            </ScrollView>
           </View>
 
-          <Text>{titulo}</Text>
-          <Text>{descricao}</Text>
-          <Text>{categoria.descricao}</Text>
+          <View style={{ margin: 10}}>
+            <Text style={{fontSize: 24, fontWeight: '700', color: Colors.purple}}>{titulo}</Text>
+            <Text style={{fontSize: 14, fontWeight: '500', color: Colors.grey}}>{descricao}</Text>
+          </View>
+          {/* <Text style={{fontSize: 24, fontWeight: '700', color: Colors.purple}}>{categoria.descricao}</Text> */}
         </View>
-      </View>
+
+      </Container>
     )
   }
 

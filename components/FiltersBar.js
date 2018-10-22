@@ -14,14 +14,26 @@ export default class FiltersBar extends Component {
   }
 
   render() {
+    const { filtered } = this.props;
     return (
-      <View style={{ height: 40, backgroundColor: Colors.bitGrey, marginTop: -1, elevation: 3, marginBottom: 5 }}>
-        <Button
-          transparent
-          style={{ margin: 4, borderColor: Colors.grey, borderWidth: .5, borderColor: Colors.grey, height: 25, alignSelf: 'flex-end' }}
-          onPress={() => this.props.open()}>
-          <Text style={{ color: Colors.grey, fontSize: 12, fontWeight: '300' }}>Filtros</Text>
-        </Button>
+      <View style={{ height: 40, paddingHorizontal: '4%', justifyContent: 'center' }}>
+        {
+          filtered
+          ?
+          <Button
+            style={{ backgroundColor: Colors.purple, height: 25, alignSelf: 'flex-start' }}
+            onPress={() => this.props.open()}>
+            <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros ··· </Text>
+          </Button>
+          :
+          <Button
+            transparent
+            style={{ borderWidth: .5, borderColor: Colors.purple, height: 25, alignSelf: 'flex-start' }}
+            onPress={() => this.props.open()}>
+            <Text style={{ color: Colors.purple, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros</Text>
+          </Button>
+
+        }
       </View>
     )
   }

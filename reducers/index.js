@@ -6,11 +6,13 @@ function authReducer(state = {}, action) {
       return {
         ...state,
         token: action.token,
+        user: action.user,
       }
     case SIGN_OUT:
       return {
         ...state,
         token:'',
+        user: null,
       }
     default:
       return state;

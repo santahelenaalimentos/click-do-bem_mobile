@@ -13,10 +13,8 @@ import CreateDonationScreen from '../screens/Items/CreateDonationScreen'
 import CreateNeedScreen from '../screens/Items/CreateNeedScreen'
 import DashboardScreen from '../screens/DashboardScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
-import FiltersScreen from '../screens/Items/FiltersScreen'
-import TabBarIcon from '../components/TabBarIcon'
+import EditItemScreen from '../screens/Items/EditItemScreen'
 import Colors from '../constants/Colors'
-
 
 const DashboardStack = createStackNavigator({
   Dashboard: DashboardScreen,
@@ -30,7 +28,7 @@ DashboardStack.navigationOptions = {
     <MaterialCommunityIcons
       name="plus-circle"
       size={24}
-      color= {focused ? Colors.purple : Colors.grey}
+      color={focused ? Colors.purple : Colors.grey}
     />
   ),
 }
@@ -38,7 +36,7 @@ DashboardStack.navigationOptions = {
 const NeedsStack = createStackNavigator({
   Needs: NeedsScreen,
   ItemDetails: ItemDetailsScreen,
-  Filters: FiltersScreen,
+  EditNeed: EditItemScreen,
 })
 
 NeedsStack.navigationOptions = {
@@ -47,7 +45,7 @@ NeedsStack.navigationOptions = {
     <MaterialCommunityIcons
       name="emoticon-happy"
       size={24}
-      color= {focused ? Colors.purple : Colors.grey}
+      color={focused ? Colors.purple : Colors.grey}
     />
   ),
 }
@@ -55,7 +53,7 @@ NeedsStack.navigationOptions = {
 const DonationsStack = createStackNavigator({
   Donations: DonationsScreen,
   ItemDetails: ItemDetailsScreen,
-  Filters: FiltersScreen,
+  EditDonation: EditItemScreen,
 })
 
 DonationsStack.navigationOptions = {
@@ -64,9 +62,19 @@ DonationsStack.navigationOptions = {
     <MaterialCommunityIcons
       name="emoticon"
       size={24}
-      color= {focused ? Colors.purple : Colors.grey}
+      color={focused ? Colors.purple : Colors.grey}
     />
   ),
+}
+
+const showTabBar = (navigation) => {
+  const { routes } = navigation.state
+  let show = true
+  routes.forEach((route) => {
+    if (route.routeName === 'ItemDetails')
+      show = false
+  })
+  return show
 }
 
 export default createBottomTabNavigator({
@@ -80,5 +88,6 @@ export default createBottomTabNavigator({
   tabBarOptions: {
     activeTintColor: Colors.purple,
     inactiveTintColor: Colors.grey,
-  }
+  },
+  navigationOptions: ({ navigation }) => ({ tabBarVisible: showTabBar(navigation) })
 })

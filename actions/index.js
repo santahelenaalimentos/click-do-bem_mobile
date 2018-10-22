@@ -1,10 +1,11 @@
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_OUT = 'SIGN_OUT'
 
-export function signIn(token){
+export function signIn(token, usuario){
     return {
         type: SIGN_IN,
-        token 
+        token,
+        user: usuario
     }
 }
 

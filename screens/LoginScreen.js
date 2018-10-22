@@ -30,7 +30,7 @@ class LoginScreen extends React.Component {
     
 
     this.state = {
-      nome: '25195505896',
+      nome: '25195505896', //91183200900
       senha: 'a1b2c3d4',
     }
 
@@ -52,11 +52,10 @@ class LoginScreen extends React.Component {
     .then(res => res.json())
     .then((data) => {
       if(data.sucesso) {
-        this.props.dispatch(signIn(data.token))
+        this.props.dispatch(signIn(data.token, data.usuario))
         this.props.navigation.navigate('Home')
       }
       else {
-        console.log(data);
         Utils.toast(data.mensagem);
       }
     })

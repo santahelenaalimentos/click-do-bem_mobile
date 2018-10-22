@@ -11,8 +11,9 @@ import {
 } from 'native-base';
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors'
+import { connect } from 'react-redux';
 
-export default class DashboardScreen extends React.Component {
+class DashboardScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -28,6 +29,7 @@ export default class DashboardScreen extends React.Component {
         <MyHeader 
           title='Dashboard'/>
         <Content>
+          <Text style={{alignSelf: 'center', minWidth: '85%', color: Colors.purple, marginTop: 10}}>Olá, {this.props.user.nome}</Text>
           <Button 
           style={styles.button} 
           onPress={() => this.props.navigation.navigate('CreateDonation', {...this.props.navigation.state.params})}>
@@ -54,6 +56,15 @@ export default class DashboardScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state){
+  return {
+    token: state.token,
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, null)(DashboardScreen)
 
 const styles = StyleSheet.create({
   button:{

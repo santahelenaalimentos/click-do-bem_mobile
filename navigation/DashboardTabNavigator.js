@@ -7,26 +7,48 @@ import {
   createStackNavigator,
 } from 'react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import DonationsScreen from '../screens/Items/DonationsScreen'
-import NeedsScreen from '../screens/Items/NeedsScreen'
-import CreateDonationScreen from '../screens/Items/CreateDonationScreen'
-import CreateNeedScreen from '../screens/Items/CreateNeedScreen'
+import CreateItemsScreen from '../screens/Items/CreateItemScreen'
 import DashboardScreen from '../screens/DashboardScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
 import EditItemScreen from '../screens/Items/EditItemScreen'
+import ItemsScreen from '../screens/Items/ItemsScreen'
+import ProfileScreen from '../screens/ProfileScreen'
 import Colors from '../constants/Colors'
+
+const ios = Platform.OS === 'ios'
+
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+},
+{
+  navigationOptions: {header: null}
+})
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Perfil',
+  tabBarIcon: ({ focused }) => (
+    <MaterialCommunityIcons
+      name= "account"
+      size={24}
+      color={focused ? Colors.purple : Colors.grey}
+    />
+  ),
+}
 
 const DashboardStack = createStackNavigator({
   Dashboard: DashboardScreen,
-  CreateNeed: CreateNeedScreen,
-  CreateDonation: CreateDonationScreen,
+  CreateNeed: {screen: props => <CreateItemsScreen {...props} donation={false}/>},
+  CreateDonation: {screen: props => <CreateItemsScreen {...props} donation={true}/>},
+},
+{
+  navigationOptions: {header: null}
 })
 
 DashboardStack.navigationOptions = {
-  tabBarLabel: 'Dashboard',
+  tabBarLabel: 'Menu',
   tabBarIcon: ({ focused }) => (
     <MaterialCommunityIcons
-      name="plus-circle"
+      name= "menu"
       size={24}
       color={focused ? Colors.purple : Colors.grey}
     />
@@ -34,16 +56,19 @@ DashboardStack.navigationOptions = {
 }
 
 const NeedsStack = createStackNavigator({
-  Needs: NeedsScreen,
+  Needs: {screen: props => <ItemsScreen {...props} donation={false}/>},
   ItemDetails: ItemDetailsScreen,
   EditNeed: EditItemScreen,
+},
+{
+  navigationOptions: {header: null}
 })
 
 NeedsStack.navigationOptions = {
-  tabBarLabel: 'Necesidades',
+  tabBarLabel: 'Necessidades',
   tabBarIcon: ({ focused }) => (
     <MaterialCommunityIcons
-      name="emoticon-happy"
+      name= "heart-half-full"
       size={24}
       color={focused ? Colors.purple : Colors.grey}
     />
@@ -51,16 +76,19 @@ NeedsStack.navigationOptions = {
 }
 
 const DonationsStack = createStackNavigator({
-  Donations: DonationsScreen,
+  Donations: {screen: props => <ItemsScreen {...props} donation={true}/>},
   ItemDetails: ItemDetailsScreen,
   EditDonation: EditItemScreen,
+},
+{
+  navigationOptions: {header: null}
 })
 
 DonationsStack.navigationOptions = {
   tabBarLabel: 'Doações',
   tabBarIcon: ({ focused }) => (
     <MaterialCommunityIcons
-      name="emoticon"
+      name= "heart"
       size={24}
       color={focused ? Colors.purple : Colors.grey}
     />
@@ -81,10 +109,11 @@ export default createBottomTabNavigator({
   DonationsStack,
   DashboardStack,
   NeedsStack,
+  ProfileStack,
 },
 {
   initialRouteName: 'DonationsStack',
-  order: ['DonationsStack', 'DashboardStack', 'NeedsStack'],
+  order: ['DonationsStack', 'NeedsStack', 'ProfileStack', 'DashboardStack'],
   tabBarOptions: {
     activeTintColor: Colors.purple,
     inactiveTintColor: Colors.grey,

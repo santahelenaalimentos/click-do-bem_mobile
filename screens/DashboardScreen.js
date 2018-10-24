@@ -27,31 +27,23 @@ class DashboardScreen extends React.Component {
     return (
       <Container>
         <MyHeader 
-          title='Dashboard'/>
-        <Content>
-          <Text style={{alignSelf: 'center', minWidth: '85%', color: Colors.purple, marginTop: 10}}>Olá, {this.props.user.nome}</Text>
-          <Button 
+          title='Menu'/>
+        <View style={{ flex:1, justifyContent: 'center', alignItems: 'center'}}>
+          <Button transparent
           style={styles.button} 
           onPress={() => this.props.navigation.navigate('CreateDonation', {...this.props.navigation.state.params})}>
             <Text style={styles.buttonText}>
-              Nova Doação
+              Criar Doação
             </Text>
           </Button>
-          <Button 
+          <Button transparent
           style={styles.button} 
           onPress={() => this.props.navigation.navigate('CreateNeed', {...this.props.navigation.state.params})}>
             <Text style={styles.buttonText}>
-              Nova Necessidade
+              Criar Necessidade
             </Text>
           </Button>
-          <Button 
-          style={styles.button} 
-          onPress={() => this.props.navigation.navigate('Login')}>
-            <Text style={styles.buttonText}>
-              Sair
-            </Text>
-          </Button>
-        </Content>
+        </View>
       </Container>
     );
   }
@@ -68,15 +60,16 @@ export default connect(mapStateToProps, null)(DashboardScreen)
 
 const styles = StyleSheet.create({
   button:{
-    backgroundColor: Colors.purple,
-    minWidth: '80%',
-    minHeight: 45,
+    borderColor: Colors.purple,
+    borderWidth: 1,
+    minWidth: '60%',
+    height: 35,
     margin: 10,
     justifyContent: 'center',
     alignSelf: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: Colors.purple,
     fontSize: 14,
   },
 

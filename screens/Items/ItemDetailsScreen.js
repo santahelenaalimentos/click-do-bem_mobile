@@ -86,12 +86,12 @@ export default class ItemDetails extends PureComponent {
                   ?
                   <Button 
                   style={{ alignSelf: 'center', backgroundColor: Colors.grey, justifyContent: 'center', minWidth: '60%', height: 45 }}
-                  onPress={() => this.props.navigation.navigate('EditDonation', { item: this.state.item })}>
-                    <Text style={{ color: 'white' }}>{tipoItem === 'Necessidade' ? 'Editar Doação' : 'Editar Doação'}</Text>
+                  onPress={() => this.props.navigation.navigate(tipoItem === 'Necessidade' ? 'EditNeed' :'EditDonation', { item: this.state.item })}>
+                    <Text style={{ color: 'white' }}>{tipoItem === 'Necessidade' ? 'Editar Necessidade' : 'Editar Doação'}</Text>
                   </Button>
                   :
                   <Button style={{ alignSelf: 'center', backgroundColor: Colors.purple, justifyContent: 'center', minWidth: '60%', height: 45 }}>
-                    <Text style={{ color: 'white' }}>{tipoItem === 'Necessidade' ? 'Oferecer Doação' : 'Solicitar Doação'}</Text>
+                    <Text style={{ color: 'white' }}>{tipoItem === 'Necessidade' ? 'Oferecer Item' : 'Solicitar Item'}</Text>
                   </Button>
                 }
               </View>

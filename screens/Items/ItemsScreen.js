@@ -7,6 +7,7 @@ import {
     Modal,
     SafeAreaView,
     Platform,
+    Animated,
 } from 'react-native'
 import {
     Container,
@@ -24,12 +25,11 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import MyHeader from '../../components/MyHeader'
-import FiltersBar from '../../components/FiltersBar'
 import Colors from '../../constants/Colors';
 
 const ios = Platform.OS === 'ios'
 
-class DonationsScreen extends Component {
+class ItemsScreen extends Component {
     static navigationOptions = {
         header: null,
     };
@@ -38,8 +38,9 @@ class DonationsScreen extends Component {
         super(props);
 
         this.state = {
-            filteredDonations: [],
-            donations: [],
+            items: [],
+            filteredItems: [],
+            categorias: [],
             loading: true,
             refreshing: false,
             modalVisible: false,
@@ -47,17 +48,32 @@ class DonationsScreen extends Component {
                 categoria: null,
                 meusItens: false,
             },
-            categorias: []
         }
 
     }
 
     componentWillMount() {
+        this.isDonation = this.props.donation
+        
+        this.scrollY = new Animated.Value(0)
         this.fetchCategorias();
-        this.fetchDonations();
+        this.fetchItems();
+
+        this.scrollY = new Animated.Value(0)
+        this.animatedHeaderHeight = this.scrollY.interpolate({
+            inputRange: [0, 50],
+            outputRange: [40 , 0],
+            extrapolate: 'clamp'
+        })
+
+        this.animatedOpacity = this.scrollY.interpolate({
+            inputRange: [0, 25],
+            outputRange: [1 , 0],
+            extrapolate: 'clamp'
+        })
     }
 
-    fetchDonations = () =>
+    fetchItems = () =>
         fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
             method: 'GET',
             headers: {
@@ -65,13 +81,12 @@ class DonationsScreen extends Component {
             },
         })
             .then(res => res.json())
-            .then(items => { console.log(items[0].titulo, items[0].tipoItem, items[0].categoria.descricao); return items; })
-            .then(items =>
+            .then(data =>
                 {
-                    const donations = items.filter(item => item.tipoItem == 'Doação')
+                    const items = data.filter(item => item.tipoItem == (this.isDonation ? 'Doação' : 'Necessidade') )
                     this.setState({
-                        donations,
-                        filteredDonations: donations,
+                        items,
+                        filteredItems: items,
                         loading: false
                     })
                 }
@@ -92,7 +107,7 @@ class DonationsScreen extends Component {
 
     _onRefresh = () => {
         this.setState({ refreshing: true });
-        this.fetchDonations().then(() => {
+        this.fetchItems().then(() => {
             this.setState({ 
                 refreshing: false,
             });
@@ -103,13 +118,13 @@ class DonationsScreen extends Component {
     openModal = () => this.setState({ modalVisible: true })
 
     filterItems = () => {
-        const { donations, filters } = this.state;
+        const { items, filters } = this.state;
         const { categoria, meusItens } = filters;
         const cpf = this.props.user.cpfCnpj
-        filteredDonations = donations
-        filteredDonations = categoria ? filteredDonations.filter(item => item.categoria.descricao === categoria) : filteredDonations
-        filteredDonations = meusItens ? filteredDonations.filter(item => item.usuario.cpfCnpj === cpf) : filteredDonations
-        this.setState({ filteredDonations })
+        filteredItems = items
+        filteredItems = categoria ? filteredItems.filter(item => item.categoria.descricao === categoria) : filteredItems
+        filteredItems = meusItens ? filteredItems.filter(item => item.usuario.cpfCnpj === cpf) : filteredItems
+        this.setState({ filteredItems })
     }
 
     removeFilters = () => 
@@ -119,13 +134,13 @@ class DonationsScreen extends Component {
         } })
 
     render() {
-        const { filteredDonations, donations, loading, refreshing, filters, categorias } = this.state
+        const { filteredItems, items, loading, refreshing, filters, categorias } = this.state
+        const filtered = items.length != filteredItems.length
 
         if (loading) {
             return (
                 <Container>
-                    <MyHeader
-                        title='Doações' />
+                    <MyHeader title={this.isDonation ? 'Doações' : 'Necessidades'} />
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Spinner color={Colors.purple} />
                     </View>
@@ -136,8 +151,29 @@ class DonationsScreen extends Component {
         return (
             <View style={{ backgroundColor: 'white', flex: 1 }}>
 
-                <MyHeader title='Doações' />
-                <FiltersBar open={this.openModal} filtered={donations.length != filteredDonations.length}/>
+                <MyHeader title={this.isDonation ? 'Doações' : 'Necessidade'} />
+
+                <Animated.View style={{ height: this.animatedHeaderHeight, opacity: this.animatedOpacity, paddingHorizontal: '4%', justifyContent: 'center' }}>
+                    {
+                    filtered
+                    ?
+                    <Button
+                        style={{ backgroundColor: Colors.purple, height: 25, alignSelf: 'flex-start' }}
+                        onPress={() => this.openModal()}>
+                        <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros ··· </Text>
+                    </Button>
+                    :
+                    <Button
+                        transparent
+                        style={{ borderWidth: .5, borderColor: Colors.purple, height: 25, alignSelf: 'flex-start' }}
+                        onPress={() => this.openModal()}>
+                        <Text style={{ color: Colors.purple, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros</Text>
+                    </Button>
+
+                    }
+                </Animated.View>
+
+
 
                 <Modal
                     visible={this.state.modalVisible}
@@ -154,11 +190,11 @@ class DonationsScreen extends Component {
                                     <Text style={{ fontSize: 14, color: Colors.purple }}>Limpar</Text>
                                 </Button>
 
-                                <Button transparent
+                                {/* <Button transparent
                                     onPress={() => this.setState({ modalVisible: false, })}
                                 >
                                     <Text style={{ fontSize: 14, color: Colors.purple }}>Fechar</Text>
-                                </Button>
+                                </Button> */}
                             </View>
 
                             <View style={{ flexDirection: 'row',
@@ -189,7 +225,7 @@ class DonationsScreen extends Component {
                                         }}
                                     >
                                         <Text style={{color: filters.meusItens ? Colors.white : Colors.purple}}>
-                                            Minhas Doações
+                                            {this.isDonation ? 'Minhas Doações' : 'Minhas Necessidades'}
                                         </Text>
                                     </Button>
                                     <Button last 
@@ -222,7 +258,12 @@ class DonationsScreen extends Component {
 
                 <View style={ios && {flex: 1}}>
                     <FlatList
-                        data={ filteredDonations }
+                        data={ filteredItems }
+                        onScroll={
+                            Animated.event([
+                                {nativeEvent: {contentOffset: {y: this.scrollY}}}
+                            ])
+                        }
                         renderItem={({ item }) =>
                             <ListItem thumbnail>
                                 <Left>
@@ -240,7 +281,7 @@ class DonationsScreen extends Component {
                                 </Right>
                             </ListItem>
                         }
-                        keyExtractor={(doacao) => doacao.id}
+                        keyExtractor={(item) => item.id}
                         refreshControl={
                             <RefreshControl
                                 onRefresh={this._onRefresh}
@@ -263,7 +304,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, null)(DonationsScreen)
+export default connect(mapStateToProps, null)(ItemsScreen)
 
 const styles = StyleSheet.create({
     container: {

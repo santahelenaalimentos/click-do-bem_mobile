@@ -16,7 +16,7 @@ export default class FiltersBar extends Component {
   render() {
     const { filtered } = this.props;
     return (
-      <View style={{ height: 40, paddingHorizontal: '4%', justifyContent: 'center' }}>
+      <View style={{ paddingHorizontal: '4%', justifyContent: 'center' }}>
         {
           filtered
           ?

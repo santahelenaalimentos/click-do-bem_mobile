@@ -29,8 +29,10 @@ import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
 import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
 
-
-class EditItemScreen extends React.Component {
+class CreateItemScreen extends React.Component {
+    static navigationOptions = {
+        header: null,
+    }
 
     constructor(props) {
         super(props);
@@ -39,39 +41,25 @@ class EditItemScreen extends React.Component {
             categorias: [],
             titulo: '',
             descricao: '',
-            tipoItem: 0, //doação???
+            tipoItem: 0,
             categoria: null,
             anonimo: false,
             image: null,
             images: [],
-
         }
 
         this.token = props.token
     }
 
     componentWillMount() {
+        this.donation = this.props.donation
+        this.setState({tipoItem: this.donation ? 2 : 1})
+
         const { Permissions } = Expo
         const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 
-        const item = this.props.navigation.getParam('item', {})
-        console.log(item)
-        this.setState({
-            titulo: item.titulo,
-            descricao: item.descricao,
-            tipoItem: item.tipoItem === 'Necessidade' ? 1 : 2, //doação???
-            categoria: item.categoria.descricao,
-            anonimo: item.anonimo,
-            images: item.imagens,
-            //recuperar imagens
-            //adicionar imagens excluidas (que contenham id) num array de strings
-        })
 
-        this.fetchCategorias()
-    }
-
-    fetchCategorias = () => {
         fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
             method: 'GET',
             headers: {
@@ -83,11 +71,11 @@ class EditItemScreen extends React.Component {
             .catch(err => console.log(err))
     }
 
-    handleEditItem = () => {
+    handleCreateItem = () => {
         const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
         const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
         const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
-
+        console.log('request: ', data)
         fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
             method: 'POST',
             headers: {
@@ -98,9 +86,8 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(body => {
-                console.log('response: ', body)
                 if (body.sucesso) {
-                    Utils.toast('Item cadastrado com sucesso', 0)
+                    Utils.toast('Sua ' + (this.donation ? 'doação' : 'necessidade') + ' foi criada com sucesso', 0)
                     this.props.navigation.navigate('Dashboard')
                 } else {
                     Utils.toast(body.mensagem.map(msg => `${msg}\n`), 0)
@@ -149,16 +136,17 @@ class EditItemScreen extends React.Component {
     }
 
     render() {
-        
         let { images } = this.state
-        console.log(images)
-        const { categorias, titulo, descricao, categoria, anonimo, tipoItem } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo } = this.state
         return (
             <Container>
                 <MyHeader
-                    buttonColor={Colors.blue}
-                    cancel={() => this.props.navigation.goBack()}
-                    title={`Editar ${tipoItem === 2 ? 'Doação' : 'Necessidade'}`} />
+                    buttonColor={Colors.weirdGreen}
+                    goBack={() => this.props.navigation.goBack()}
+                    cancel={() => this.props.navigation.navigate('Dashboard')}
+                    headerAndroid={Colors.dark}
+                    statusBarAndroid={Colors.lighterDark}
+                    title= {this.donation ? 'Doação' : 'Necessidade'} />
                 <Content>
                     <View style={styles.inputContainer}>
                         <Item stackedLabel>
@@ -207,13 +195,7 @@ class EditItemScreen extends React.Component {
                         {images &&
                             <View style={styles.thumbnailsContainer}>
                                 {images.map((image, index) =>
-                                    (
-                                        image.id
-                                        ?
-                                        <ThumbnailWithIcon key={index} uri={`http://dev-clickdobemapi.santahelena.com${image.arquivo}`} remove={this.removeImage} />
-                                        :
-                                        <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
-                                    )
+                                    <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
                                 )}
                             </View>
                         }
@@ -250,7 +232,7 @@ class EditItemScreen extends React.Component {
                     <View style={styles.buttonContainer}>
                         <Button
                             style={styles.button}
-                            onPress={this.handleEditItem}>
+                            onPress={this.handleCreateItem}>
                             <Text style={styles.buttonText}>Salvar</Text>
                         </Button>
                     </View>
@@ -266,7 +248,7 @@ function mapStateToProps(state) {
     return { token: state.token }
 }
 
-export default connect(mapStateToProps, null)(EditItemScreen)
+export default connect(mapStateToProps, null)(CreateItemScreen)
 
 const styles = StyleSheet.create({
     inputContainer: {

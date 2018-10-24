@@ -43,13 +43,13 @@ export default function MyHeader(props) {
                     </Header>
                     :
                     <Header androidStatusBarColor={Colors.purple} style={{ backgroundColor: Colors.purple, elevation: 7, marginBottom: 10 }}>
-                        <Left>
-                            {goBack &&
+                        {goBack &&
+                            <Left>
                                 <Button transparent onPress={goBack}>
                                     <Icon name='arrow-back' />
                                 </Button>
-                            }
-                        </Left>
+                            </Left>
+                        }
                         <Body>
                             <Title>{title}</Title>
                         </Body>

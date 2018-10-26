@@ -36,6 +36,7 @@ class EditItemScreen extends React.Component {
         super(props);
 
         this.state = {
+            id: '',
             categorias: [],
             titulo: '',
             descricao: '',
@@ -44,7 +45,7 @@ class EditItemScreen extends React.Component {
             anonimo: false,
             image: null,
             images: [],
-
+            imgExcluir: []
         }
 
         this.token = props.token
@@ -56,15 +57,15 @@ class EditItemScreen extends React.Component {
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 
         const item = this.props.navigation.getParam('item', {})
-        console.log(item)
+
         this.setState({
+            id: item.id,
             titulo: item.titulo,
             descricao: item.descricao,
             tipoItem: item.tipoItem === 'Necessidade' ? 1 : 2, //doação???
             categoria: item.categoria.descricao,
             anonimo: item.anonimo,
-            images: item.imagens,
-            //recuperar imagens
+            images: item.imagens.map(img => ({id: img.id, uri: `http://dev-clickdobemapi.santahelena.com${img.arquivo}`, base64: null })),
             //adicionar imagens excluidas (que contenham id) num array de strings
         })
 
@@ -84,12 +85,14 @@ class EditItemScreen extends React.Component {
     }
 
     handleEditItem = () => {
-        const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
-        const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
-        const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
+        const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir } = this.state
+        const imagens = images
+                        .filter(img => img.id === null) //before sending, remove the images already saved
+                        .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
+        const data = { id, titulo, descricao, tipoItem, categoria, anonimo, imagens, imgExcluir }
 
         fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `bearer ${this.token}`
@@ -98,12 +101,12 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(body => {
-                console.log('response: ', body)
                 if (body.sucesso) {
-                    Utils.toast('Item cadastrado com sucesso', 0)
-                    this.props.navigation.navigate('Dashboard')
+                    Utils.toast('Item editado com sucesso')
+                    console.log(tipoItem)
+                    this.props.navigation.navigate(tipoItem === 1 ? 'Needs' : 'Donations')
                 } else {
-                    Utils.toast(body.mensagem.map(msg => `${msg}\n`), 0)
+                    Utils.toast(body.mensagem.map(msg => `${msg}\n`))
                 }
             })
             .catch(err => console.log(err))
@@ -138,21 +141,24 @@ class EditItemScreen extends React.Component {
         )
 
         if (!result.cancelled) {
-            images.push({ uri: result.uri, base64: result.base64 })
+            images.push({ id: null, uri: result.uri, base64: result.base64 })
             this.setState({ images })
         }
     }
 
     removeImage = (uri) => {
-        const { images } = this.state;
-        this.setState({ images: images.filter((item) => item.uri != uri) })
+        const { images, imgExcluir } = this.state;
+        const removedItem = images.filter(item => item.uri === uri)[0]
+        if(removedItem.id) {
+            this.setState({ images: images.filter((item) => item.uri != uri), imgExcluir: [...imgExcluir, removedItem.id]})
+        }
+        else{
+            this.setState({ images: images.filter((item) => item.uri != uri) })
+        }
     }
 
-    render() {
-        
-        let { images } = this.state
-        console.log(images)
-        const { categorias, titulo, descricao, categoria, anonimo, tipoItem } = this.state
+    render() {        
+        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images } = this.state
         return (
             <Container>
                 <MyHeader
@@ -207,13 +213,7 @@ class EditItemScreen extends React.Component {
                         {images &&
                             <View style={styles.thumbnailsContainer}>
                                 {images.map((image, index) =>
-                                    (
-                                        image.id
-                                        ?
-                                        <ThumbnailWithIcon key={index} uri={`http://dev-clickdobemapi.santahelena.com${image.arquivo}`} remove={this.removeImage} />
-                                        :
-                                        <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
-                                    )
+                                    <ThumbnailWithIcon key={index} uri={image.uri} remove={this.removeImage} />
                                 )}
                             </View>
                         }
@@ -251,7 +251,7 @@ class EditItemScreen extends React.Component {
                         <Button
                             style={styles.button}
                             onPress={this.handleEditItem}>
-                            <Text style={styles.buttonText}>Salvar</Text>
+                            <Text style={styles.buttonText}>Salvar Edição</Text>
                         </Button>
                     </View>
 

@@ -11,12 +11,21 @@ import MyHeader from '../components/MyHeader';
 import { connect } from 'react-redux'
 import Colors from '../constants/Colors';
 import Strings from '../utils/Strings'
+import { signOut } from '../actions';
+import Storage from '../utils/Storage'
 
 class ProfileScreen extends Component {
+
+    handleSignOut = () => {
+        Storage._deleteUser()
+        this.props.dispatch(signOut())
+        this.props.navigation.navigate('Login')
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <MyHeader title='Perfil' />
+                <MyHeader title='Perfil' goBack={() => this.props.navigation.goBack()}/>
                 <View style={styles.innerContainer}>
                     <View>
                         <Text>Olá, {Strings.formatName(this.props.user.nome)}</Text>
@@ -24,7 +33,7 @@ class ProfileScreen extends Component {
                     <View>
                         <Button danger
                             style={styles.button}
-                            onPress={() => this.props.navigation.navigate('Login')}>
+                            onPress={this.handleSignOut}>
                             <Text style={styles.buttonText}> Sair </Text>
                         </Button>
                     </View>

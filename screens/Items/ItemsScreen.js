@@ -256,7 +256,7 @@ class ItemsScreen extends Component {
                     </SafeAreaView>
                 </Modal>
 
-                <View style={ios && {flex: 1}}>
+                <View style={{flex: 1}}>
                     <FlatList
                         data={ filteredItems }
                         onScroll={

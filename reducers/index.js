@@ -11,7 +11,7 @@ function authReducer(state = {}, action) {
     case SIGN_OUT:
       return {
         ...state,
-        token:'',
+        token: null,
         user: null,
       }
     default:

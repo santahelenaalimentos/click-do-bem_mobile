@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   TextInput,
+  AsyncStorage,
 } from 'react-native';
 import {
   Button,
@@ -18,6 +19,8 @@ import Utils from '../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
 import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
+import Storage from '../utils/Storage'
+
 
 class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -34,6 +37,23 @@ class LoginScreen extends React.Component {
       senha: 'a1b2c3d4',
     }
 
+  }
+
+  componentWillMount(){
+    Storage._recoverData('storedUserData')
+    .then(data => {
+      console.log(data)
+      let dados = JSON.parse(data)
+      console.log(dados)
+      return dados
+    })
+    .then(user => {
+      if(user){
+        this.props.dispatch(signIn(user.token, user))
+        this.navigateHome()
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   onPressSignIn = () => {
@@ -53,7 +73,8 @@ class LoginScreen extends React.Component {
     .then((data) => {
       if(data.sucesso) {
         this.props.dispatch(signIn(data.token, data.usuario))
-        this.props.navigation.navigate('Home')
+        Storage._storeUser(data.usuario, data.token)
+        this.navigateHome()
       }
       else {
         Utils.toast(data.mensagem);
@@ -62,9 +83,9 @@ class LoginScreen extends React.Component {
     .catch((err) => console.log(err))    
   }
 
-  onPressSignUp = () => {
-    this.props.navigation.navigate('SignUp');
-  }
+  navigateSignUp = () => this.props.navigation.navigate('SignUp')
+
+  navigateHome = () => this.props.navigation.navigate('Home')
 
   render() {
     return (
@@ -107,7 +128,7 @@ class LoginScreen extends React.Component {
             <View style={styles.ou}>
               <Text></Text>
             </View>
-            <Button style={styles.signUpButton} onPress={this.onPressSignUp} block >
+            <Button style={styles.signUpButton} onPress={this.navigateSignUp} block >
               <Text style={styles.signUpText}>Criar nova conta</Text>
             </Button>
           </View>

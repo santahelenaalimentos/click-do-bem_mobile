@@ -26,21 +26,28 @@ class DashboardScreen extends React.Component {
   render() {
     return (
       <Container>
-        <MyHeader 
-          title='Menu'/>
-        <View style={{ flex:1, justifyContent: 'center', alignItems: 'center'}}>
+        <MyHeader
+          title='Menu' />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Button transparent
-          style={styles.button} 
-          onPress={() => this.props.navigation.navigate('CreateDonation', {...this.props.navigation.state.params})}>
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate('CreateDonation', { ...this.props.navigation.state.params })}>
             <Text style={styles.buttonText}>
               Criar Doação
             </Text>
           </Button>
           <Button transparent
-          style={styles.button} 
-          onPress={() => this.props.navigation.navigate('CreateNeed', {...this.props.navigation.state.params})}>
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate('CreateNeed', { ...this.props.navigation.state.params })}>
             <Text style={styles.buttonText}>
               Criar Necessidade
+            </Text>
+          </Button>
+          <Button transparent
+            style={styles.button}
+            onPress={() => this.props.navigation.navigate('ProfileScreen')}>
+            <Text style={styles.buttonText}>
+              Meu Perfil
             </Text>
           </Button>
         </View>
@@ -49,7 +56,7 @@ class DashboardScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     token: state.token,
     user: state.user
@@ -59,7 +66,7 @@ function mapStateToProps(state){
 export default connect(mapStateToProps, null)(DashboardScreen)
 
 const styles = StyleSheet.create({
-  button:{
+  button: {
     borderColor: Colors.purple,
     borderWidth: 1,
     minWidth: '60%',

@@ -141,11 +141,7 @@ class CreateItemScreen extends React.Component {
         return (
             <Container>
                 <MyHeader
-                    buttonColor={Colors.weirdGreen}
-                    goBack={() => this.props.navigation.goBack()}
                     cancel={() => this.props.navigation.navigate('Dashboard')}
-                    headerAndroid={Colors.dark}
-                    statusBarAndroid={Colors.lighterDark}
                     title= {this.donation ? 'Doação' : 'Necessidade'} />
                 <Content>
                     <View style={styles.inputContainer}>

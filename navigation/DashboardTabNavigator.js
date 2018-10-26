@@ -14,21 +14,22 @@ import EditItemScreen from '../screens/Items/EditItemScreen'
 import ItemsScreen from '../screens/Items/ItemsScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import Colors from '../constants/Colors'
+import MatchesScreen from '../screens/MatchesScreen'
 
 const ios = Platform.OS === 'ios'
 
 const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen,
+  Matches: MatchesScreen,
 },
 {
   navigationOptions: {header: null}
 })
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: 'Perfil',
+  tabBarLabel: 'Matches',
   tabBarIcon: ({ focused }) => (
     <MaterialCommunityIcons
-      name= "account"
+      name= "creation"
       size={24}
       color={focused ? Colors.purple : Colors.grey}
     />
@@ -39,6 +40,7 @@ const DashboardStack = createStackNavigator({
   Dashboard: DashboardScreen,
   CreateNeed: {screen: props => <CreateItemsScreen {...props} donation={false}/>},
   CreateDonation: {screen: props => <CreateItemsScreen {...props} donation={true}/>},
+  ProfileScreen: ProfileScreen,
 },
 {
   navigationOptions: {header: null}

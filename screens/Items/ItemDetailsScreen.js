@@ -84,10 +84,10 @@ export default class ItemDetails extends PureComponent {
                 {
                   viewerCPF === usuario.cpfCnpj
                   ?
-                  <Button 
-                  style={{ alignSelf: 'center', backgroundColor: Colors.grey, justifyContent: 'center', minWidth: '60%', height: 45 }}
+                  <Button transparent
+                  style={{ alignSelf: 'center', borderColor: Colors.purple, borderWidth: 1, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
                   onPress={() => this.props.navigation.navigate(tipoItem === 'Necessidade' ? 'EditNeed' :'EditDonation', { item: this.state.item })}>
-                    <Text style={{ color: 'white' }}>{tipoItem === 'Necessidade' ? 'Editar Necessidade' : 'Editar Doação'}</Text>
+                    <Text style={{ color: Colors.purple }}>{tipoItem === 'Necessidade' ? 'Editar Necessidade' : 'Editar Doação'}</Text>
                   </Button>
                   :
                   <Button style={{ alignSelf: 'center', backgroundColor: Colors.purple, justifyContent: 'center', minWidth: '60%', height: 45 }}>

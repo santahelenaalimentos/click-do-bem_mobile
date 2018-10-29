@@ -21,7 +21,6 @@ import Colors from '../constants/Colors';
 import NoHeader from '../components/NoHeader'
 import Storage from '../utils/Storage'
 
-
 class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -30,21 +29,16 @@ class LoginScreen extends React.Component {
   constructor(props){
     super(props);
 
-    
-
     this.state = {
       nome: '25195505896', //91183200900
       senha: 'a1b2c3d4',
     }
-
   }
 
   componentWillMount(){
     Storage._recoverData('storedUserData')
     .then(data => {
-      console.log(data)
       let dados = JSON.parse(data)
-      console.log(dados)
       return dados
     })
     .then(user => {
@@ -77,11 +71,13 @@ class LoginScreen extends React.Component {
         this.navigateHome()
       }
       else {
-        Utils.toast(data.mensagem);
+        Utils.toastTop(data.mensagem);
       }
     })
     .catch((err) => console.log(err))    
   }
+
+  onPressRecoverPassword = () => this.props.navigation.navigate('RecoverPassword')
 
   navigateSignUp = () => this.props.navigation.navigate('SignUp')
 
@@ -117,9 +113,19 @@ class LoginScreen extends React.Component {
               maxLength={8}
               onChangeText={(senha) => this.setState({ senha })}/>
 
+            <View style={{  minWidth:'85%', alignItems: 'flex-end' }}>
+              <View>
+                <Button transparent 
+                  onPress={() => this.onPressRecoverPassword()}
+                  style={{height: 25}}>
+                  <Text style={{color: Colors.blue}}>Esqueci minha senha</Text>
+                </Button>
+              </View>
+            </View>
+
           </View>
 
-          <View style={{height: 40}}/>
+          <View style={{height: 20}}/>
           
           <View >
             <Button style={styles.signInButton} onPress={this.onPressSignIn} block >
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   signUpText: {
-    color: Colors.blue,
+    color: Colors.purple,
   },
   signInButton: {
     backgroundColor: Colors.purple,
@@ -180,7 +186,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: Colors.blue,
+    borderColor: Colors.purple,
     elevation: 1, 
     marginBottom: 4,
   },

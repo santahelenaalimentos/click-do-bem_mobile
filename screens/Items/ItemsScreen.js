@@ -49,13 +49,11 @@ class ItemsScreen extends Component {
                 meusItens: false,
             },
         }
-
     }
 
     componentWillMount() {
         this.isDonation = this.props.donation
         
-        this.scrollY = new Animated.Value(0)
         this.fetchCategorias();
         this.fetchItems();
 
@@ -151,7 +149,7 @@ class ItemsScreen extends Component {
         return (
             <View style={{ backgroundColor: 'white', flex: 1 }}>
 
-                <MyHeader title={this.isDonation ? 'Doações' : 'Necessidade'} />
+                <MyHeader title={this.isDonation ? 'Doações' : 'Necessidades'} />
 
                 <Animated.View style={{ height: this.animatedHeaderHeight, opacity: this.animatedOpacity, paddingHorizontal: '4%', justifyContent: 'center' }}>
                     {

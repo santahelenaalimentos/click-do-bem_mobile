@@ -15,6 +15,8 @@ import ItemsScreen from '../screens/Items/ItemsScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import Colors from '../constants/Colors'
 import MatchesScreen from '../screens/MatchesScreen'
+import EditInfoScreen from '../screens/EditInfoScreen'
+import ChangePasswordScreen from '../screens/ChangePasswordScreen'
 
 const ios = Platform.OS === 'ios'
 
@@ -41,6 +43,8 @@ const DashboardStack = createStackNavigator({
   CreateNeed: {screen: props => <CreateItemsScreen {...props} donation={false}/>},
   CreateDonation: {screen: props => <CreateItemsScreen {...props} donation={true}/>},
   ProfileScreen: ProfileScreen,
+  ChangePassword: ChangePasswordScreen,
+  EditInfo: EditInfoScreen,
 },
 {
   navigationOptions: {header: null}

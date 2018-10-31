@@ -8,9 +8,12 @@ import {
 } from 'react-native'
 import {
     Button,
+    Content,
+    Container,
 } from 'native-base'
 import Colors from '../constants/Colors'
 import MyHeader from '../components/MyHeader'
+import Toast from '../utils/Toast'
 import isValid from '../utils/Validate'
 import messages from '../utils/ValidationMessages'
 import { TextInputMask } from 'react-native-masked-text'
@@ -58,27 +61,28 @@ export default class RecoverPasswordScreen extends Component {
             .then(res => res.json())
             .then(data => {
                 if (data.sucesso) {
-                    toastTop(data.mensagem)
+                    Toast.toastTop(data.mensagem)
                     this.props.navigation.navigate('Login')
                 }
-                else toastTop(data.mensagem)
+                else Toast.toastTop(toast.mensagem.map(msg => `${msg}\n`))
             })
             .catch(err => console.log(err))
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <MyHeader
                     title='Recuperar Senha'
                     goBack={() => this.props.navigation.navigate('Login')} />
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', marginTop: ios ? 15 : 0 }}>
+                <Content containerContentStyle={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', marginTop: ios ? 15 : 0 }}>
 
-                    <View style={{ minWidth: '85%', maxWidth: '85%' }}>
+                    {ios && <View style={{height: 10}}/>}
+                    <View style={{ minWidth: '85%', maxWidth: '85%', alignSelf:'center' }}>
                         <Text style={styles.instructions}> Para recuperar sua senha, preencha os dados abaixo, e confirme. </Text>
                     </View>
-                    <View style={{ height: 20 }} />
-                    <View style={{ minWidth: '80%', maxWidth: '80%' }}>
+                    <View style={{ height: 10 }} />
+                    <View style={{ minWidth: '80%', maxWidth: '80%', alignSelf:'center' }}>
                         <Text style={styles.label}>CPF</Text>
                         <TextInputMask
                             style={styles.input}
@@ -114,13 +118,13 @@ export default class RecoverPasswordScreen extends Component {
                             onChangeText={(confirmarSenha) => this.setState({ confirmarSenha })} />
                     </View>
                     <View style={{ height: 20 }} />
-                    <View>
+                    <View style={{ alignSelf:'center' }}>
                         <Button onPress={() => this.handleRecoverPassword()} style={{ justifyContent: 'center', backgroundColor: Colors.purple, height: 35, minWidth: '85%' }}>
                             <Text style={{ color: Colors.white }}>Confirmar</Text>
                         </Button>
                     </View>
-                </View>
-            </View>
+                </Content>
+            </Container>
         )
     }
 }
@@ -128,14 +132,6 @@ export default class RecoverPasswordScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        flex: 1
-    },
-    inputsContainer: {
-        flex: 1,
-        width: '89%',
-        alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 10,
     },
     label: {
         fontSize: 14,
@@ -147,10 +143,5 @@ const styles = StyleSheet.create({
         height: 45,
         borderBottomColor: '#999999',
         borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
-    },
-    instructions: {
-        color: Colors.grey,
-        fontSize: 16,
-        fontWeight: ios ? '500' : '400'
     }
 })

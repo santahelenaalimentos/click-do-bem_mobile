@@ -32,10 +32,26 @@ class ProfileScreen extends Component {
         this.props.navigation.navigate('Login')
     }
 
+    handleChangePassword = () => {
+        this.props.navigation.navigate('ChangePassword',{ 
+            documento: this.props.user.cpfCnpj, 
+        })
+    }
+
+    handleEditInfo = () => {
+        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade,
+            uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
+
+        this.props.navigation.navigate('EditInfo',{
+            user:{  id: this.props.user.id, documento: this.props.user.cpfCnpj, dataNascimento, email, telefoneFixo, 
+                telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento, nome: this.props.user.nome }
+        })
+    }
+
     render() {
-        console.log(this.props.user)
-        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
-        let nasc = new Date(dataNascimento)
+        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade,
+                uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
+
         return (
             <View style={styles.container}>
                 <MyHeader title='Perfil' goBack={() => this.props.navigation.goBack()} />
@@ -55,37 +71,22 @@ class ProfileScreen extends Component {
                         <Card>
                             <CardItem header bordered>
                                 <Left>
-                                    <Text style={styles.cardTitle}>Dados Pessoais</Text>
+                                    <Text style={styles.cardTitle}>Informações</Text>
                                 </Left>
                                 <Right>
-                                    <Button style={{ height: 20 }} transparent>
+                                    <Button style={{ height: 20 }} transparent
+                                        onPress={() => this.handleEditInfo()}>
                                         <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
                                     </Button>
                                 </Right>
                             </CardItem>
                             <CardItem bordered>
                                 <Body>
-                                    <Text style={styles.info}>Nascimento: {nasc.getDay()}/{nasc.getMonth()}/{nasc.getFullYear()}</Text>
+                                    <Text style={styles.separatorTitle}>Contato</Text>
                                     <Text style={styles.info}>Email: {email}</Text>
                                     <Text style={styles.info}>Telefone: {telefoneFixo}</Text>
                                     <Text style={styles.info}>Celular: {telefoneCelular}</Text>
-                                </Body>
-                            </CardItem>
-                        </Card>
-
-                        <Card>
-                            <CardItem header bordered>
-                                <Left>
-                                    <Text style={styles.cardTitle}>Endereço</Text>
-                                </Left>
-                                <Right>
-                                    <Button style={{ height: 20 }} transparent>
-                                        <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
-                                    </Button>
-                                </Right>
-                            </CardItem>
-                            <CardItem bordered>
-                                <Body>
+                                    <Text style={styles.separatorTitle}>Endereço</Text>
                                     <Text style={styles.info}>Logradouro: {logradouro}</Text>
                                     <Text style={styles.info}>Número: {numero}</Text>
                                     <Text style={styles.info}>Complemento: {complemento}</Text>
@@ -103,7 +104,8 @@ class ProfileScreen extends Component {
                                     <Text style={styles.cardTitle}>Segurança</Text>
                                 </Left>
                                 <Right>
-                                    <Button style={{ height: 20 }} transparent>
+                                    <Button style={{ height: 20 }} transparent
+                                        onPress={() => this.handleChangePassword()}>
                                         <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
                                     </Button>
                                 </Right>
@@ -126,7 +128,7 @@ class ProfileScreen extends Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        user: state.user,
     }
 }
 
@@ -155,6 +157,12 @@ const styles = StyleSheet.create({
         color: Colors.purple,
         fontSize: 16,
         fontWeight: '500',
+    },
+    separatorTitle:{
+        color: Colors.grey,
+        fontSize: 14,
+        fontWeight: '500',
+        marginTop: 5,
     },
     bigText: {
         color: Colors.purple,

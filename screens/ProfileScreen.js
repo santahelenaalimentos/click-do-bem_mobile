@@ -3,16 +3,26 @@ import {
     Text,
     View,
     StyleSheet,
+    Platform,
 } from 'react-native'
 import {
-    Button
+    Button,
+    Content,
+    Card,
+    CardItem,
+    Body,
+    Left,
+    Right,
+    Container,
 } from 'native-base'
-import MyHeader from '../components/MyHeader';
 import { connect } from 'react-redux'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import MyHeader from '../components/MyHeader';
 import Colors from '../constants/Colors';
 import Strings from '../utils/Strings'
 import { signOut } from '../actions';
 import Storage from '../utils/Storage'
+const ios = Platform.OS === 'ios'
 
 class ProfileScreen extends Component {
 
@@ -23,53 +33,152 @@ class ProfileScreen extends Component {
     }
 
     render() {
+        console.log(this.props.user)
+        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
+        let nasc = new Date(dataNascimento)
         return (
             <View style={styles.container}>
-                <MyHeader title='Perfil' goBack={() => this.props.navigation.goBack()}/>
-                <View style={styles.innerContainer}>
-                    <View>
-                        <Text>Olá, {Strings.formatName(this.props.user.nome)}</Text>
+                <MyHeader title='Perfil' goBack={() => this.props.navigation.goBack()} />
+
+                <Content contentContainerStyle={styles.content} scrollEnabled={true}>
+                    <View style={styles.cardsContainer}>
+
+                        <View style={styles.titleSection}>
+                            <Text style={styles.bigText}>{Strings.formatName(this.props.user.nome)}</Text>
+                            <Button danger
+                                style={styles.signOutButton}
+                                onPress={this.handleSignOut}>
+                                <Text style={styles.buttonText}> Sair </Text>
+                            </Button>
+                        </View>
+
+                        <Card>
+                            <CardItem header bordered>
+                                <Left>
+                                    <Text style={styles.cardTitle}>Dados Pessoais</Text>
+                                </Left>
+                                <Right>
+                                    <Button style={{ height: 20 }} transparent>
+                                        <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
+                                    </Button>
+                                </Right>
+                            </CardItem>
+                            <CardItem bordered>
+                                <Body>
+                                    <Text style={styles.info}>Nascimento: {nasc.getDay()}/{nasc.getMonth()}/{nasc.getFullYear()}</Text>
+                                    <Text style={styles.info}>Email: {email}</Text>
+                                    <Text style={styles.info}>Telefone: {telefoneFixo}</Text>
+                                    <Text style={styles.info}>Celular: {telefoneCelular}</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+
+                        <Card>
+                            <CardItem header bordered>
+                                <Left>
+                                    <Text style={styles.cardTitle}>Endereço</Text>
+                                </Left>
+                                <Right>
+                                    <Button style={{ height: 20 }} transparent>
+                                        <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
+                                    </Button>
+                                </Right>
+                            </CardItem>
+                            <CardItem bordered>
+                                <Body>
+                                    <Text style={styles.info}>Logradouro: {logradouro}</Text>
+                                    <Text style={styles.info}>Número: {numero}</Text>
+                                    <Text style={styles.info}>Complemento: {complemento}</Text>
+                                    <Text style={styles.info}>Bairro: {bairro}</Text>
+                                    <Text style={styles.info}>Cidade: {cidade}</Text>
+                                    <Text style={styles.info}>UF: {uf}</Text>
+                                    <Text style={styles.info}>CEP: {cep}</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+
+                        <Card>
+                            <CardItem header bordered>
+                                <Left>
+                                    <Text style={styles.cardTitle}>Segurança</Text>
+                                </Left>
+                                <Right>
+                                    <Button style={{ height: 20 }} transparent>
+                                        <MaterialCommunityIcons name='pencil' size={20} color={Colors.grey} />
+                                    </Button>
+                                </Right>
+                            </CardItem>
+                            <CardItem bordered>
+                                <Body>
+                                    <Text style={styles.info}>CPF: {this.props.user.cpfCnpj}</Text>
+                                    <Text style={styles.info}>Senha: ********</Text>
+                                </Body>
+                            </CardItem>
+                        </Card>
+
                     </View>
-                    <View>
-                        <Button danger
-                            style={styles.button}
-                            onPress={this.handleSignOut}>
-                            <Text style={styles.buttonText}> Sair </Text>
-                        </Button>
-                    </View>
-                </View>
+
+                </Content>
             </View>
         )
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         user: state.user
     }
 }
 
- export default connect(mapStateToProps, null)(ProfileScreen)
+export default connect(mapStateToProps, null)(ProfileScreen)
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    innerContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: Colors.white,
+        minHeight: '200%'
     },
-    button: {
-        minWidth: '60%',
-        height: 35,
-        margin: 10,
+    content: {
+        ...Platform.select({
+            ios: {
+                flex: 1,
+            },
+        }),
+        alignItems: 'center',
+        minWidth: '90%',
+    },
+    titleSection: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+    },
+    cardTitle: {
+        color: Colors.purple,
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    bigText: {
+        color: Colors.purple,
+        fontSize: 24,
+        fontWeight: '500',
+        marginBottom: 5,
+        marginTop: 10,
+    },
+    signOutButton: {
+        minWidth: '20%',
+        height: 25,
         justifyContent: 'center',
-        alignSelf: 'center',
+        alignItems: 'center',
+        alignSelf: 'center'
     },
     buttonText: {
         color: Colors.white,
-        fontSize: 14,
+        fontWeight: '600',
+        fontSize: 12,
     },
+    info: {
+        color: Colors.grey,
+    },
+    cardsContainer: {
+        minWidth: '90%',
+    }
 })

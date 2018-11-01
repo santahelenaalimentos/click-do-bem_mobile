@@ -118,7 +118,6 @@ class ProfileScreen extends Component {
                         </Card>
 
                     </View>
-
                 </Content>
             </View>
         )
@@ -137,7 +136,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.white,
-        minHeight: '200%'
     },
     content: {
         ...Platform.select({
@@ -147,6 +145,7 @@ const styles = StyleSheet.create({
         }),
         alignItems: 'center',
         minWidth: '90%',
+        minHeight: '100%',
     },
     titleSection: {
         justifyContent: 'space-between',
@@ -187,5 +186,6 @@ const styles = StyleSheet.create({
     },
     cardsContainer: {
         minWidth: '90%',
+        flex: 1,
     }
 })

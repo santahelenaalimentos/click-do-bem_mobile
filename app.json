@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "[Beta] Teste 008",
-    "description": "",
-    "slug": "beta-teste-008",
+    "name": "[Beta] Teste 009",
+    "description": "* Implementado meu perfil - beta\n* Correções menores",
+    "slug": "beta-teste-009",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

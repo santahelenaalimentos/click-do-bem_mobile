@@ -60,7 +60,7 @@ class ChangePasswordScreen extends React.Component {
                 Toast.toast(data.mensagem, 50)
                 this.props.navigation.goBack()
             } 
-            else if(data.mensagem) Toast.toastTop(data.mensagem.map(msg => `${msg}\n`))
+            else if(data.mensagem) Toast.toastTop(data.mensagem instanceof Array ? data.mensagem.map(msg => `${msg}\n`) : data.mensagem)
             else Toast.toastTop('Ocorreu um erro desconhecido.')
         })
         .catch(err => console.log(err))

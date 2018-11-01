@@ -65,8 +65,10 @@ class LoginScreen extends React.Component {
             .then(res => res.json())
             .then((data) => {
                 if (data.sucesso) {
-                    this.props.dispatch(signIn(data.token, data.usuario))
-                    Storage._storeUser(data.usuario, data.token)
+                    const user = this.formatData(data.usuario)
+                    console.log(user)
+                    this.props.dispatch(signIn(data.token, user))
+                    Storage._storeUser(user, data.token)
                     this.navigateHome()
                 }
                 else {
@@ -74,6 +76,14 @@ class LoginScreen extends React.Component {
                 }
             })
             .catch((err) => console.log(err))
+    }
+
+    formatData = (usuario) => {
+        const { id, nome, cpfCnpj, usuarioPerfil, usuarioLogin } = usuario
+        return {
+            id, nome, cpfCnpj, usuarioPerfil, usuarioLogin,
+            ...usuario.usuarioDados
+        }
     }
 
     onPressRecoverPassword = () => this.props.navigation.navigate('RecoverPassword')

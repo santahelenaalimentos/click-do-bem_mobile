@@ -39,19 +39,18 @@ class ProfileScreen extends Component {
     }
 
     handleEditInfo = () => {
-        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade,
-            uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
+        const { id, nome, cpfCnpj, dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade,
+            uf, bairro, logradouro, numero, complemento } = this.props.user
 
         this.props.navigation.navigate('EditInfo',{
-            user:{  id: this.props.user.id, documento: this.props.user.cpfCnpj, dataNascimento, email, telefoneFixo, 
-                telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento, nome: this.props.user.nome }
+            user:{  id, documento: cpfCnpj, dataNascimento, email, telefoneFixo, 
+                telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento, nome }
         })
     }
 
     render() {
-        const { dataNascimento, email, telefoneFixo, telefoneCelular, cep, cidade,
-                uf, bairro, logradouro, numero, complemento } = this.props.user.usuarioDados
-
+        const { nome, cpfCnpj, email, telefoneFixo, telefoneCelular, cep, cidade, uf, bairro, logradouro, numero, complemento } = this.props.user;
+        console.log(this.props.user)
         return (
             <View style={styles.container}>
                 <MyHeader title='Perfil' goBack={() => this.props.navigation.goBack()} />
@@ -60,7 +59,7 @@ class ProfileScreen extends Component {
                     <View style={styles.cardsContainer}>
 
                         <View style={styles.titleSection}>
-                            <Text style={styles.bigText}>{Strings.formatName(this.props.user.nome)}</Text>
+                            <Text style={styles.bigText}>{Strings.formatName(nome)}</Text>
                             <Button danger
                                 style={styles.signOutButton}
                                 onPress={this.handleSignOut}>
@@ -112,7 +111,7 @@ class ProfileScreen extends Component {
                             </CardItem>
                             <CardItem bordered>
                                 <Body>
-                                    <Text style={styles.info}>CPF: {this.props.user.cpfCnpj}</Text>
+                                    <Text style={styles.info}>CPF: {cpfCnpj}</Text>
                                     <Text style={styles.info}>Senha: ********</Text>
                                 </Body>
                             </CardItem>

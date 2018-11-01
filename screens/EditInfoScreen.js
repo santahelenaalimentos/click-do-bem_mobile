@@ -20,6 +20,7 @@ import MyHeader from '../components/MyHeader'
 import { TextInputMask } from 'react-native-masked-text'
 import Toast from '../utils/Toast'
 import { connect } from 'react-redux'
+import { updateUser } from '../actions/index'
 import Colors from '../constants/Colors';
 const ufList = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO']
 
@@ -58,7 +59,7 @@ class EditInfoScreen extends Component {
             id, 
             nome, 
             dataNascimento,
-            endereco:{ logradouro, numero, complemento, bairro, cidade, uf, cep },
+            endereco:{ logradouro, numero, complemento, bairro, cidade, uf, cep: cep.replace('-', '') },
             telefoneFixo,
             telefoneCelular,
             email,
@@ -79,6 +80,8 @@ class EditInfoScreen extends Component {
         .then(data => {
             console.log(data)
             if(data.sucesso){
+                let user = this.formatUser()
+                this.props.dispatch(updateUser(user))
                 Toast.toast(data.mensagem, 50)
                 this.props.navigation.goBack()
             } 
@@ -86,6 +89,11 @@ class EditInfoScreen extends Component {
             else Toast.toastTop('Ocorreu um erro desconhecido.')
         })
         .catch(err => console.log(err))
+    }
+
+    formatUser = () => {
+        const { nome, telefoneCelular, telefoneFixo, email, uf, cep, logradouro, numero, bairro, complemento } = this.state
+        return { ...this.props.user, nome, telefoneCelular, telefoneFixo, email, uf, cep, logradouro, numero, bairro, complemento }
     }
 
     render() {
@@ -210,6 +218,7 @@ class EditInfoScreen extends Component {
 function mapStateToProps(state) {
     return {
         token: state.token,
+        user: state.user,
     }
 }
 

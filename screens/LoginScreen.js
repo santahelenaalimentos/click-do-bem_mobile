@@ -29,7 +29,7 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
-            nome: '25195505896', //91183200900
+            nome: '11618050877', //91183200900
             senha: 'a1b2c3d4',
         }
     }
@@ -79,6 +79,7 @@ class LoginScreen extends React.Component {
     }
 
     formatData = (usuario) => {
+        usuario.usuarioDados.id = usuario.id
         const { id, nome, cpfCnpj, usuarioPerfil, usuarioLogin } = usuario
         return {
             id, nome, cpfCnpj, usuarioPerfil, usuarioLogin,

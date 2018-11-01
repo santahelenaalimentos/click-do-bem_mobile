@@ -105,7 +105,8 @@ const showTabBar = (navigation) => {
   const { routes } = navigation.state
   let show = true
   routes.forEach((route) => {
-    if (route.routeName === 'ItemDetails')
+    if (route.routeName === 'CreateNeed' || route.routeName === 'CreateDonation' 
+        || route.routeName === 'EditNeed' || route.routeName === 'EditDonation' )
       show = false
   })
   return show

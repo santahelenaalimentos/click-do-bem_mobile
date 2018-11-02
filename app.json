@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "[Beta] Teste 009",
-    "description": "* Implementado meu perfil - beta\n* Correções menores",
-    "slug": "beta-teste-009",
+    "name": "[Beta] Teste 010",
+    "description": "* Implementado tela de matches - beta, incompleta\n* outras correções",
+    "slug": "beta-teste-010",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

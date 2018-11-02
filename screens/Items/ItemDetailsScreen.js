@@ -8,11 +8,12 @@ import {
     Platform,
     Modal,
     StyleSheet,
-    TextInput,
     TouchableWithoutFeedback,
+    KeyboardAvoidingView,
 } from 'react-native'
 import {
     Container,
+    Content,
     Button,
     Card,
     CardItem,
@@ -20,11 +21,11 @@ import {
     Right,
     Body,
 } from 'native-base'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { TextInputMask } from 'react-native-masked-text'
 import MyHeader from '../../components/MyHeader';
 import Colors from '../../constants/Colors';
 import { connect } from 'react-redux'
+import Toast from '../../utils/Toast'
 
 class ItemDetailsScreen extends PureComponent {
     static navigationOptions = {
@@ -74,6 +75,35 @@ class ItemDetailsScreen extends PureComponent {
         this.setState({ isVisible: true })
     }
 
+    handleMatch = () => {
+        const { itemValue, item: { id } } = this.state
+
+        console.log('itens', itemValue, id)
+
+        if(!id || !itemValue || itemValue === 'R$0,00' || itemValue === '0000') 
+            return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
+
+        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/item/match/${id}?valor=${itemValue}`,
+            {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `bearer ${this.props.token}`
+                }
+            })
+            .then(res => res.json())
+            .then((data) => {
+                console.log('response ', data)
+                if(data.matchId) {
+                    this.handleCloseModal()
+                    this.props.navigation.goBack()
+                    return Toast.toastTop('Combinação realizada. Entre em contato com sua contraparte.')
+                }
+                Toast.toastTop(data.mensagem)
+            })
+            .catch((err) => console.log(err))
+    }
+
     render() {
         const { height, width } = Dimensions.get('window');
         const { titulo, descricao, categoria, imagens, tipoItem, usuario } = this.state.item
@@ -117,8 +147,8 @@ class ItemDetailsScreen extends PureComponent {
                         <ScrollView>
                             <View style={{ margin: 10, alignItems: 'flex-start' }}>
                                 <Text style={{ fontSize: 24, fontWeight: '700', color: Colors.purple }}>{titulo}</Text>
-                                <Text style={{ fontSize: 12, fontWeight: '400', color: Colors.grey, marginBottom: 10, paddingVertical: 3 }}>{categoria.descricao}</Text>
-                                <Text style={{ fontSize: 14, fontWeight: '500', color: Colors.grey }}>{descricao}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: '500', color: Colors.grey, marginBottom: 10, paddingVertical: 3 }}>{categoria.descricao}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: '300', color: Colors.grey }}>{descricao}</Text>
                             </View>
 
                             <View style={{ marginVertical: 30 }}>
@@ -160,7 +190,7 @@ class ItemDetailsScreen extends PureComponent {
                                     <Text style={styles.modalSecondaryButtonText}>FECHAR</Text>
                                 </Button>
                             </View>
-                            <View style={styles.modalContent}>
+                            <Content contentContainerStyle={styles.modalContent}>
 
                                 <View style={styles.cardsContainer}>
                                     <Card>
@@ -183,7 +213,7 @@ class ItemDetailsScreen extends PureComponent {
                                     </Card>
                                 </View>
 
-                                <View style={styles.inputContainer}>
+                                <KeyboardAvoidingView style={styles.inputContainer}>
                                     <Text style={styles.label}>Valor financeiro do item</Text>
                                     <TextInputMask
                                         style={styles.input}
@@ -192,14 +222,15 @@ class ItemDetailsScreen extends PureComponent {
                                         maxLength={20}
                                         onChangeText={(itemValue) => this.setState({ itemValue })} />
 
-                                </View>
+                                </KeyboardAvoidingView>
 
                                 <View style={styles.buttonContainer}>
-                                    <Button style={styles.modalPrimaryButton}>
+                                    <Button style={styles.modalPrimaryButton}
+                                        onPress={() => this.handleMatch()}>
                                         <Text style={{color: Colors.white}}>Confirmar Solicitação</Text>
                                     </Button>
                                 </View>
-                            </View>
+                            </Content>
                         </View>
                     </View>
                 </Modal>
@@ -227,7 +258,7 @@ const styles = StyleSheet.create({
     },
     modalOuterRegion: {
         width: '100%',
-        flex: .3,
+        flex: .3
     },
     modalInnerContainer: {
         width: '100%',
@@ -255,11 +286,17 @@ const styles = StyleSheet.create({
     modalContent: {
         alignItems: 'center',
         justifyContent:'space-around',
-        flex: 1,
+        flexGrow: 1,
     },
     cardsContainer: {
         minWidth: '90%',
-        flex: 2,
+    },
+    inputContainer: {
+        minWidth: '85%',
+        marginVertical: 10,
+    },
+    buttonContainer:{
+        marginVertical: 5,
     },
     cardTitle: {
         color: Colors.purple,
@@ -269,13 +306,6 @@ const styles = StyleSheet.create({
     info: {
         color: Colors.grey,
         marginVertical: 1,
-    },
-    inputContainer: {
-        minWidth: '85%',
-        flex: 1,
-    },
-    buttonContainer:{
-        flex: 1,
     },
     modalPrimaryButton:{
         height: 45,

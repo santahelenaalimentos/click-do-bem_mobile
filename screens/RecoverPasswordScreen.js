@@ -60,11 +60,12 @@ export default class RecoverPasswordScreen extends Component {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data, data.mensagem)
                 if (data.sucesso) {
                     Toast.toastTop(data.mensagem)
                     this.props.navigation.navigate('Login')
                 }
-                else Toast.toastTop(toast.mensagem.map(msg => `${msg}\n`))
+                else Toast.toastTop(data.mensagem instanceof Array ? data.mensagem.map(msg => `${msg}\n`) : data.mensagem)
             })
             .catch(err => console.log(err))
     }
@@ -79,7 +80,7 @@ export default class RecoverPasswordScreen extends Component {
 
                     {ios && <View style={{height: 10}}/>}
                     <View style={{ minWidth: '85%', maxWidth: '85%', alignSelf:'center' }}>
-                        <Text style={styles.instructions}> Para recuperar sua senha, preencha os dados abaixo, e confirme. </Text>
+                        <Text style={styles.instructions}> Para recuperar sua senha, preencha os dados abaixo e confirme. </Text>
                     </View>
                     <View style={{ height: 10 }} />
                     <View style={{ minWidth: '80%', maxWidth: '80%', alignSelf:'center' }}>

@@ -76,11 +76,12 @@ class ItemDetailsScreen extends PureComponent {
     }
 
     handleMatch = () => {
-        const { itemValue, item: { id } } = this.state
+        let { itemValue, item: { id } } = this.state
+        itemValue = Number( itemValue.replace('R$', '').replace(/\./g,'').replace(',', '.'))
 
-        console.log('itens', itemValue, id)
+        console.log('valor do item enviado', itemValue)
 
-        if(!id || !itemValue || itemValue === 'R$0,00' || itemValue === '0000') 
+        if( !id || !itemValue || itemValue <= 0 ) 
             return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
 
         fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/item/match/${id}?valor=${itemValue}`,
@@ -93,13 +94,12 @@ class ItemDetailsScreen extends PureComponent {
             })
             .then(res => res.json())
             .then((data) => {
-                console.log('response ', data)
-                if(data.matchId) {
+                if(data.sucesso) {
                     this.handleCloseModal()
                     this.props.navigation.goBack()
-                    return Toast.toastTop('Combinação realizada. Entre em contato com sua contraparte.')
-                }
-                Toast.toastTop(data.mensagem)
+                    Toast.toastTop('Combinação realizada. Entre em contato com sua contraparte.')
+                } 
+                else Toast.toastTop(data.mensagem)
             })
             .catch((err) => console.log(err))
     }

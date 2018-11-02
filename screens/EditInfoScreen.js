@@ -54,6 +54,14 @@ class EditInfoScreen extends Component {
 
     handleSubmit = () => {
         const { id, nome, dataNascimento, telefoneCelular, telefoneFixo, email, logradouro, numero, complemento, bairro, cidade, uf, cep } = this.state
+        
+        let errs = []
+        if(telefoneCelular.length !== 15) errs.push('Número de celular inválido.');
+        if(telefoneFixo.length !== 14 && telefoneCelular.length > 0) errs.push('Número de telefone inválido.');
+        if (!email || !(email.indexOf('@') > -1) || (email.indexOf(' ') > -1) || !(email.indexOf('.') > -1)) errs.push('Endereço de e-mail inválido')
+        if(!cep || (cep.length !== 9 && cep.indexOf('-') > -1) || (cep.length !== 8 && !(cep.indexOf('-') > -1))) errs.push('Número de CEP inválido.')
+
+        if(errs.length) return toastTop(errs.map(err => `${err}\n`))
 
         const payload = { 
             id, 
@@ -138,7 +146,8 @@ class EditInfoScreen extends Component {
                         />
 
                         <Text style={styles.label}>E-mail</Text>
-                        <TextInput
+                        <TextInput 
+                            autoCapitalize='none'
                             style={styles.input}
                             value={email}
                             onChangeText={(email) => this.setState({ email })}
@@ -184,8 +193,9 @@ class EditInfoScreen extends Component {
                             onChangeText={(logradouro) => this.setState({ logradouro })} />
 
                         <Text style={styles.label}>Número</Text>
-                        <TextInput
+                        <TextInputMask
                             style={styles.input}
+                            type='only-numbers'
                             value={numero}
                             onChangeText={(numero) => this.setState({ numero })} />
 

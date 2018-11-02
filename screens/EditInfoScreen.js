@@ -57,7 +57,7 @@ class EditInfoScreen extends Component {
         
         let errs = []
         if(telefoneCelular.length !== 15) errs.push('Número de celular inválido.');
-        if(telefoneFixo.length !== 14 && telefoneCelular.length > 0) errs.push('Número de telefone inválido.');
+        if(telefoneFixo.length !== 14 && telefoneFixo.length > 0) errs.push('Número de telefone inválido.')
         if (!email || !(email.indexOf('@') > -1) || (email.indexOf(' ') > -1) || !(email.indexOf('.') > -1)) errs.push('Endereço de e-mail inválido')
         if(!cep || (cep.length !== 9 && cep.indexOf('-') > -1) || (cep.length !== 8 && !(cep.indexOf('-') > -1))) errs.push('Número de CEP inválido.')
 

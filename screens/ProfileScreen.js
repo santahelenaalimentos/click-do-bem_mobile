@@ -91,7 +91,7 @@ class ProfileScreen extends Component {
                                     <Text style={styles.info}>Complemento: {complemento}</Text>
                                     <Text style={styles.info}>Bairro: {bairro}</Text>
                                     <Text style={styles.info}>Cidade: {cidade}</Text>
-                                    <Text style={styles.info}>UF: {uf}</Text>
+                                    <Text style={styles.info}>Estado: {uf}</Text>
                                     <Text style={styles.info}>CEP: {cep}</Text>
                                 </Body>
                             </CardItem>

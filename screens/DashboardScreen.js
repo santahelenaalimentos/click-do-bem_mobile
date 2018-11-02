@@ -9,7 +9,9 @@ import {
     Content,
     List,
     ListItem,
-    Button,
+    Icon,
+    Right,
+    Left,
 } from 'native-base';
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors'
@@ -35,17 +37,32 @@ class DashboardScreen extends React.Component {
                         <ListItem 
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateDonation', { ...this.props.navigation.state.params })}>
-                            <Text style={styles.buttonText}>Criar uma Doação</Text>
+                            <Left>
+                                <Text style={styles.buttonText}>Criar uma Doação</Text>
+                            </Left>
+                            <Right>
+                                <Icon name='arrow-forward'/>
+                            </Right>
                         </ListItem>
                         <ListItem 
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateNeed', { ...this.props.navigation.state.params })}>
-                            <Text style={styles.buttonText}>Criar uma Necessidade</Text>
+                            <Left>
+                                <Text style={styles.buttonText}>Criar uma Necessidade</Text>
+                            </Left>
+                            <Right>
+                                <Icon name='arrow-forward'/>
+                            </Right>
                         </ListItem>
                         <ListItem 
                             style={styles.menuItem} 
                             onPress={() => this.props.navigation.navigate('ProfileScreen')}>
-                            <Text style={styles.buttonText}>Meu Perfil</Text>
+                            <Left>
+                                <Text style={styles.buttonText}>Meu Perfil</Text>
+                            </Left>
+                            <Right>
+                                <Icon name='arrow-forward'/>
+                            </Right>
                         </ListItem>
                     </List>
                 </Content>

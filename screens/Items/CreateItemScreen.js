@@ -60,7 +60,7 @@ class CreateItemScreen extends React.Component {
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 
 
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
+        fetch(`${global.BASE_API_V1}/categoria`, {
             method: 'GET',
             headers: {
                 "Authorization": `bearer ${this.token}`,
@@ -75,8 +75,8 @@ class CreateItemScreen extends React.Component {
         const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
         const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
         const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
-        console.log('request: ', data)
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
+
+        fetch(`${global.BASE_API_V1}/item`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

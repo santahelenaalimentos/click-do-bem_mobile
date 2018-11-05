@@ -51,7 +51,7 @@ export default class RecoverPasswordScreen extends Component {
     }
 
     submitRecoverPassword = (payload) => {
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/usuario/esquecisenha`, {
+        fetch(`${global.BASE_API_V1}/usuario/esquecisenha`, {
             method: 'POST',
             headers: {
                 "Content-Type": `application/json`

@@ -72,7 +72,7 @@ class ItemsScreen extends Component {
     }
 
     fetchItems = () =>
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
+        fetch(`${global.BASE_API_V1}/item`, {
             method: 'GET',
             headers: {
                 "Authorization": `bearer ${this.props.token}`,
@@ -92,7 +92,7 @@ class ItemsScreen extends Component {
             .catch(err => console.log(err))
 
     fetchCategorias = () =>
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
+        fetch(`${global.BASE_API_V1}/categoria`, {
             method: 'GET',
             headers: {
                 "Authorization": `bearer ${this.props.token}`,

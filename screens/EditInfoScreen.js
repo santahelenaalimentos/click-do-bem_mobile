@@ -76,7 +76,7 @@ class EditInfoScreen extends Component {
         console.log(payload)
         console.log(this.props.token)
 
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/colaborador`, {
+        fetch(`${global.BASE_API_V1}/colaborador`, {
             method: 'PUT',
             headers:{
                 'Authorization': `bearer ${this.props.token}`,

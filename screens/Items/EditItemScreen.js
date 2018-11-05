@@ -73,7 +73,7 @@ class EditItemScreen extends React.Component {
     }
 
     fetchCategorias = () => {
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/categoria', {
+        fetch(`${global.BASE_API_V1}/categoria`, {
             method: 'GET',
             headers: {
                 "Authorization": `bearer ${this.token}`,
@@ -91,7 +91,7 @@ class EditItemScreen extends React.Component {
                         .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
         const data = { id, titulo, descricao, tipoItem, categoria, anonimo, imagens, imgExcluir }
 
-        fetch('http://dev-clickdobemapi.santahelena.com/api/v1/item', {
+        fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",

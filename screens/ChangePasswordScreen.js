@@ -45,7 +45,7 @@ class ChangePasswordScreen extends React.Component {
         console.log(payload)
         console.log(this.props.token)
 
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/usuario/trocarsenha`, {
+        fetch(`${global.BASE_API_V1}/usuario/trocarsenha`, {
             method: 'POST',
             headers:{
                 'Authorization': `bearer ${this.props.token}`,

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "[Beta] Teste 100",
-    "description": "-Corrige bugs apontados em QA que eram pertinentes ao app\n-Adiciona funcionalidades a tela de matches",
-    "slug": "beta-teste-100",
+    "name": "[Beta] Teste 101",
+    "description": "-Corrige bugs apontados em QA que eram pertinentes ao app",
+    "slug": "beta-teste-101",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

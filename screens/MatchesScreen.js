@@ -36,7 +36,7 @@ class MatchesScreen extends Component {
     }
 
     fetchMatches = () =>
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/item/match`, {
+        fetch(`${global.BASE_API_V1}/item/match`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",

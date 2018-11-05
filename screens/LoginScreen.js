@@ -53,7 +53,7 @@ class LoginScreen extends React.Component {
         const { nome, senha } = this.state;
         const data = { nome: nome.replace(".", "").replace(".", "").replace("-", ""), senha: md5(senha) };
 
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/usuario/autenticar`,
+        fetch(`${global.BASE_API_V1}/usuario/autenticar`,
             {
                 method: 'POST',
                 body: JSON.stringify(data),

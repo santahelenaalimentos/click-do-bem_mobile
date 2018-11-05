@@ -51,7 +51,7 @@ class ItemDetailsScreen extends PureComponent {
     }
 
     fetchItemUserData = (id) => {
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/colaborador/${id}`,
+        fetch(`${global.BASE_API_V1}/colaborador/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -79,12 +79,10 @@ class ItemDetailsScreen extends PureComponent {
         let { itemValue, item: { id } } = this.state
         itemValue = Number( itemValue.replace('R$', '').replace(/\./g,'').replace(',', '.'))
 
-        console.log('valor do item enviado', itemValue)
-
         if( !id || !itemValue || itemValue <= 0 ) 
             return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
 
-        fetch(`http://dev-clickdobemapi.santahelena.com/api/v1/item/match/${id}?valor=${itemValue}`,
+        fetch(`${global.BASE_API_V1}/item/match/${id}?valor=${itemValue}`,
             {
                 method: 'POST',
                 headers: {
@@ -106,8 +104,9 @@ class ItemDetailsScreen extends PureComponent {
 
     render() {
         const { height, width } = Dimensions.get('window');
-        const { titulo, descricao, categoria, imagens, tipoItem, usuario } = this.state.item
+        const { titulo, descricao, categoria, imagens, tipoItem, usuario, anonimo } = this.state.item
         const isNeed = tipoItem === 'Necessidade'
+        const isAnonymous = anonimo
         const viewerCPF = this.props.navigation.getParam('viewerCPF', {})
         const { nome, usuarioDados: { telefoneCelular = '', telefoneFixo = '', email = '' } = {} } = this.state.itemUser
 
@@ -204,10 +203,10 @@ class ItemDetailsScreen extends PureComponent {
                                         </CardItem>
                                         <CardItem bordered>
                                             <Body>
-                                                <Text style={styles.info}>Nome: {nome}</Text>
-                                                <Text style={styles.info}>Telefone: {telefoneFixo || '(não cadastrado)'}</Text>
-                                                <Text style={styles.info}>Celular: {telefoneCelular}</Text>
-                                                <Text style={styles.info}>E-mail: {email}</Text>
+                                                <Text style={styles.info}>Nome: {isAnonymous ? '(Oculto)' : nome}</Text>
+                                                <Text style={styles.info}>Telefone: {isAnonymous ? '(Oculto)' : (telefoneFixo || '(não cadastrado)')}</Text>
+                                                <Text style={styles.info}>Celular: {isAnonymous ? '(Oculto)' : telefoneCelular}</Text>
+                                                <Text style={styles.info}>E-mail: {isAnonymous ? '(Oculto)' : email}</Text>
                                             </Body>
                                         </CardItem>
                                     </Card>

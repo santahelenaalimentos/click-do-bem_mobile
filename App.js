@@ -8,10 +8,16 @@ import { Provider } from 'react-redux'
 import reducer from './reducers/index'
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+  constructor(){
+    super()
 
+    global.BASE_API_V1 = 'http://dev-clickdobemapi.santahelena.com/api/v1'
+    
+    this.state = {
+      isLoadingComplete: false,
+    };
+  }
+  
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

@@ -10,9 +10,18 @@ import reducer from './reducers/index'
 export default class App extends React.Component {
   constructor(){
     super()
-
-    // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
+    
+    //DEV
     global.BASE_API_V1 = 'http://dev-clickdobemapi.santahelena.com/api/v1'
+    global.BASE_IMAGES = 'http://dev-clickdobemapi.santahelena.com/'
+    
+    //HOMOLOG
+    // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
+    // global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
+    
+    //PROD
+    // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
+    // global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
     
     this.state = {
       isLoadingComplete: false,

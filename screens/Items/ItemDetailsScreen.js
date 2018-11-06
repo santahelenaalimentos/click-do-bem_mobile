@@ -76,13 +76,16 @@ class ItemDetailsScreen extends PureComponent {
     }
 
     handleMatch = () => {
-        let { itemValue, item: { id } } = this.state
-        itemValue = Number( itemValue.replace('R$', '').replace(/\./g,'').replace(',', '.'))
+        let { itemValue, item: { id, tipoItem } } = this.state
+        itemValue = Number(itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
 
-        if( !id || !itemValue || itemValue <= 0 ) 
+        if ((!id || !itemValue || itemValue <= 0) && tipoItem != 'Necessidade')
             return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
 
-        fetch(`${global.BASE_API_V1}/item/match/${id}?valor=${itemValue}`,
+        //TODO remover console.log
+        console.log(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`)
+
+        fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' && `?valor=${itemValue}`}`,
             {
                 method: 'POST',
                 headers: {
@@ -92,11 +95,11 @@ class ItemDetailsScreen extends PureComponent {
             })
             .then(res => res.json())
             .then((data) => {
-                if(data.sucesso) {
+                if (data.sucesso) {
                     this.handleCloseModal()
                     this.props.navigation.goBack()
                     Toast.toastTop('Combinação realizada. Entre em contato com sua contraparte.')
-                } 
+                }
                 else Toast.toastTop(data.mensagem)
             })
             .catch((err) => console.log(err))
@@ -129,7 +132,7 @@ class ItemDetailsScreen extends PureComponent {
                                     imagens.map(img =>
                                         <View style={{ height: height / 2, width: width, flex: 1 }} key={img.id}>
                                             <Image
-                                                source={{ uri: `http://dev-clickdobemapi.santahelena.com${img.arquivo}` }}
+                                                source={{ uri: `${global.BASE_IMAGES}${img.arquivo}` }}
                                                 style={{ flex: 1, width: width }} />
                                         </View>)
                                     :
@@ -179,9 +182,9 @@ class ItemDetailsScreen extends PureComponent {
                     onRequestClose={() => this.setState({ isVisible: false })}>
                     <View style={styles.modalContainer}>
                         <TouchableWithoutFeedback onPress={() => this.handleCloseModal()}>
-                            <View style={styles.modalOuterRegion}></View>
+                            <View style={[styles.modalOuterRegion, { flex: isNeed ? .55 : .4 }]}></View>
                         </TouchableWithoutFeedback>
-                        <View style={styles.modalInnerContainer}>
+                        <View style={[styles.modalInnerContainer, { flex: isNeed ? .45 : .6 }]}>
                             <View style={StyleSheet.modalHeader}>
                                 <Button transparent
                                     style={styles.modalSecondaryButton}
@@ -212,21 +215,25 @@ class ItemDetailsScreen extends PureComponent {
                                     </Card>
                                 </View>
 
-                                <KeyboardAvoidingView style={styles.inputContainer}>
-                                    <Text style={styles.label}>Valor financeiro do item</Text>
-                                    <TextInputMask
-                                        style={styles.input}
-                                        type='money'
-                                        value={this.state.itemValue}
-                                        maxLength={20}
-                                        onChangeText={(itemValue) => this.setState({ itemValue })} />
+                                {
+                                    !isNeed
+                                    &&
+                                    <KeyboardAvoidingView style={styles.inputContainer}>
+                                        <Text style={styles.label}>Valor financeiro do item</Text>
+                                        <TextInputMask
+                                            style={styles.input}
+                                            type='money'
+                                            value={this.state.itemValue}
+                                            maxLength={20}
+                                            onChangeText={(itemValue) => this.setState({ itemValue })} />
 
-                                </KeyboardAvoidingView>
+                                    </KeyboardAvoidingView>
+                                }
 
                                 <View style={styles.buttonContainer}>
                                     <Button style={styles.modalPrimaryButton}
                                         onPress={() => this.handleMatch()}>
-                                        <Text style={{color: Colors.white}}>Confirmar Solicitação</Text>
+                                        <Text style={{ color: Colors.white }}>Confirmar Solicitação</Text>
                                     </Button>
                                 </View>
                             </Content>
@@ -257,11 +264,9 @@ const styles = StyleSheet.create({
     },
     modalOuterRegion: {
         width: '100%',
-        flex: .4
     },
     modalInnerContainer: {
         width: '100%',
-        flex: .6,
         backgroundColor: Colors.iosGrey,
         elevation: 1,
         borderRadius: 5,
@@ -284,7 +289,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         alignItems: 'center',
-        justifyContent:'space-around',
+        justifyContent: 'space-around',
         flexGrow: 1,
     },
     cardsContainer: {
@@ -294,8 +299,8 @@ const styles = StyleSheet.create({
         minWidth: '85%',
         marginVertical: 10,
     },
-    buttonContainer:{
-        marginVertical: 5,
+    buttonContainer: {
+        marginBottom: 25,
     },
     cardTitle: {
         color: Colors.purple,
@@ -306,7 +311,7 @@ const styles = StyleSheet.create({
         color: Colors.grey,
         marginVertical: 1,
     },
-    modalPrimaryButton:{
+    modalPrimaryButton: {
         height: 45,
         backgroundColor: Colors.purple,
         alignSelf: 'center',

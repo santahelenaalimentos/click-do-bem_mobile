@@ -24,6 +24,7 @@ import {
 } from 'expo'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
+import { TextInputMask } from 'react-native-masked-text'
 import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
@@ -40,6 +41,7 @@ class EditItemScreen extends React.Component {
             categorias: [],
             titulo: '',
             descricao: '',
+            itemValue: '000',
             tipoItem: 0, //doação???
             categoria: null,
             anonimo: false,
@@ -65,7 +67,7 @@ class EditItemScreen extends React.Component {
             tipoItem: item.tipoItem === 'Necessidade' ? 1 : 2, //doação???
             categoria: item.categoria.descricao,
             anonimo: item.anonimo,
-            images: item.imagens.map(img => ({id: img.id, uri: `http://dev-clickdobemapi.santahelena.com${img.arquivo}`, base64: null })),
+            images: item.imagens.map(img => ({id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
             //adicionar imagens excluidas (que contenham id) num array de strings
         })
 
@@ -86,10 +88,18 @@ class EditItemScreen extends React.Component {
 
     handleEditItem = () => {
         const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir } = this.state
+        const itemValue = Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
+
         const imagens = images
                         .filter(img => img.id === null) //before sending, remove the images already saved
                         .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
-        const data = { id, titulo, descricao, tipoItem, categoria, anonimo, imagens, imgExcluir }
+
+        const data = { id, titulo, descricao, tipoItem, categoria, anonimo, imagens, imgExcluir, valor: itemValue }
+
+        // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
+
+        //TODO remover console.log
+        console.log(data)
 
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
@@ -158,7 +168,9 @@ class EditItemScreen extends React.Component {
     }
 
     render() {        
-        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images, itemValue } = this.state
+        const isNeed = tipoItem === 1
+
         return (
             <Container>
                 <MyHeader
@@ -187,6 +199,19 @@ class EditItemScreen extends React.Component {
                                 multiline={true}
                                 numberOfLines={6} />
                         </Item>
+                        {
+                            isNeed
+                            &&
+                            <Item stackedLabel>
+                                <Label style={styles.label}>Valor financeiro do item</Label>
+                                <TextInputMask
+                                    style={styles.maskedInput}
+                                    type='money'
+                                    value={itemValue}
+                                    maxLength={20}
+                                    onChangeText={(itemValue) => this.setState({ itemValue })} />
+                            </Item>
+                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Fotos</Text>
@@ -306,6 +331,11 @@ const styles = StyleSheet.create({
     },
     regularInput: {
         maxWidth: '100%',
+    },
+    maskedInput:{
+        minWidth: '100%',
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     label: {
         color: '#666666'

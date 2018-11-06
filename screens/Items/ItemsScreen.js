@@ -207,7 +207,7 @@ class ItemsScreen extends Component {
                         
                         <View style={{ flex: 9, alignItems: 'stretch', padding: 10 }}>
                             <View style={{
-                                flexDirection: 'row', borderBottomWidth: .5, borderColor: Colors.lighterGrey,
+                                flexDirection: 'row', borderBottomWidth: .5, borderColor: Colors.evenLighterGrey,
                                 justifyContent: 'space-between', alignItems: 'center', borderTopWidth: .5,
                                 height: 70, paddingHorizontal: '5%', marginVertical: '1%'
                             }}>
@@ -226,7 +226,7 @@ class ItemsScreen extends Component {
                             </View>
 
                             <View style={{ 
-                                flexDirection: 'row', borderBottomWidth: .5, borderColor: Colors.lighterGrey,
+                                flexDirection: 'row', borderBottomWidth: .5, borderColor: Colors.evenLighterGrey,
                                 justifyContent: 'space-between', alignItems: 'center',
                                 height: 70, paddingHorizontal: '5%', marginVertical: '1%'
                             }}>
@@ -260,7 +260,7 @@ class ItemsScreen extends Component {
                         renderItem={({ item }) =>
                             <ListItem thumbnail>
                                 <Left>
-                                    <Thumbnail square source={item.imagens.length ? { uri: `http://dev-clickdobemapi.santahelena.com/${item.imagens[0].arquivo}` } : require('../../assets/images/tb-placeholder-gray.png')} />
+                                    <Thumbnail square source={item.imagens.length ? { uri: `${global.BASE_IMAGES}${item.imagens[0].arquivo}` } : require('../../assets/images/tb-placeholder-gray.png')} />
                                 </Left>
                                 <Body>
                                     <Text style={styles.titulo} numberOfLines={1}>{item.titulo || 'Sem título'}</Text>

@@ -22,12 +22,15 @@ import {
     ImagePicker,
     ImageManipulator,
 } from 'expo'
+import { TextInputMask } from 'react-native-masked-text'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
 import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
+import createIconSetFromFontello from '@expo/vector-icons/createIconSetFromFontello';
+import Toast from '../../utils/Toast';
 
 class CreateItemScreen extends React.Component {
     static navigationOptions = {
@@ -42,6 +45,7 @@ class CreateItemScreen extends React.Component {
             titulo: '',
             descricao: '',
             tipoItem: 0,
+            itemValue: '000',
             categoria: null,
             anonimo: false,
             image: null,
@@ -53,7 +57,7 @@ class CreateItemScreen extends React.Component {
 
     componentWillMount() {
         this.donation = this.props.donation
-        this.setState({tipoItem: this.donation ? 2 : 1})
+        this.setState({ tipoItem: this.donation ? 2 : 1 })
 
         const { Permissions } = Expo
         const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
@@ -73,9 +77,16 @@ class CreateItemScreen extends React.Component {
 
     handleCreateItem = () => {
         const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
-        const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
-        const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens }
+        const itemValue = Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
 
+        const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
+        const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens, valor: itemValue }
+        
+        // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
+
+        //TODO remover console.log
+        console.log(data)
+        console.log(this.token)
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'POST',
             headers: {
@@ -84,13 +95,13 @@ class CreateItemScreen extends React.Component {
             },
             body: JSON.stringify(data)
         })
-            .then(res => res.json())
+            .then(res => { console.log(res); return res.json(); })
             .then(body => {
                 if (body.sucesso) {
                     Utils.toast('Sua ' + (this.donation ? 'doação' : 'necessidade') + ' foi criada com sucesso', 0)
                     this.props.navigation.navigate('Dashboard')
                 } else {
-                    Utils.toast(body.mensagem.map(msg => `${msg}\n`), 0)
+                    Utils.toast(body.mensagem instanceof Array ? body.mensagem.map(msg => `${msg}\n`) : body.mensagem, 0)
                 }
             })
             .catch(err => console.log(err))
@@ -137,12 +148,12 @@ class CreateItemScreen extends React.Component {
 
     render() {
         let { images } = this.state
-        const { categorias, titulo, descricao, categoria, anonimo } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo, itemValue } = this.state
         return (
             <Container>
                 <MyHeader
                     cancel={() => this.props.navigation.navigate('Dashboard')}
-                    title= {this.donation ? 'Doação' : 'Necessidade'} />
+                    title={this.donation ? 'Doação' : 'Necessidade'} />
                 <Content>
                     <View style={styles.inputContainer}>
                         <Item stackedLabel>
@@ -165,6 +176,19 @@ class CreateItemScreen extends React.Component {
                                 multiline={true}
                                 numberOfLines={6} />
                         </Item>
+                        {
+                            !this.donation
+                            &&
+                            <Item stackedLabel>
+                                <Label style={styles.label}>Valor financeiro do item</Label>
+                                <TextInputMask
+                                    style={styles.maskedInput}
+                                    type='money'
+                                    value={itemValue}
+                                    maxLength={20}
+                                    onChangeText={(itemValue) => this.setState({ itemValue })} />
+                            </Item>
+                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Fotos</Text>
@@ -284,6 +308,11 @@ const styles = StyleSheet.create({
     },
     regularInput: {
         maxWidth: '100%',
+    },
+    maskedInput:{
+        minWidth: '100%',
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     label: {
         color: '#666666'

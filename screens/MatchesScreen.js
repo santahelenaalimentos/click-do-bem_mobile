@@ -18,6 +18,7 @@ import {
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Colors from '../constants/Colors'
+import Strings from '../utils/Strings'
 import MyHeader from '../components/MyHeader';
 
 class MatchesScreen extends Component {
@@ -116,15 +117,17 @@ class MatchesScreen extends Component {
                                             <Text style={styles.cardTitle}>{item.titulo}</Text>
                                         </Left>
                                         <Right>
-                                            <Text style={styles.cardTitle}>{item.tipoMatch}</Text>
+                                            <View style={styles.tagContainer}>
+                                                <Text style={styles.tagText}>{item.tipoMatch}</Text>
+                                            </View>
                                         </Right>
                                     </CardItem>
                                     <CardItem bordered>
                                         <Body>
-                                            <Text style={styles.info}>Doador: {item.nomeDoador}</Text>
-                                            <Text style={styles.info}>Receptor: {item.nomeReceptor}</Text>
+                                            <Text style={styles.info}>Doador: {Strings.formatName(item.nomeDoador)}</Text>
+                                            <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
                                             <Text style={styles.info}>Categoria: {item.categoria}</Text>
-                                            <Text style={styles.info}>Valor Estimado: {item.valor}</Text>
+                                            <Text style={styles.info}>Valor Estimado: {Strings.formatCurrency(item.valor)}</Text>
                                         </Body>
                                     </CardItem>
                                 </Card>
@@ -157,4 +160,11 @@ const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
     },
+    tagContainer:{
+
+    },
+    tagText:{
+        color: Colors.lighterPurple,
+        fontSize: 14,
+    }
 })

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "[Beta] Teste 101",
-    "description": "-Corrige bugs apontados em QA que eram pertinentes ao app",
-    "slug": "beta-teste-101",
+    "name": "[Release] Sprint 03",
+    "description": "SPRINT 3 Release Notes\n\nFeatures:\n- Visualização de “meu perfil”\n- Edição de dados cadastrais\n- Edição de senha\n- Recuperação de senha\n- Efetivar doação ou necessidade (realizar match)\n- Visualizar items efetivados (matchs)\n\nFeatures bonus:\n- Melhoria de layout do menu do app\n",
+    "slug": "release-sprint-03",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [

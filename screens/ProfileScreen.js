@@ -111,8 +111,8 @@ class ProfileScreen extends Component {
                             </CardItem>
                             <CardItem bordered>
                                 <Body>
-                                    <Text style={styles.info}>CPF: {cpfCnpj}</Text>
-                                    <Text style={styles.info}>Senha: ********</Text>
+                                    <Text style={styles.info}>CPF: {Strings.formatCPF(cpfCnpj)}</Text>
+                                    <Text style={styles.info}>Senha: ········</Text>
                                 </Body>
                             </CardItem>
                         </Card>

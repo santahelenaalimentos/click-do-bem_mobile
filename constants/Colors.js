@@ -11,8 +11,10 @@ export default {
   blue: '#00BCD4',
   purple: '#673AB7',
   lighterPurple: '#734db7',
+  evenLighterPurple: '#8364ba',
   iosGrey: '#f7f7f7',
   grey: '#424242',
-  greyPlaceholder: '717171',
+  lighterGrey: '#a1a1a1',
+  greyPlaceholder: '#717171',
   white: 'white',
 };

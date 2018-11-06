@@ -13,6 +13,7 @@ import {
     Right,
     Left,
 } from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors'
 import { connect } from 'react-redux';
@@ -38,6 +39,7 @@ class DashboardScreen extends React.Component {
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateDonation', { ...this.props.navigation.state.params })}>
                             <Left>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.lighterPurple}/>
                                 <Text style={styles.buttonText}>Criar uma Doação</Text>
                             </Left>
                             <Right>
@@ -48,6 +50,7 @@ class DashboardScreen extends React.Component {
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateNeed', { ...this.props.navigation.state.params })}>
                             <Left>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.lighterPurple}/>
                                 <Text style={styles.buttonText}>Criar uma Necessidade</Text>
                             </Left>
                             <Right>
@@ -58,6 +61,18 @@ class DashboardScreen extends React.Component {
                             style={styles.menuItem} 
                             onPress={() => this.props.navigation.navigate('ProfileScreen')}>
                             <Left>
+                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.lighterPurple}/>
+                                <Text style={styles.buttonText}>Ranking de Doações</Text>
+                            </Left>
+                            <Right>
+                                <Icon name='arrow-forward'/>
+                            </Right>
+                        </ListItem>
+                        <ListItem 
+                            style={styles.menuItem} 
+                            onPress={() => this.props.navigation.navigate('ProfileScreen')}>
+                            <Left>
+                                <MaterialCommunityIcons name='account' size={20} color={Colors.lighterPurple}/>
                                 <Text style={styles.buttonText}>Meu Perfil</Text>
                             </Left>
                             <Right>
@@ -92,7 +107,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     buttonText: {
-        color: Colors.purple,
+        color: Colors.grey,
+        alignSelf: 'center',
+        marginLeft: 10,
         fontSize: 14,
     },
 

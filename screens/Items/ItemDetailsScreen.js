@@ -257,12 +257,12 @@ const styles = StyleSheet.create({
     },
     modalOuterRegion: {
         width: '100%',
-        flex: .3
+        flex: .4
     },
     modalInnerContainer: {
         width: '100%',
-        flex: .7,
-        backgroundColor: Colors.white,
+        flex: .6,
+        backgroundColor: Colors.iosGrey,
         elevation: 1,
         borderRadius: 5,
         shadowColor: Colors.grey,

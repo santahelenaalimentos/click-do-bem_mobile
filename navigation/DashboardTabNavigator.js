@@ -8,7 +8,6 @@ import {
 } from 'react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import CreateItemsScreen from '../screens/Items/CreateItemScreen'
-import DashboardScreen from '../screens/DashboardScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
 import EditItemScreen from '../screens/Items/EditItemScreen'
 import ItemsScreen from '../screens/Items/ItemsScreen'
@@ -17,6 +16,8 @@ import Colors from '../constants/Colors'
 import MatchesScreen from '../screens/MatchesScreen'
 import EditInfoScreen from '../screens/EditInfoScreen'
 import ChangePasswordScreen from '../screens/ChangePasswordScreen'
+import RankingScreen from '../screens/RankingScreen';
+import MenuScreen from '../screens/MenuScreen';
 
 const ios = Platform.OS === 'ios'
 
@@ -38,19 +39,20 @@ ProfileStack.navigationOptions = {
   ),
 }
 
-const DashboardStack = createStackNavigator({
-  Dashboard: DashboardScreen,
+const MenuStack = createStackNavigator({
+  Menu: MenuScreen,
   CreateNeed: {screen: props => <CreateItemsScreen {...props} donation={false}/>},
   CreateDonation: {screen: props => <CreateItemsScreen {...props} donation={true}/>},
   ProfileScreen: ProfileScreen,
   ChangePassword: ChangePasswordScreen,
   EditInfo: EditInfoScreen,
+  Ranking: RankingScreen,
 },
 {
   navigationOptions: {header: null}
 })
 
-DashboardStack.navigationOptions = {
+MenuStack.navigationOptions = {
   tabBarLabel: 'Menu',
   tabBarIcon: ({ focused }) => (
     <MaterialCommunityIcons
@@ -114,13 +116,13 @@ const showTabBar = (navigation) => {
 
 export default createBottomTabNavigator({
   DonationsStack,
-  DashboardStack,
+  MenuStack,
   NeedsStack,
   ProfileStack,
 },
 {
   initialRouteName: 'DonationsStack',
-  order: ['DonationsStack', 'NeedsStack', 'ProfileStack', 'DashboardStack'],
+  order: ['DonationsStack', 'NeedsStack', 'ProfileStack', 'MenuStack'],
   tabBarOptions: {
     activeTintColor: Colors.purple,
     inactiveTintColor: Colors.grey,

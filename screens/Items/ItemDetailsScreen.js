@@ -84,8 +84,9 @@ class ItemDetailsScreen extends PureComponent {
 
         //TODO remover console.log
         console.log(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`)
+        console.log(this.props.token)
 
-        fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' && `?valor=${itemValue}`}`,
+        fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`,
             {
                 method: 'POST',
                 headers: {
@@ -93,8 +94,9 @@ class ItemDetailsScreen extends PureComponent {
                     'Authorization': `bearer ${this.props.token}`
                 }
             })
-            .then(res => res.json())
+            .then(res => { console.log(res); return res.json(); } )
             .then((data) => {
+                console.log(data)
                 if (data.sucesso) {
                     this.handleCloseModal()
                     this.props.navigation.goBack()

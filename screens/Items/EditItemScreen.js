@@ -68,6 +68,7 @@ class EditItemScreen extends React.Component {
             categoria: item.categoria.descricao,
             anonimo: item.anonimo,
             images: item.imagens.map(img => ({id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
+            itemValue: item.valor,
             //adicionar imagens excluidas (que contenham id) num array de strings
         })
 
@@ -88,7 +89,9 @@ class EditItemScreen extends React.Component {
 
     handleEditItem = () => {
         const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir } = this.state
-        const itemValue = Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
+        const itemValue = tipoItem === 1 
+                            ? Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
+                            : null
 
         const imagens = images
                         .filter(img => img.id === null) //before sending, remove the images already saved

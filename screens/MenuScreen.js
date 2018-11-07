@@ -18,7 +18,7 @@ import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors'
 import { connect } from 'react-redux';
 
-class DashboardScreen extends React.Component {
+class MenuScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
@@ -59,7 +59,7 @@ class DashboardScreen extends React.Component {
                         </ListItem>
                         <ListItem 
                             style={styles.menuItem} 
-                            onPress={() => this.props.navigation.navigate('ProfileScreen')}>
+                            onPress={() => this.props.navigation.navigate('Ranking')}>
                             <Left>
                                 <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.lighterPurple}/>
                                 <Text style={styles.buttonText}>Ranking de Doações</Text>
@@ -94,7 +94,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, null)(DashboardScreen)
+export default connect(mapStateToProps, null)(MenuScreen)
 
 const styles = StyleSheet.create({
     button: {

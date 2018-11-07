@@ -99,7 +99,7 @@ class CreateItemScreen extends React.Component {
             .then(body => {
                 if (body.sucesso) {
                     Utils.toast('Sua ' + (this.donation ? 'doação' : 'necessidade') + ' foi criada com sucesso', 0)
-                    this.props.navigation.navigate('Dashboard')
+                    this.props.navigation.navigate('Menu')
                 } else {
                     Utils.toast(body.mensagem instanceof Array ? body.mensagem.map(msg => `${msg}\n`) : body.mensagem, 0)
                 }
@@ -152,7 +152,7 @@ class CreateItemScreen extends React.Component {
         return (
             <Container>
                 <MyHeader
-                    cancel={() => this.props.navigation.navigate('Dashboard')}
+                    cancel={() => this.props.navigation.goBack()}
                     title={this.donation ? 'Doação' : 'Necessidade'} />
                 <Content>
                     <View style={styles.inputContainer}>

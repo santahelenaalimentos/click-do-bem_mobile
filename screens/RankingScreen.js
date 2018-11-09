@@ -67,10 +67,10 @@ class RankingScreen extends Component {
                                 <View key={index} style={styles.itemContainer}>
                                     <Item style={styles.item}>
                                         <Left style={styles.textContainer}>
-                                            <Text style={{color: Colors.purple}}> {formatName(item.nome)} </Text>
+                                            <Text style={{color: Colors.grey}}> {formatName(item.nome)} </Text>
                                         </Left>
                                         <Right style={styles.textContainer}>
-                                            <Text style={{color: Colors.purple}}> {item.pontuacao} pontos </Text>
+                                            <Text style={{color: Colors.grey}}> {item.pontuacao} pontos </Text>
                                         </Right>
                                     </Item>
                                 </View>
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     },
     button:{
         alignSelf: 'center',
-        backgroundColor: Colors.purple,
-        height: 40,
+        backgroundColor: Colors.evenLighterPurple,
+        height: 30,
         paddingHorizontal: 10,
         marginRight: 10,
     },

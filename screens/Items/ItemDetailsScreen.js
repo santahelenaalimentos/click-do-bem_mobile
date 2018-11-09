@@ -94,7 +94,7 @@ class ItemDetailsScreen extends PureComponent {
                     'Authorization': `bearer ${this.props.token}`
                 }
             })
-            .then(res => { console.log(res); return res.json(); } )
+            .then(res => { console.log(res); return res.json(); })
             .then((data) => {
                 console.log(data)
                 if (data.sucesso) {
@@ -140,7 +140,7 @@ class ItemDetailsScreen extends PureComponent {
                                     :
                                     <View style={{ height: height / 2, width: width, flex: 1 }}>
                                         <Image
-                                            source={require('../../assets/images/tb-placeholder.png')}
+                                            source={require('../../assets/images/tb-placeholder-gray.png')}
                                             style={{ flex: 1, width: width }} />
                                     </View>
                             }
@@ -151,7 +151,7 @@ class ItemDetailsScreen extends PureComponent {
                         <ScrollView>
                             <View style={{ margin: 10, alignItems: 'flex-start' }}>
                                 <Text style={{ fontSize: 24, fontWeight: '700', color: Colors.purple }}>{titulo}</Text>
-                                <Text style={{ fontSize: 14, fontWeight: '500', color: Colors.grey, marginBottom: 10, paddingVertical: 3 }}>{categoria.descricao}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: '500', color: Colors.evenLighterPurple, marginBottom: 10, paddingVertical: 3 }}>{categoria.descricao}</Text>
                                 <Text style={{ fontSize: 14, fontWeight: '300', color: Colors.grey }}>{descricao}</Text>
                             </View>
 
@@ -160,9 +160,9 @@ class ItemDetailsScreen extends PureComponent {
                                     viewerCPF === usuario.cpfCnpj
                                         ?
                                         <Button transparent
-                                            style={{ alignSelf: 'center', borderColor: Colors.purple, borderWidth: 1, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
+                                            style={{ alignSelf: 'center', backgroundColor: Colors.evenLighterPurple, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
                                             onPress={() => this.props.navigation.navigate(isNeed ? 'EditNeed' : 'EditDonation', { item: this.state.item })}>
-                                            <Text style={{ color: Colors.purple }}>{isNeed ? 'Editar Necessidade' : 'Editar Doação'}</Text>
+                                            <Text style={{ color: Colors.white }}>{isNeed ? 'Editar Necessidade' : 'Editar Doação'}</Text>
                                         </Button>
                                         :
                                         <Button
@@ -184,9 +184,9 @@ class ItemDetailsScreen extends PureComponent {
                     onRequestClose={() => this.setState({ isVisible: false })}>
                     <View style={styles.modalContainer}>
                         <TouchableWithoutFeedback onPress={() => this.handleCloseModal()}>
-                            <View style={[styles.modalOuterRegion, { flex: isNeed ? .55 : .4 }]}></View>
+                            <View style={[styles.modalOuterRegion, { flex: isNeed ? .5 : .4 }]}></View>
                         </TouchableWithoutFeedback>
-                        <View style={[styles.modalInnerContainer, { flex: isNeed ? .45 : .6 }]}>
+                        <View style={[styles.modalInnerContainer, { flex: isNeed ? .5 : .6 }]}>
                             <View style={StyleSheet.modalHeader}>
                                 <Button transparent
                                     style={styles.modalSecondaryButton}
@@ -199,12 +199,7 @@ class ItemDetailsScreen extends PureComponent {
                                 <View style={styles.cardsContainer}>
                                     <Card>
                                         <CardItem header bordered>
-                                            <Left>
-                                                <Text style={styles.cardTitle}>Dados do {isNeed ? 'Beneficiado' : 'Doador'}</Text>
-                                            </Left>
-                                            <Right>
-
-                                            </Right>
+                                            <Text style={styles.cardTitle}>Dados do {isNeed ? 'Beneficiado' : 'Doador'}</Text>
                                         </CardItem>
                                         <CardItem bordered>
                                             <Body>
@@ -270,7 +265,7 @@ const styles = StyleSheet.create({
     modalInnerContainer: {
         width: '100%',
         backgroundColor: Colors.iosGrey,
-        elevation: 1,
+        elevation: 7,
         borderRadius: 5,
         shadowColor: Colors.grey,
         shadowOffset: { width: 0, height: -1 },
@@ -287,7 +282,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10
     },
     modalSecondaryButtonText: {
-        color: Colors.purple,
+        color: Colors.evenLighterPurple,
     },
     modalContent: {
         alignItems: 'center',

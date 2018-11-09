@@ -110,6 +110,7 @@ class LoginScreen extends React.Component {
                         <Text style={styles.label}>CPF</Text>
                         <TextInputMask
                             style={styles.input}
+                            underlineColorAndroid={Colors.grey}
                             type={'cpf'}
                             value={this.state.nome}
                             maxLength={14}
@@ -118,6 +119,7 @@ class LoginScreen extends React.Component {
                         <Text style={styles.label}>Senha</Text>
                         <TextInput
                             secureTextEntry={true}
+                            underlineColorAndroid={Colors.grey}
                             style={styles.input}
                             value={this.state.senha}
                             maxLength={8}
@@ -128,7 +130,7 @@ class LoginScreen extends React.Component {
                                 <Button transparent
                                     onPress={() => this.onPressRecoverPassword()}
                                     style={{ height: 25 }}>
-                                    <Text style={{ color: Colors.blue }}>Esqueci minha senha</Text>
+                                    <Text style={{ color: Colors.evenLighterPurple }}>Esqueci minha senha</Text>
                                 </Button>
                             </View>
                         </View>

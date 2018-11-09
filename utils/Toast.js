@@ -3,24 +3,24 @@ import {
 } from 'native-base';
 import Colors from '../constants/Colors'
 
-toast = (msg, margin = 50, duration = 2000, color = Colors.blue) =>
+toast = (msg, margin = 50, duration = 2000, color = Colors.evenLighterPurple) =>
     Toast.show({
         text: msg,
         buttonText: 'OK',
         style: {
-            marginBottom: margin,
+            marginBottom: 60,
             backgroundColor: color,
         },
         duration: duration,
     })
 
-toastTop = (msg, margin = 10, duration = 2000, color = Colors.blue) =>
+toastTop = (msg, margin = 10, duration = 2000, color = Colors.evenLighterPurple) =>
     Toast.show({
         text: msg,
         buttonText: 'OK',
         position: 'top',
         style: {
-            marginTop: margin,
+            marginTop: 10,
             backgroundColor: color,
         },
         duration: duration,

@@ -5,7 +5,6 @@ export default {
 
   blue: '#00BCD4',
   purple: '#673AB7',
-  lighterPurple: '#734db7',
   evenLighterPurple: '#8364ba',
   iosGrey: '#f7f7f7',
   grey: '#424242',

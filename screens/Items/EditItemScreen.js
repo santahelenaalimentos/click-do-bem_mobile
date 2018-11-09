@@ -68,7 +68,7 @@ class EditItemScreen extends React.Component {
             categoria: item.categoria.descricao,
             anonimo: item.anonimo,
             images: item.imagens.map(img => ({id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
-            itemValue: item.valor,
+            itemValue: item.valor+'00',
             //adicionar imagens excluidas (que contenham id) num array de strings
         })
 
@@ -103,6 +103,7 @@ class EditItemScreen extends React.Component {
 
         //TODO remover console.log
         console.log(data)
+        console.log(this.token)
 
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
@@ -114,9 +115,9 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(body => {
+                console.log(body)
                 if (body.sucesso) {
                     Utils.toast('Item editado com sucesso')
-                    console.log(tipoItem)
                     this.props.navigation.navigate(tipoItem === 1 ? 'Needs' : 'Donations')
                 } else {
                     Utils.toast(body.mensagem.map(msg => `${msg}\n`))
@@ -209,6 +210,7 @@ class EditItemScreen extends React.Component {
                                 <Label style={styles.label}>Valor financeiro do item</Label>
                                 <TextInputMask
                                     style={styles.maskedInput}
+                                    underlineColorAndroid='transparent'
                                     type='money'
                                     value={itemValue}
                                     maxLength={20}

@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "[Release] Sprint 03",
-    "description": "SPRINT 3 Release Notes\n\nFeatures:\n- Visualização de “meu perfil”\n- Edição de dados cadastrais\n- Edição de senha\n- Recuperação de senha\n- Efetivar doação ou necessidade (realizar match)\n- Visualizar items efetivados (matchs)\n\nFeatures bonus:\n- Melhoria de layout do menu do app\n",
-    "slug": "release-sprint-03",
+    "name": "[Beta] Teste 103",
+    "description": "- Melhorias de layout\n- Correção de bugs encontrados",
+    "slug": "beta-103",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -24,7 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.santahelena.clickdobem"
+    },
+    "android": {
+      "package": "com.santahelena.clickdobem"
     },
     "androidStatusBar": {
       "backgroundColor": "#cccccc"

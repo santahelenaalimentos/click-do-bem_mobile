@@ -29,8 +29,9 @@ import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
 import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
-import createIconSetFromFontello from '@expo/vector-icons/createIconSetFromFontello';
 import Toast from '../../utils/Toast';
+
+const ios = Platform.OS === 'ios'
 
 class CreateItemScreen extends React.Component {
     static navigationOptions = {
@@ -183,6 +184,7 @@ class CreateItemScreen extends React.Component {
                                 <Label style={styles.label}>Valor financeiro do item</Label>
                                 <TextInputMask
                                     style={styles.maskedInput}
+                                    underlineColorAndroid='transparent'
                                     type='money'
                                     value={itemValue}
                                     maxLength={20}
@@ -313,6 +315,7 @@ const styles = StyleSheet.create({
         minWidth: '100%',
         flex: 1,
         justifyContent: 'flex-end',
+        borderBottomWidth: 0
     },
     label: {
         color: '#666666'

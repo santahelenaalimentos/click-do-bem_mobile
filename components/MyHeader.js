@@ -27,8 +27,8 @@ export default function MyHeader(props) {
                         <Left>
                             {goBack &&
                                 <Button transparent onPress={goBack}>
-                                    <Icon style={{ color: Colors.blue, marginTop: -2 }} name='arrow-back' />
-                                    <Text style={{ color: Colors.blue }}> Voltar</Text>
+                                    <Icon style={{ color: Colors.evenLighterPurple, marginTop: -2 }} name='arrow-back' />
+                                    <Text style={{ color: Colors.evenLighterPurple }}> Voltar</Text>
                                 </Button>
                             }
                         </Left>
@@ -37,7 +37,7 @@ export default function MyHeader(props) {
                         </Body>
                         <Right>
                             {cancel &&
-                                <Text style={{ color: Colors.blue }} onPress={cancel}>Cancelar</Text>
+                                <Text style={{ color: Colors.evenLighterPurple }} onPress={cancel}>Cancelar</Text>
                             }
                         </Right>
                     </Header>

@@ -161,16 +161,16 @@ class ItemsScreen extends Component {
                         filtered
                             ?
                             <Button
-                                style={{ backgroundColor: Colors.lighterPurple, height: 25, alignSelf: 'flex-start' }}
+                                style={{ backgroundColor: Colors.purple, height: 25, alignSelf: 'flex-start' }}
                                 onPress={() => this.openModal()}>
-                                <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros ··· </Text>
+                                <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '600', paddingHorizontal: 5 }}>Filtros</Text>
                             </Button>
                             :
                             <Button
                                 transparent
-                                style={{ borderWidth: .5, borderColor: Colors.lighterPurple, height: 25, alignSelf: 'flex-start' }}
+                                style={{ backgroundColor: Colors.evenLighterPurple, height: 25, alignSelf: 'flex-start' }}
                                 onPress={() => this.openModal()}>
-                                <Text style={{ color: Colors.lighterPurple, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros</Text>
+                                <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '400', paddingHorizontal: 5 }}>Filtros</Text>
                             </Button>
 
                     }
@@ -269,7 +269,7 @@ class ItemsScreen extends Component {
                                 <Right>
                                     <Button transparent
                                         onPress={() => this.props.navigation.navigate('ItemDetails', { item, viewerCPF: this.props.user.cpfCnpj })}>
-                                        <Text style={{ color: Colors.lighterPurple }}>Detalhes</Text>
+                                        <Text style={{ color: Colors.evenLighterPurple }}>Detalhes</Text>
                                     </Button>
                                 </Right>
                             </ListItem>
@@ -306,11 +306,11 @@ const styles = StyleSheet.create({
     },
     modalOuterRegion: {
         width: '100%',
-        flex: .4
+        flex: .5
     },
     modalInnerContainer: {
         width: '100%',
-        flex: .6,
+        flex: .5,
         backgroundColor: Colors.iosGrey,
         elevation: 7,
         marginTop: ios ? 0 : 7,

@@ -39,7 +39,7 @@ class MenuScreen extends React.Component {
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateDonation', { ...this.props.navigation.state.params })}>
                             <Left>
-                                <MaterialCommunityIcons name='plus' size={20} color={Colors.lighterPurple}/>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple}/>
                                 <Text style={styles.buttonText}>Criar uma Doação</Text>
                             </Left>
                             <Right>
@@ -50,7 +50,7 @@ class MenuScreen extends React.Component {
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateNeed', { ...this.props.navigation.state.params })}>
                             <Left>
-                                <MaterialCommunityIcons name='plus' size={20} color={Colors.lighterPurple}/>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple}/>
                                 <Text style={styles.buttonText}>Criar uma Necessidade</Text>
                             </Left>
                             <Right>
@@ -61,7 +61,7 @@ class MenuScreen extends React.Component {
                             style={styles.menuItem} 
                             onPress={() => this.props.navigation.navigate('Ranking')}>
                             <Left>
-                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.lighterPurple}/>
+                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.purple}/>
                                 <Text style={styles.buttonText}>Ranking de Doações</Text>
                             </Left>
                             <Right>
@@ -72,7 +72,7 @@ class MenuScreen extends React.Component {
                             style={styles.menuItem} 
                             onPress={() => this.props.navigation.navigate('ProfileScreen')}>
                             <Left>
-                                <MaterialCommunityIcons name='account' size={20} color={Colors.lighterPurple}/>
+                                <MaterialCommunityIcons name='account' size={20} color={Colors.purple}/>
                                 <Text style={styles.buttonText}>Meu Perfil</Text>
                             </Left>
                             <Right>

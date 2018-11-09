@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 
     },
     tagText:{
-        color: Colors.lighterPurple,
+        color: Colors.purple,
         fontSize: 14,
     }
 })

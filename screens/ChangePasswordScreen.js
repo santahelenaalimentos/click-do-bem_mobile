@@ -16,6 +16,7 @@ import Toast from '../utils/Toast'
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors';
 import { connect } from 'react-redux';
+import Session from '../utils/Session'
 
 class ChangePasswordScreen extends React.Component {
     static navigationOptions = {
@@ -63,7 +64,10 @@ class ChangePasswordScreen extends React.Component {
             else if(data.mensagem) Toast.toastTop(data.mensagem instanceof Array ? data.mensagem.map(msg => `${msg}\n`) : data.mensagem)
             else Toast.toastTop('Ocorreu um erro desconhecido.')
         })
-        .catch(err => console.log(err))
+        .catch(err => { 
+            Session.logout(this.props); 
+            console.log('erro:', err);
+        })
     }
 
     render() {

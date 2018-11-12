@@ -16,6 +16,7 @@ import {
 import MyHeader from '../components/MyHeader'
 import Colors from '../constants/Colors';
 import { connect } from 'react-redux'
+import Session from '../utils/Session'
 
 const mock = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -41,7 +42,10 @@ class RankingScreen extends Component {
         .then(individual => {
             this.setState({ individual })
         })
-        .catch(err => console.log(err))
+        .catch(err => { 
+            Session.logout(this.props); 
+            console.log('erro:', err);
+        })
 
     render() {
         const { individual, grupos } = this.state

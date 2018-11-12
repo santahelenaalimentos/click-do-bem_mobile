@@ -22,6 +22,7 @@ import Toast from '../utils/Toast'
 import { connect } from 'react-redux'
 import { updateUser } from '../actions/index'
 import Colors from '../constants/Colors';
+import Session from '../utils/Session'
 const ufList = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO']
 
 class EditInfoScreen extends Component {
@@ -96,7 +97,10 @@ class EditInfoScreen extends Component {
             else if(data.mensagem) Toast.toastTop(data.mensagem instanceof Array ? data.mensagem.map(msg => `${msg}\n`) : data.mensagem)
             else Toast.toastTop('Ocorreu um erro desconhecido.')
         })
-        .catch(err => console.log(err))
+        .catch(err => { 
+            Session.logout(this.props); 
+            console.log('erro:', err);
+        })
     }
 
     formatUser = () => {

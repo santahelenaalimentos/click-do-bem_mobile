@@ -29,6 +29,7 @@ import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
 import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
+import Session from '../../utils/Session'
 
 
 class EditItemScreen extends React.Component {
@@ -84,7 +85,10 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(categorias => this.setState({ categorias }))
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     handleEditItem = () => {
@@ -123,7 +127,10 @@ class EditItemScreen extends React.Component {
                     Utils.toast(body.mensagem.map(msg => `${msg}\n`))
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     _pickImage = async (camera) => {

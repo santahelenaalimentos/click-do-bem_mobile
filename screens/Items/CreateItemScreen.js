@@ -29,6 +29,7 @@ import Utils from '../../utils/Utils'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors'
 import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
+import Session from '../../utils/Session'
 import Toast from '../../utils/Toast';
 
 const ios = Platform.OS === 'ios'
@@ -73,7 +74,10 @@ class CreateItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(categorias => this.setState({ categorias }))
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     handleCreateItem = () => {
@@ -105,7 +109,10 @@ class CreateItemScreen extends React.Component {
                     Utils.toast(body.mensagem instanceof Array ? body.mensagem.map(msg => `${msg}\n`) : body.mensagem, 0)
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     _pickImage = async (camera) => {

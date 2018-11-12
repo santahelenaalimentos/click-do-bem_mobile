@@ -7,6 +7,7 @@ import {
   createStackNavigator,
 } from 'react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 import CreateItemsScreen from '../screens/Items/CreateItemScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
 import EditItemScreen from '../screens/Items/EditItemScreen'
@@ -20,6 +21,25 @@ import RankingScreen from '../screens/RankingScreen';
 import MenuScreen from '../screens/MenuScreen';
 
 const ios = Platform.OS === 'ios'
+
+
+const CampaignStack = createStackNavigator({
+  Matches: MatchesScreen,
+},
+{
+  navigationOptions: {header: null}
+})
+
+CampaignStack.navigationOptions = {
+  tabBarLabel: 'Matches',
+  tabBarIcon: ({ focused }) => (
+    <AntDesign
+      name= "notification"
+      size={24}
+      color={focused ? Colors.purple : Colors.grey}
+    />
+  ),
+}
 
 const ProfileStack = createStackNavigator({
   Matches: MatchesScreen,

@@ -28,6 +28,7 @@ import {
 import { connect } from 'react-redux'
 import MyHeader from '../../components/MyHeader'
 import Colors from '../../constants/Colors';
+import Session from '../../utils/Session'
 
 const ios = Platform.OS === 'ios'
 
@@ -90,7 +91,10 @@ class ItemsScreen extends Component {
                 })
             }
             )
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
 
     fetchCategorias = () =>
         fetch(`${global.BASE_API_V1}/categoria`, {
@@ -101,7 +105,10 @@ class ItemsScreen extends Component {
         })
             .then(res => res.json())
             .then(categorias => this.setState({ categorias }))
-            .catch(err => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
 
 
     _onRefresh = () => {

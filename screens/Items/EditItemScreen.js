@@ -87,7 +87,6 @@ class EditItemScreen extends React.Component {
             .then(categorias => this.setState({ categorias }))
             .catch(err => { 
                 Session.logout(this.props); 
-                console.log('erro:', err);
             })
     }
 
@@ -105,10 +104,6 @@ class EditItemScreen extends React.Component {
 
         // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
 
-        //TODO remover console.log
-        console.log(data)
-        console.log(this.token)
-
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
             headers: {
@@ -119,7 +114,6 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(body => {
-                console.log(body)
                 if (body.sucesso) {
                     Utils.toast('Item editado com sucesso')
                     this.props.navigation.navigate(tipoItem === 1 ? 'Needs' : 'Donations')
@@ -129,7 +123,6 @@ class EditItemScreen extends React.Component {
             })
             .catch(err => { 
                 Session.logout(this.props); 
-                console.log('erro:', err);
             })
     }
 

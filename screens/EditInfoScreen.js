@@ -74,9 +74,6 @@ class EditInfoScreen extends Component {
             email,
         }
 
-        console.log(payload)
-        console.log(this.props.token)
-
         fetch(`${global.BASE_API_V1}/colaborador`, {
             method: 'PUT',
             headers:{
@@ -87,7 +84,6 @@ class EditInfoScreen extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             if(data.sucesso){
                 let user = this.formatUser()
                 this.props.dispatch(updateUser(user))
@@ -99,7 +95,6 @@ class EditInfoScreen extends Component {
         })
         .catch(err => { 
             Session.logout(this.props); 
-            console.log('erro:', err);
         })
     }
 

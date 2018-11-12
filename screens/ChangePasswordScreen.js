@@ -43,8 +43,6 @@ class ChangePasswordScreen extends React.Component {
 
         const payload = { documento, senhaAtual: md5(senhaAtual), novaSenha, confirmarSenha }
 
-        console.log(payload)
-        console.log(this.props.token)
 
         fetch(`${global.BASE_API_V1}/usuario/trocarsenha`, {
             method: 'POST',
@@ -56,7 +54,6 @@ class ChangePasswordScreen extends React.Component {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             if(data.sucesso){
                 Toast.toast(data.mensagem, 50)
                 this.props.navigation.goBack()
@@ -66,7 +63,6 @@ class ChangePasswordScreen extends React.Component {
         })
         .catch(err => { 
             Session.logout(this.props); 
-            console.log('erro:', err);
         })
     }
 

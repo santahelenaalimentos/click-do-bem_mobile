@@ -5,39 +5,42 @@ import {
     StyleSheet,
     FlatList,
     RefreshControl,
+    Image,
 } from 'react-native'
 import {
     Card,
     CardItem,
-    Left,
-    Right,
     Body,
     Spinner,
     Button,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import Colors from '../constants/Colors'
-import Strings from '../utils/Strings'
-import MyHeader from '../components/MyHeader';
+import Colors from '../../constants/Colors'
+import MyHeader from '../../components/MyHeader';
 
-class MatchesScreen extends Component {
+class CampaignsScreen extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            matches: [],
-            isLoading: true,
+            campaigns: [
+                { titulo: 'Natal 2018', descricao: 'Venha compartilhar itens no natal de 2018...' },
+                { titulo: 'Natal 2019', descricao: 'Venha compartilhar itens no natal de 2019...' },
+                { titulo: 'Natal 2020', descricao: 'Venha compartilhar itens no natal de 2020...' },
+                { titulo: 'Natal 2021', descricao: 'Venha compartilhar itens no natal de 2021...' },
+            ],
+            isLoading: false,
             refreshing: false,
         }
     }
 
     componentWillMount() {
-        this.fetchMatches()
+        //this.fetchCampaigns()
     }
 
-    fetchMatches = () =>
-        fetch(`${global.BASE_API_V1}/item/match`, {
+    fetchCampaigns = () =>
+        fetch(`${global.BASE_API_V1}/campanhas`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -46,51 +49,48 @@ class MatchesScreen extends Component {
         })
             .then(res => res.json())
             .then((data) => {
-                if (data.sucesso) {
-                    this.setState({ matches: data.mensagem })
-                }
-                this.setState({ isLoading: false })
+
             })
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
                 console.log('erro:', err);
             })
 
     _onRefresh = () => {
         this.setState({ refreshing: true });
-        this.fetchMatches().then(() => {
+        this.fetchCampaigns().then(() => {
             this.setState({
                 refreshing: false,
             });
         });
     }
 
-    retryFetchMatches = () => {
-        this.setState({isLoading: true})
-        this.fetchMatches()
+    retryFetchCampaigns = () => {
+        this.setState({ isLoading: true })
+        this.fetchC()
     }
 
     render() {
-        const { matches, isLoading, refreshing } = this.state
+        const { campaigns, isLoading, refreshing } = this.state
 
         if (isLoading)
             return (
                 <View style={{ flex: 1, backgroundColor: Colors.white }}>
-                    <MyHeader title='Matches' />
+                    <MyHeader title='Campanhas' />
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <Spinner color={Colors.purple} />
                     </View>
                 </View>
             )
 
-        if (!matches.length && !isLoading)
+        if (!campaigns.length && !isLoading)
             return (
                 <View style={{ flex: 1, backgroundColor: Colors.white }}>
-                    <MyHeader title='Matches' />
+                    <MyHeader title='Campanhas' />
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: Colors.purple }}>Você ainda não efetuou nenhum match.</Text>
-                        <Button transparent onPress={() => this.retryFetchMatches()} style={{alignSelf: 'center'}}>
-                            <MaterialCommunityIcons name='refresh' color={Colors.purple} size={32}/>
+                        <Text style={{ color: Colors.purple }}>Não existem campanhas cadastradas.</Text>
+                        <Button transparent onPress={() => this.retryFetchCampaigns()} style={{ alignSelf: 'center' }}>
+                            <MaterialCommunityIcons name='refresh' color={Colors.purple} size={32} />
                         </Button>
                     </View>
                 </View>
@@ -98,12 +98,12 @@ class MatchesScreen extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: Colors.white, paddingHorizontal: 10 }}>
-                <MyHeader title='Matches' />
+                <MyHeader title='Campanhas' />
 
                 <View style={styles.listContainer}>
                     <FlatList
-                        data={matches}
-                        keyExtractor={(item) => item.id}
+                        data={campaigns}
+                        keyExtractor={(item) => item.titulo}
                         refreshControl={
                             <RefreshControl
                                 onRefresh={this._onRefresh}
@@ -111,25 +111,20 @@ class MatchesScreen extends Component {
                                 colors={[Colors.purple, Colors.blue]}
                             />
                         }
-                        renderItem={({item}) =>
+                        renderItem={({ item }) =>
                             <View>
                                 <Card>
-                                    <CardItem header bordered>
-                                        <Left>
-                                            <Text style={styles.cardTitle}>{item.titulo}</Text>
-                                        </Left>
-                                        <Right>
-                                            <View style={styles.tagContainer}>
-                                                <Text style={styles.tagText}>{item.tipoMatch}</Text>
-                                            </View>
-                                        </Right>
-                                    </CardItem>
-                                    <CardItem bordered>
+                                    <CardItem>
                                         <Body>
-                                            <Text style={styles.info}>Doador: {Strings.formatName(item.nomeDoador)}</Text>
-                                            <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
-                                            <Text style={styles.info}>Categoria: {item.categoria}</Text>
-                                            <Text style={styles.info}>Valor Estimado: {Strings.formatCurrency(item.valor)}</Text>
+                                            <Text style={styles.cardTitle}>{item.titulo}</Text>
+                                        </Body>
+                                    </CardItem>
+                                    <CardItem cardBody>
+                                        <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 200, width: null, flex: 1 }} />
+                                    </CardItem>
+                                    <CardItem>
+                                        <Body>
+                                            <Text style={styles.info}>{item.descricao}</Text>
                                         </Body>
                                     </CardItem>
                                 </Card>
@@ -148,7 +143,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, null)(MatchesScreen)
+export default connect(mapStateToProps, null)(CampaignsScreen)
 
 const styles = StyleSheet.create({
     cardTitle: {
@@ -162,10 +157,10 @@ const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
     },
-    tagContainer:{
+    tagContainer: {
 
     },
-    tagText:{
+    tagText: {
         color: Colors.purple,
         fontSize: 14,
     }

@@ -61,10 +61,12 @@ class ItemDetailsScreen extends PureComponent {
             })
             .then(res => res.json())
             .then((data) => {
-                console.log(data.usuarioDados)
                 this.setState({ itemUser: data })
             })
-            .catch((err) => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     handleCloseModal = () => {
@@ -82,10 +84,6 @@ class ItemDetailsScreen extends PureComponent {
         if ((!id || !itemValue || itemValue <= 0) && tipoItem != 'Necessidade')
             return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
 
-        //TODO remover console.log
-        console.log(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`)
-        console.log(this.props.token)
-
         fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`,
             {
                 method: 'POST',
@@ -94,9 +92,8 @@ class ItemDetailsScreen extends PureComponent {
                     'Authorization': `bearer ${this.props.token}`
                 }
             })
-            .then(res => { console.log(res); return res.json(); })
+            .then(res => res.json())
             .then((data) => {
-                console.log(data)
                 if (data.sucesso) {
                     this.handleCloseModal()
                     this.props.navigation.goBack()
@@ -104,7 +101,10 @@ class ItemDetailsScreen extends PureComponent {
                 }
                 else Toast.toastTop(data.mensagem)
             })
-            .catch((err) => console.log(err))
+            .catch(err => { 
+                Session.logout(this.props); 
+                console.log('erro:', err);
+            })
     }
 
     render() {

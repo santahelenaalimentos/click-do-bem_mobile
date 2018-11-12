@@ -41,7 +41,7 @@ export default class CpfScreen extends React.Component {
 
   handleNext(){
     const { documento } = this.state;
-    console.log(documento)
+
     if(documento.length != 14){
       Utils.toast('O CPF digitado não é válido.')
       return;

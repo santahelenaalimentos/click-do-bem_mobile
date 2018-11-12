@@ -76,7 +76,6 @@ class CreateItemScreen extends React.Component {
             .then(categorias => this.setState({ categorias }))
             .catch(err => { 
                 Session.logout(this.props); 
-                console.log('erro:', err);
             })
     }
 
@@ -88,10 +87,6 @@ class CreateItemScreen extends React.Component {
         const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens, valor: itemValue }
         
         // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
-
-        //TODO remover console.log
-        console.log(data)
-        console.log(this.token)
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'POST',
             headers: {
@@ -100,7 +95,7 @@ class CreateItemScreen extends React.Component {
             },
             body: JSON.stringify(data)
         })
-            .then(res => { console.log(res); return res.json(); })
+            .then(res => res.json())
             .then(body => {
                 if (body.sucesso) {
                     Utils.toast('Sua ' + (this.donation ? 'doação' : 'necessidade') + ' foi criada com sucesso', 0)
@@ -111,7 +106,6 @@ class CreateItemScreen extends React.Component {
             })
             .catch(err => { 
                 Session.logout(this.props); 
-                console.log('erro:', err);
             })
     }
 

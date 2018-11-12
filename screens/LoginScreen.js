@@ -66,7 +66,6 @@ class LoginScreen extends React.Component {
             .then((data) => {
                 if (data.sucesso) {
                     const user = this.formatData(data.usuario)
-                    console.log(user)
                     this.props.dispatch(signIn(data.token, user))
                     Storage._storeUser(user, data.token)
                     this.navigateHome()

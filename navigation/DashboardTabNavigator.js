@@ -7,7 +7,6 @@ import {
   createStackNavigator,
 } from 'react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
 import CreateItemsScreen from '../screens/Items/CreateItemScreen'
 import ItemDetailsScreen from '../screens/Items/ItemDetailsScreen'
 import EditItemScreen from '../screens/Items/EditItemScreen'
@@ -19,22 +18,23 @@ import EditInfoScreen from '../screens/EditInfoScreen'
 import ChangePasswordScreen from '../screens/ChangePasswordScreen'
 import RankingScreen from '../screens/RankingScreen';
 import MenuScreen from '../screens/MenuScreen';
+import CampaignsScreen from '../screens/Campaigns/CampaignsScreen'
 
 const ios = Platform.OS === 'ios'
 
 
 const CampaignStack = createStackNavigator({
-  Matches: MatchesScreen,
+  Campaigns: CampaignsScreen,
 },
 {
   navigationOptions: {header: null}
 })
 
 CampaignStack.navigationOptions = {
-  tabBarLabel: 'Matches',
+  tabBarLabel: 'Campanhas',
   tabBarIcon: ({ focused }) => (
-    <AntDesign
-      name= "notification"
+    <MaterialCommunityIcons
+      name= "bulletin-board"
       size={24}
       color={focused ? Colors.purple : Colors.grey}
     />
@@ -137,12 +137,13 @@ const showTabBar = (navigation) => {
 export default createBottomTabNavigator({
   DonationsStack,
   MenuStack,
+  CampaignStack,
   NeedsStack,
   ProfileStack,
 },
 {
   initialRouteName: 'DonationsStack',
-  order: ['DonationsStack', 'NeedsStack', 'ProfileStack', 'MenuStack'],
+  order: ['DonationsStack', 'NeedsStack', 'CampaignStack', 'ProfileStack', 'MenuStack'],
   tabBarOptions: {
     activeTintColor: Colors.purple,
     inactiveTintColor: Colors.grey,

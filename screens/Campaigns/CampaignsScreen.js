@@ -6,6 +6,10 @@ import {
     FlatList,
     RefreshControl,
     Image,
+    Modal,
+    TouchableWithoutFeedback,
+    Platform,
+    ScrollView,
 } from 'react-native'
 import {
     Card,
@@ -18,6 +22,8 @@ import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Colors from '../../constants/Colors'
 import MyHeader from '../../components/MyHeader';
+
+const ios = Platform.OS === 'ios'
 
 class CampaignsScreen extends Component {
     constructor(props) {
@@ -32,6 +38,8 @@ class CampaignsScreen extends Component {
             ],
             isLoading: false,
             refreshing: false,
+            modalVisible: false,
+            selectedCampaign: null,
         }
     }
 
@@ -70,8 +78,12 @@ class CampaignsScreen extends Component {
         this.fetchC()
     }
 
+    handleCloseModal = () => this.setState({ modalVisible: false })
+
+    handleSelectCampaign = (item) => this.setState({ modalVisible: true, selectedCampaign: item })
+
     render() {
-        const { campaigns, isLoading, refreshing } = this.state
+        const { selectedCampaign, campaigns, isLoading, refreshing } = this.state
 
         if (isLoading)
             return (
@@ -113,25 +125,66 @@ class CampaignsScreen extends Component {
                         }
                         renderItem={({ item }) =>
                             <View>
-                                <Card>
-                                    <CardItem>
-                                        <Body>
-                                            <Text style={styles.cardTitle}>{item.titulo}</Text>
-                                        </Body>
-                                    </CardItem>
-                                    <CardItem cardBody>
-                                        <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 200, width: null, flex: 1 }} />
-                                    </CardItem>
-                                    <CardItem>
-                                        <Body>
-                                            <Text style={styles.info}>{item.descricao}</Text>
-                                        </Body>
-                                    </CardItem>
-                                </Card>
+                                <TouchableWithoutFeedback onPress={() => this.handleSelectCampaign(item)}>
+                                    <Card>
+                                        <CardItem>
+                                            <Body>
+                                                <Text style={styles.cardTitle}>{item.titulo}</Text>
+                                            </Body>
+                                        </CardItem>
+                                        <CardItem cardBody>
+                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1 }} />
+                                        </CardItem>
+                                    </Card>
+                                </TouchableWithoutFeedback>
                             </View>
                         }
                     />
                 </View>
+
+                <Modal
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    animationType={'slide'}
+                    onRequestClose={() => this.handleCloseModal()}
+                >
+                    <TouchableWithoutFeedback onPress={() => this.handleCloseModal()}>
+                        <View style={styles.modalOuterRegion}></View>
+                    </TouchableWithoutFeedback>
+                    <View style={styles.modalInnerContainer}>
+                        <View style={{ flex: 1, alignItems: 'stretch', paddingHorizontal: 10 }}>
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: '3%' }}>
+
+                                <Button transparent
+                                    onPress={() => { this.handleCloseModal() }}
+                                >
+                                    <Text style={{ fontSize: 14, color: Colors.purple }}>Fechar</Text>
+                                </Button>
+                            </View>
+                        </View>
+
+                        <View style={{ flex: 9, alignItems: 'stretch', padding: 10 }}>
+                            {
+                                selectedCampaign
+                                &&
+                                <ScrollView>
+                                    <Card>
+                                        <CardItem>
+                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 250, width: null, flex: 1 }} />
+                                        </CardItem>
+                                        <CardItem>
+                                            <Text style={styles.cardTitle}>{selectedCampaign.titulo}</Text>
+                                        </CardItem>
+                                        <CardItem>
+                                            <Text style={styles.info}>{selectedCampaign.descricao}</Text>
+                                        </CardItem>
+                                    </Card>
+                                </ScrollView>
+                            }
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }
@@ -148,11 +201,13 @@ export default connect(mapStateToProps, null)(CampaignsScreen)
 const styles = StyleSheet.create({
     cardTitle: {
         color: Colors.purple,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '500',
     },
     info: {
         color: Colors.grey,
+        fontSize: 12,
+        fontWeight: '400'
     },
     listContainer: {
         flex: 1,
@@ -163,5 +218,20 @@ const styles = StyleSheet.create({
     tagText: {
         color: Colors.purple,
         fontSize: 14,
-    }
+    },
+    modalOuterRegion: {
+        width: '100%',
+        flex: .2
+    },
+    modalInnerContainer: {
+        width: '100%',
+        flex: .8,
+        backgroundColor: Colors.iosGrey,
+        elevation: 7,
+        marginTop: ios ? 0 : 7,
+        borderRadius: 5,
+        shadowColor: Colors.grey,
+        shadowOffset: { width: 0, height: -1 },
+        shadowOpacity: .5,
+    },
 })

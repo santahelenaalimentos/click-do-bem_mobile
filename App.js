@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Root } from 'native-base'
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
+import AppNavigator from './screens/_navigation/AppNavigator';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './redux/reducers/index'

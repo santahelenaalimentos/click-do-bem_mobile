@@ -7,18 +7,18 @@ import {
   createStackNavigator,
 } from 'react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import CreateItemsScreen from '../screens/items/CreateItemScreen'
-import ItemDetailsScreen from '../screens/items/ItemDetailsScreen'
-import EditItemScreen from '../screens/items/EditItemScreen'
-import ItemsScreen from '../screens/items/ItemsScreen'
-import ProfileScreen from '../screens/profile/ProfileScreen'
-import Colors from '../utils/Colors'
-import MatchesScreen from '../screens/matches/MatchesScreen'
-import EditInfoScreen from '../screens/profile/EditInfoScreen'
-import ChangePasswordScreen from '../screens/password/ChangePasswordScreen'
-import RankingScreen from '../screens/ranking/RankingScreen';
-import MenuScreen from '../screens/menu/MenuScreen';
-import CampaignsScreen from '../screens/campaigns/CampaignsScreen'
+import CreateItemsScreen from '../items/CreateItemScreen'
+import ItemDetailsScreen from '../items/ItemDetailsScreen'
+import EditItemScreen from '../items/EditItemScreen'
+import ItemsScreen from '../items/ItemsScreen'
+import ProfileScreen from '../profile/ProfileScreen'
+import Colors from '../../utils/Colors'
+import MatchesScreen from '../matches/MatchesScreen'
+import EditInfoScreen from '../profile/EditInfoScreen'
+import ChangePasswordScreen from '../password/ChangePasswordScreen'
+import RankingScreen from '../ranking/RankingScreen';
+import MenuScreen from '../menu/MenuScreen';
+import CampaignsScreen from '../campaigns/CampaignsScreen'
 
 const ios = Platform.OS === 'ios'
 

@@ -12,11 +12,11 @@ import {
     Button,
 } from 'native-base';
 import md5 from 'md5';
-import Toast from '../utils/Toast'
-import MyHeader from '../components/MyHeader'
-import Colors from '../constants/Colors';
+import Toast from '../../utils/Toast'
+import MyHeader from '../_shared_components/MyHeader'
+import Colors from '../../utils/Colors';
 import { connect } from 'react-redux';
-import Session from '../utils/Session'
+import Session from '../../utils/Session'
 
 class ChangePasswordScreen extends React.Component {
     static navigationOptions = {

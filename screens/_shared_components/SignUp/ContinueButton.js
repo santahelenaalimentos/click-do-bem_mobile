@@ -8,7 +8,7 @@ import {
 import {
   Button,
 } from 'native-base';
-import Colors from '../../constants/Colors';
+import Colors from '../../../utils/Colors';
 
 export default (props) => {
   return (

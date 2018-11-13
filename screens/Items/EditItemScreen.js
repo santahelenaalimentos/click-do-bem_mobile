@@ -26,9 +26,9 @@ import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import { TextInputMask } from 'react-native-masked-text'
 import Utils from '../../utils/Utils'
-import MyHeader from '../../components/MyHeader'
-import Colors from '../../constants/Colors'
-import ThumbnailWithIcon from '../../components/ThumbnailWithIcon'
+import MyHeader from '../_shared_components/MyHeader'
+import Colors from '../../utils/Colors'
+import ThumbnailWithIcon from '../_shared_components/ThumbnailWithIcon'
 import Session from '../../utils/Session'
 
 

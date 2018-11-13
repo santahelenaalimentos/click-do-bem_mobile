@@ -1,10 +1,10 @@
 import { createStackNavigator } from 'react-navigation'
 
-import CpfScreen from '../screens/SignUp/CpfScreen'
-import PersonalDataScreen from '../screens/SignUp/PersonalDataScreen'
-import AddressScreen from '../screens/SignUp/AddressScreen'
-import PhoneScreen from '../screens/SignUp/PhoneScreen'
-import CredentialsScreen from '../screens/SignUp/CredentialsScreen'
+import CpfScreen from '../screens/sign_up/CpfScreen'
+import PersonalDataScreen from '../screens/sign_up/PersonalDataScreen'
+import AddressScreen from '../screens/sign_up/AddressScreen'
+import PhoneScreen from '../screens/sign_up/PhoneScreen'
+import CredentialsScreen from '../screens/sign_up/CredentialsScreen'
 
 export default createStackNavigator({
   // You could add another route here for authentication.

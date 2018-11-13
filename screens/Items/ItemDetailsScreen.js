@@ -22,8 +22,8 @@ import {
     Body,
 } from 'native-base'
 import { TextInputMask } from 'react-native-masked-text'
-import MyHeader from '../../components/MyHeader';
-import Colors from '../../constants/Colors';
+import MyHeader from '../_shared_components/MyHeader';
+import Colors from '../../utils/Colors';
 import { connect } from 'react-redux'
 import Toast from '../../utils/Toast'
 

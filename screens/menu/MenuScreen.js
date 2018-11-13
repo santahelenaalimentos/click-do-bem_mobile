@@ -14,8 +14,8 @@ import {
     Left,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import MyHeader from '../components/MyHeader'
-import Colors from '../constants/Colors'
+import MyHeader from '../_shared_components/MyHeader'
+import Colors from '../../utils/Colors'
 import { connect } from 'react-redux';
 
 class MenuScreen extends React.Component {
@@ -35,64 +35,63 @@ class MenuScreen extends React.Component {
 
                 <Content>
                     <List>
-                        <ListItem 
+                        <ListItem
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateDonation', { ...this.props.navigation.state.params })}>
                             <Left>
-                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple}/>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Criar uma Doação</Text>
                             </Left>
                             <Right>
-                                <Icon name='arrow-forward'/>
+                                <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
-                        <ListItem 
+                        <ListItem
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('CreateNeed', { ...this.props.navigation.state.params })}>
                             <Left>
-                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple}/>
+                                <MaterialCommunityIcons name='plus' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Criar uma Necessidade</Text>
                             </Left>
                             <Right>
-                                <Icon name='arrow-forward'/>
+                                <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
-                        <ListItem 
-                            style={styles.menuItem} 
+                        <ListItem
+                            style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('Ranking')}>
                             <Left>
-                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.purple}/>
+                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Ranking de Doações</Text>
                             </Left>
                             <Right>
-                                <Icon name='arrow-forward'/>
+                                <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
-                        <ListItem 
-                            style={styles.menuItem} 
+                        <ListItem
+                            style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('Ranking')}>
                             <Left>
-                                <MaterialCommunityIcons name='city' size={20} color={Colors.purple}/>
+                                <MaterialCommunityIcons name='city' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Entidades Parceiras</Text>
                             </Left>
                             <Right>
-                                <Icon name='arrow-forward'/>
+                                <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
-                        <ListItem 
-                            style={styles.menuItem} 
+                        <ListItem
+                            style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('ProfileScreen')}>
                             <Left>
-                                <MaterialCommunityIcons name='account' size={20} color={Colors.purple}/>
+                                <MaterialCommunityIcons name='account' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Meu Perfil</Text>
                             </Left>
                             <Right>
-                                <Icon name='arrow-forward'/>
+                                <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
                     </List>
                 </Content>
-
             </Container>
         );
     }

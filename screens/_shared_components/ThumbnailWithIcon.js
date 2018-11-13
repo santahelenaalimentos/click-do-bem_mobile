@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image, View, StyleSheet, Platform } from 'react-native'
 import { Icon, Button } from 'native-base'
-import Colors from '../constants/Colors';
 
 export default function ThumbnailWithIcon(props) {
   const { uri } = props

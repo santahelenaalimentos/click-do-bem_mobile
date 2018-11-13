@@ -17,11 +17,11 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import MyHeader from '../components/MyHeader';
-import Colors from '../constants/Colors';
-import Strings from '../utils/Strings'
-import { signOut } from '../actions';
-import Storage from '../utils/Storage'
+import MyHeader from '../_shared_components/MyHeader';
+import Colors from '../../utils/Colors';
+import Strings from '../../utils/Strings'
+import { signOut } from '../../redux/actions';
+import Storage from '../../utils/Storage'
 const ios = Platform.OS === 'ios'
 
 class ProfileScreen extends Component {

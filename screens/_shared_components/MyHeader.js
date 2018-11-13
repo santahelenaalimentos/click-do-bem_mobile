@@ -13,7 +13,7 @@ import {
     Icon,
     Button,
 } from 'native-base'
-import Colors from '../constants/Colors'
+import Colors from '../../utils/Colors'
 
 export default function MyHeader(props) {
 

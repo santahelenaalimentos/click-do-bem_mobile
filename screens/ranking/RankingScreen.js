@@ -13,10 +13,10 @@ import {
     Button,
     Spinner,
 } from 'native-base'
-import MyHeader from '../components/MyHeader'
-import Colors from '../constants/Colors';
+import MyHeader from '../_shared_components/MyHeader'
+import Colors from '../../utils/Colors';
 import { connect } from 'react-redux'
-import Session from '../utils/Session'
+import Session from '../../utils/Session'
 
 const mock = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 

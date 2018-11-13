@@ -19,10 +19,9 @@ import {
 import { TextInputMask } from 'react-native-masked-text'
 
 import Utils from '../../utils/Utils'
-import ContinueButton from '../../components/SignUp/ContinueButton';
-import Instructions from '../../components/SignUp/Instructions';
-import Colors from '../../constants/Colors';
-import MyHeader from '../../components/MyHeader'
+import ContinueButton from '../_shared_components/SignUp/ContinueButton';
+import Instructions from '../_shared_components/SignUp/Instructions';
+import MyHeader from '../_shared_components/MyHeader'
 
 export default class CpfScreen extends React.Component {
   static navigationOptions = {

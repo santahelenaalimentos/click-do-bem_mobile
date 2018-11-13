@@ -15,10 +15,9 @@ import {
 } from 'native-base';
 import Utils from '../../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
-import MyHeader from '../../components/MyHeader'
-import ContinueButton from '../../components/SignUp/ContinueButton';
-import Instructions from '../../components/SignUp/Instructions';
-import Colors from '../../constants/Colors';
+import MyHeader from '../_shared_components/MyHeader'
+import ContinueButton from '../_shared_components/SignUp/ContinueButton';
+import Instructions from '../_shared_components/SignUp/Instructions';
 
 export default class PersonalDataScreen extends React.Component {
   static navigationOptions = {

@@ -17,9 +17,9 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import Colors from '../constants/Colors'
-import Strings from '../utils/Strings'
-import MyHeader from '../components/MyHeader';
+import Colors from '../../utils/Colors'
+import Strings from '../../utils/Strings'
+import MyHeader from '../_shared_components/MyHeader';
 
 class MatchesScreen extends Component {
     constructor(props) {
@@ -97,7 +97,7 @@ class MatchesScreen extends Component {
             )
 
         return (
-            <View style={{ flex: 1, backgroundColor: Colors.white, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, backgroundColor: Colors.white }}>
                 <MyHeader title='Matches' />
 
                 <View style={styles.listContainer}>
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
+        paddingHorizontal: 10,
     },
     tagContainer:{
 

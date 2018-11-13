@@ -5,7 +5,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from './reducers/index'
+import reducer from './redux/reducers/index'
 
 export default class App extends React.Component {
   constructor(){

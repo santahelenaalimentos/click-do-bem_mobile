@@ -16,13 +16,13 @@ import {
     Icon,
     Button,
 } from 'native-base'
-import MyHeader from '../components/MyHeader'
+import MyHeader from '../_shared_components/MyHeader'
 import { TextInputMask } from 'react-native-masked-text'
-import Toast from '../utils/Toast'
+import Toast from '../../utils/Toast'
 import { connect } from 'react-redux'
-import { updateUser } from '../actions/index'
-import Colors from '../constants/Colors';
-import Session from '../utils/Session'
+import { updateUser } from '../../redux/actions/index'
+import Colors from '../../utils/Colors';
+import Session from '../../utils/Session'
 const ufList = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO']
 
 class EditInfoScreen extends Component {

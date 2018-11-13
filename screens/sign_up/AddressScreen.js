@@ -22,10 +22,9 @@ import {
 } from 'native-base';
 import { TextInputMask } from 'react-native-masked-text';
 import Utils from '../../utils/Utils'
-import MyHeader from '../../components/MyHeader'
-import ContinueButton from '../../components/SignUp/ContinueButton';
-import Instructions from '../../components/SignUp/Instructions';
-import Colors from '../../constants/Colors';
+import MyHeader from '../_shared_components/MyHeader'
+import ContinueButton from '../_shared_components/SignUp/ContinueButton';
+import Instructions from '../_shared_components/SignUp/Instructions';
 
 const ufList = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
 

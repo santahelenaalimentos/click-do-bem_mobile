@@ -1,5 +1,5 @@
 import Storage from './Storage'
-import { signOut } from '../actions/index'
+import { signOut } from '../redux/actions/index'
 import Toast from './Toast'
 
 

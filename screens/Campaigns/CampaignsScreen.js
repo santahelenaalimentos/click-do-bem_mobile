@@ -20,8 +20,8 @@ import {
 } from 'native-base'
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import Colors from '../../constants/Colors'
-import MyHeader from '../../components/MyHeader';
+import Colors from '../../utils/Colors'
+import MyHeader from '../_shared_components/MyHeader';
 
 const ios = Platform.OS === 'ios'
 
@@ -109,7 +109,7 @@ class CampaignsScreen extends Component {
             )
 
         return (
-            <View style={{ flex: 1, backgroundColor: Colors.white, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, backgroundColor: Colors.white }}>
                 <MyHeader title='Campanhas' />
 
                 <View style={styles.listContainer}>
@@ -127,13 +127,13 @@ class CampaignsScreen extends Component {
                             <View>
                                 <TouchableWithoutFeedback onPress={() => this.handleSelectCampaign(item)}>
                                     <Card>
+                                        <CardItem cardBody>
+                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1, margin: 5, resizeMode: 'center' }} />
+                                        </CardItem>
                                         <CardItem>
                                             <Body>
                                                 <Text style={styles.cardTitle}>{item.titulo}</Text>
                                             </Body>
-                                        </CardItem>
-                                        <CardItem cardBody>
-                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1 }} />
                                         </CardItem>
                                     </Card>
                                 </TouchableWithoutFeedback>
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
+        paddingHorizontal: 10
     },
     tagContainer: {
 

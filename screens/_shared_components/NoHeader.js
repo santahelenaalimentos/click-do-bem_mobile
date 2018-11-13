@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, Platform } from 'react-native'
 import { Header } from 'native-base'
-import Colors from '../constants/Colors'
+import Colors from '../../utils/Colors'
 
 export default class NoHeader extends Component {
   render() {

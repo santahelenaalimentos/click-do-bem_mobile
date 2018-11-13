@@ -11,11 +11,11 @@ import {
     Content,
     Container,
 } from 'native-base'
-import Colors from '../constants/Colors'
-import MyHeader from '../components/MyHeader'
-import Toast from '../utils/Toast'
-import isValid from '../utils/Validate'
-import messages from '../utils/ValidationMessages'
+import Colors from '../../utils/Colors'
+import MyHeader from '../_shared_components/MyHeader'
+import Toast from '../../utils/Toast'
+import isValid from '../../utils/Validate'
+import messages from '../../utils/ValidationMessages'
 import { TextInputMask } from 'react-native-masked-text'
 const ios = Platform.OS === 'ios'
 

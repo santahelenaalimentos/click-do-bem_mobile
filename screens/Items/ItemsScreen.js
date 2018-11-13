@@ -26,8 +26,8 @@ import {
     Switch
 } from 'native-base'
 import { connect } from 'react-redux'
-import MyHeader from '../../components/MyHeader'
-import Colors from '../../constants/Colors';
+import MyHeader from '../_shared_components/MyHeader'
+import Colors from '../../utils/Colors';
 import Session from '../../utils/Session'
 
 const ios = Platform.OS === 'ios'

@@ -13,12 +13,12 @@ import {
 } from 'native-base';
 import md5 from 'md5';
 import { connect } from 'react-redux'
-import { signIn } from '../actions/index'
-import Utils from '../utils/Utils'
+import { signIn } from '../../redux/actions/index'
+import Utils from '../../utils/Utils'
 import { TextInputMask } from 'react-native-masked-text'
-import Colors from '../constants/Colors';
-import NoHeader from '../components/NoHeader'
-import Storage from '../utils/Storage'
+import Colors from '../../utils/Colors';
+import NoHeader from '../_shared_components/NoHeader'
+import Storage from '../../utils/Storage'
 
 class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -98,7 +98,7 @@ class LoginScreen extends React.Component {
                 <NoHeader />
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../assets/images/cbem-logo.png')}
+                        source={require('../../assets/images/cbem-logo.png')}
                         style={styles.welcomeImage}
                     />
                 </View>

@@ -1,7 +1,7 @@
 import {
   Toast
 } from 'native-base';
-import Colors from '../constants/Colors'
+import Colors from '../utils/Colors'
 
 toast = (msg, margin = 50, duration = 2000, color = Colors.evenLighterPurple) =>
   Toast.show({

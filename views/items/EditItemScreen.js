@@ -24,7 +24,6 @@ import {
 } from 'expo'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
-import { TextInputMask } from 'react-native-masked-text'
 import Utils from '../../utils/Utils'
 import MyHeader from '../_shared_components/MyHeader'
 import Colors from '../../utils/Colors'
@@ -49,7 +48,9 @@ class EditItemScreen extends React.Component {
             anonimo: false,
             image: null,
             images: [],
-            imgExcluir: []
+            imgExcluir: [],
+            campaigns: [],
+            campaign: null
         }
 
         this.token = props.token
@@ -71,10 +72,12 @@ class EditItemScreen extends React.Component {
             anonimo: item.anonimo,
             images: item.imagens.map(img => ({ id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
             itemValue: item.valorFaixa ? item.valorFaixa.id : null,
+            campaign: item.campanha ? item.campanha.id : null,
         })
 
         this.fetchCategories()
         this.fetchValues()
+        this.fetchCampaigns()
     }
 
     fetchCategories = () => {
@@ -108,14 +111,31 @@ class EditItemScreen extends React.Component {
                 Session.logout(this.props);
             })
 
+    fetchCampaigns = () =>
+        fetch(`${global.BASE_API_V1}/campanha`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `bearer ${this.token}`
+            }
+        })
+            .then(res => res.json())
+            .then((data) => {
+                this.setState({ campaigns: data })
+            })
+            .catch(err => {
+                Session.logout(this.props);
+                console.log('erro:', err);
+            })
+
     handleEditItem = () => {
-        const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir, itemValue } = this.state
+        const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir, itemValue, campaign } = this.state
 
         const imagens = images
             .filter(img => img.id === null) //before sending, remove the images already saved
             .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
 
-        const data = { id, titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, imgExcluir, valorFaixaId: itemValue }
+        const data = { id, titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, imgExcluir, valorFaixaId: itemValue, campanhaId: campaign }
 
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
@@ -185,7 +205,7 @@ class EditItemScreen extends React.Component {
     }
 
     render() {
-        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images, itemValue, values } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images, itemValue, values, campaigns, campaign } = this.state
         const isNeed = tipoItem === 1
 
         return (
@@ -286,6 +306,24 @@ class EditItemScreen extends React.Component {
                                 </Right>
                             </Item>
                         }
+                        <Item style={styles.item}>
+                            <Left>
+                                <Text style={styles.label}>Campanha</Text>
+                            </Left>
+                            <Right>
+                                <Picker
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                    placeholderStyle={{ color: "#bfc6ea" }}
+                                    placeholderIconColor="#007aff"
+                                    style={styles.picker}
+                                    selectedValue={campaign}
+                                    onValueChange={(campaign) => this.setState({ campaign })}>
+                                    <Picker.Item key='0' label='Selecione' value={null} />
+                                    {campaigns.map(item => <Picker.Item key={item.id} label={item.descricao} value={item.id} />)}
+                                </Picker>
+                            </Right>
+                        </Item>
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Anônimo</Text>

@@ -130,6 +130,7 @@ class MatchesScreen extends Component {
                                             <Text style={styles.info}>Doador: {Strings.formatName(item.nomeDoador)}</Text>
                                             <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
                                             <Text style={styles.info}>Categoria: {item.categoria}</Text>
+                                            {/* <Text style={styles.info}>Campanha: {item.campanha ? item.campanha.descricao : '(Não informado)'}</Text> */}
                                             <Text style={styles.info}>Valor Estimado: {item.valorFaixa}</Text>
                                         </Body>
                                     </CardItem>

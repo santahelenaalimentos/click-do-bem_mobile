@@ -46,6 +46,8 @@ class CreateItemScreen extends React.Component {
         anonimo: false,
         image: null,
         images: [],
+        campaigns: [],
+        campaign: null,
     }
 
     token = this.props.token
@@ -60,7 +62,7 @@ class CreateItemScreen extends React.Component {
 
         this.fetchCategories()
         this.fetchValues()
-
+        this.fetchCampaigns()
     }
 
     fetchCategories = () =>
@@ -97,11 +99,28 @@ class CreateItemScreen extends React.Component {
                 Session.logout(this.props);
             })
 
+    fetchCampaigns = () =>
+        fetch(`${global.BASE_API_V1}/campanha`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `bearer ${this.token}`
+            }
+        })
+            .then(res => res.json())
+            .then((data) => {
+                this.setState({ campaigns: data })
+            })
+            .catch(err => {
+                Session.logout(this.props);
+                console.log('erro:', err);
+            })
+
     handleCreateItem = () => {
-        const { titulo, descricao, tipoItem, categoria, anonimo, images, itemValue } = this.state
+        const { titulo, descricao, tipoItem, categoria, anonimo, images, itemValue, campaign } = this.state
 
         const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
-        const data = { titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, valorFaixaId: itemValue }
+        const data = { titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, valorFaixaId: itemValue, campanhaId: campaign }
 
         console.log(data)
         // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
@@ -168,7 +187,7 @@ class CreateItemScreen extends React.Component {
 
     render() {
         let { images } = this.state
-        const { categorias, titulo, descricao, categoria, anonimo, itemValue, values } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo, itemValue, values, campaign, campaigns } = this.state
         return (
             <Container>
                 <MyHeader
@@ -266,6 +285,24 @@ class CreateItemScreen extends React.Component {
                                 </Right>
                             </Item>
                         }
+                        <Item style={styles.item}>
+                            <Left>
+                                <Text style={styles.label}>Campanha</Text>
+                            </Left>
+                            <Right>
+                                <Picker
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                    placeholderStyle={{ color: "#bfc6ea" }}
+                                    placeholderIconColor="#007aff"
+                                    style={styles.picker}
+                                    selectedValue={campaign}
+                                    onValueChange={(campaign) => this.setState({ campaign })}>
+                                    <Picker.Item key='0' label='Selecione' value={null} />
+                                    {campaigns.map(item => <Picker.Item key={item.id} label={item.descricao} value={item.id} />)}
+                                </Picker>
+                            </Right>
+                        </Item>
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Anônimo</Text>

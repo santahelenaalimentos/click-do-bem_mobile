@@ -2,10 +2,9 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Root } from 'native-base'
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './screens/_navigation/AppNavigator';
-import { createStore } from 'redux'
+import AppNavigator from './views/_navigation/AppNavigator';
 import { Provider } from 'react-redux'
-import reducer from './redux/reducers/index'
+import { Store } from './redux/Store'
 
 export default class App extends React.Component {
   constructor(){
@@ -39,7 +38,7 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <Provider store={createStore(reducer)}>
+        <Provider store={Store}>
           <Root style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             {/* {Platform.OS === 'android' && <StatusBar backgroundColor={'#cccccc'} style={{ paddingBottom: 10 }} />} */}

@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Colors from '../../utils/Colors'
 import MyHeader from '../_shared_components/MyHeader';
+import Session from '../../utils/Session'
 
 const ios = Platform.OS === 'ios'
 

@@ -46,6 +46,7 @@ class MatchesScreen extends Component {
         })
             .then(res => res.json())
             .then((data) => {
+                console.log(data)
                 if (data.sucesso) {
                     this.setState({ matches: data.mensagem })
                 }
@@ -129,7 +130,7 @@ class MatchesScreen extends Component {
                                             <Text style={styles.info}>Doador: {Strings.formatName(item.nomeDoador)}</Text>
                                             <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
                                             <Text style={styles.info}>Categoria: {item.categoria}</Text>
-                                            <Text style={styles.info}>Valor Estimado: {Strings.formatCurrency(item.valor)}</Text>
+                                            <Text style={styles.info}>Valor Estimado: {item.valorFaixa}</Text>
                                         </Body>
                                     </CardItem>
                                 </Card>

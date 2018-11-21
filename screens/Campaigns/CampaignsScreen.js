@@ -30,13 +30,8 @@ class CampaignsScreen extends Component {
         super(props)
 
         this.state = {
-            campaigns: [
-                { titulo: 'Natal 2018', descricao: 'Venha compartilhar itens no natal de 2018...' },
-                { titulo: 'Natal 2019', descricao: 'Venha compartilhar itens no natal de 2019...' },
-                { titulo: 'Natal 2020', descricao: 'Venha compartilhar itens no natal de 2020...' },
-                { titulo: 'Natal 2021', descricao: 'Venha compartilhar itens no natal de 2021...' },
-            ],
-            isLoading: false,
+            campaigns: null,
+            isLoading: true,
             refreshing: false,
             modalVisible: false,
             selectedCampaign: null,
@@ -44,11 +39,11 @@ class CampaignsScreen extends Component {
     }
 
     componentWillMount() {
-        //this.fetchCampaigns()
+        this.fetchCampaigns()
     }
 
     fetchCampaigns = () =>
-        fetch(`${global.BASE_API_V1}/campanhas`, {
+        fetch(`${global.BASE_API_V1}/campanha`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -57,7 +52,7 @@ class CampaignsScreen extends Component {
         })
             .then(res => res.json())
             .then((data) => {
-
+                this.setState({ campaigns: data, isLoading: false })
             })
             .catch(err => {
                 Session.logout(this.props);
@@ -115,7 +110,7 @@ class CampaignsScreen extends Component {
                 <View style={styles.listContainer}>
                     <FlatList
                         data={campaigns}
-                        keyExtractor={(item) => item.titulo}
+                        keyExtractor={(item) => item.id}
                         refreshControl={
                             <RefreshControl
                                 onRefresh={this._onRefresh}
@@ -128,11 +123,11 @@ class CampaignsScreen extends Component {
                                 <TouchableWithoutFeedback onPress={() => this.handleSelectCampaign(item)}>
                                     <Card>
                                         <CardItem cardBody>
-                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1, margin: 5, resizeMode: 'center' }} />
+                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1, margin: 5, resizeMode: 'cover' }} />
                                         </CardItem>
                                         <CardItem>
                                             <Body>
-                                                <Text style={styles.cardTitle}>{item.titulo}</Text>
+                                                <Text style={styles.cardTitle}>{item.descricao}</Text>
                                             </Body>
                                         </CardItem>
                                     </Card>

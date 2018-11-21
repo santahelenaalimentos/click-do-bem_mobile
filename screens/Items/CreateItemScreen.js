@@ -34,27 +34,21 @@ import Session from '../../utils/Session'
 const ios = Platform.OS === 'ios'
 
 class CreateItemScreen extends React.Component {
-    static navigationOptions = {
-        header: null,
+
+    state = {
+        categorias: [],
+        values: [],
+        titulo: '',
+        descricao: '',
+        tipoItem: 0,
+        itemValue: null,
+        categoria: null,
+        anonimo: false,
+        image: null,
+        images: [],
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            categorias: [],
-            titulo: '',
-            descricao: '',
-            tipoItem: 0,
-            itemValue: '000',
-            categoria: null,
-            anonimo: false,
-            image: null,
-            images: [],
-        }
-
-        this.token = props.token
-    }
+    token = this.props.token
 
     componentWillMount() {
         this.donation = this.props.donation
@@ -64,7 +58,12 @@ class CreateItemScreen extends React.Component {
         const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 
+        this.fetchCategories()
+        this.fetchValues()
 
+    }
+
+    fetchCategories = () =>
         fetch(`${global.BASE_API_V1}/categoria`, {
             method: 'GET',
             headers: {
@@ -72,19 +71,39 @@ class CreateItemScreen extends React.Component {
             },
         })
             .then(res => res.json())
+            // .then(cat => {
+            //     console.log(cat)
+            //     return cat
+            // })
             .then(categorias => this.setState({ categorias }))
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
             })
-    }
+
+    fetchValues = () =>
+        fetch(`${global.BASE_API_V1}/item/valor-faixa`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `bearer ${this.token}`,
+            },
+        })
+            .then(res => res.json())
+            .then(val => {
+                console.log(val)
+                return val
+            })
+            .then(values => this.setState({ values }))
+            .catch(err => {
+                Session.logout(this.props);
+            })
 
     handleCreateItem = () => {
-        const { titulo, descricao, tipoItem, categoria, anonimo, images } = this.state
-        const itemValue = Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
+        const { titulo, descricao, tipoItem, categoria, anonimo, images, itemValue } = this.state
 
         const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
-        const data = { titulo, descricao, tipoItem, categoria, anonimo, imagens, valor: itemValue }
-        
+        const data = { titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, valorFaixaId: itemValue }
+
+        console.log(data)
         // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'POST',
@@ -103,8 +122,8 @@ class CreateItemScreen extends React.Component {
                     Utils.toast(body.mensagem instanceof Array ? body.mensagem.map(msg => `${msg}\n`) : body.mensagem, 0)
                 }
             })
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
             })
     }
 
@@ -149,7 +168,7 @@ class CreateItemScreen extends React.Component {
 
     render() {
         let { images } = this.state
-        const { categorias, titulo, descricao, categoria, anonimo, itemValue } = this.state
+        const { categorias, titulo, descricao, categoria, anonimo, itemValue, values } = this.state
         return (
             <Container>
                 <MyHeader
@@ -177,20 +196,6 @@ class CreateItemScreen extends React.Component {
                                 multiline={true}
                                 numberOfLines={6} />
                         </Item>
-                        {
-                            !this.donation
-                            &&
-                            <Item stackedLabel>
-                                <Label style={styles.label}>Valor financeiro do item</Label>
-                                <TextInputMask
-                                    style={styles.maskedInput}
-                                    underlineColorAndroid='transparent'
-                                    type='money'
-                                    value={itemValue}
-                                    maxLength={20}
-                                    onChangeText={(itemValue) => this.setState({ itemValue })} />
-                            </Item>
-                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Fotos</Text>
@@ -235,10 +240,32 @@ class CreateItemScreen extends React.Component {
                                     selectedValue={categoria}
                                     onValueChange={(cat) => this.setState({ categoria: cat })}>
                                     <Picker.Item key='0' label='Selecione' value={null} />
-                                    {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao} />)}
+                                    {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.id} />)}
                                 </Picker>
                             </Right>
                         </Item>
+                        {
+                            !this.donation
+                            &&
+                            <Item style={styles.item}>
+                                <Left>
+                                    <Text style={styles.label}>Valor</Text>
+                                </Left>
+                                <Right>
+                                    <Picker
+                                        mode="dropdown"
+                                        iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                        placeholderStyle={{ color: "#bfc6ea" }}
+                                        placeholderIconColor="#007aff"
+                                        style={styles.picker}
+                                        selectedValue={itemValue}
+                                        onValueChange={(itemValue) => this.setState({ itemValue })}>
+                                        <Picker.Item key='0' label='Selecione' value={null} />
+                                        {values.map(item => <Picker.Item key={item.id} label={item.descricao} value={item.id} />)}
+                                    </Picker>
+                                </Right>
+                            </Item>
+                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Anônimo</Text>
@@ -311,7 +338,7 @@ const styles = StyleSheet.create({
     regularInput: {
         maxWidth: '100%',
     },
-    maskedInput:{
+    maskedInput: {
         minWidth: '100%',
         flex: 1,
         justifyContent: 'flex-end',

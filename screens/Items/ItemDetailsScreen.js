@@ -20,6 +20,10 @@ import {
     Left,
     Right,
     Body,
+    Item,
+    Picker,
+    Icon,
+
 } from 'native-base'
 import { TextInputMask } from 'react-native-masked-text'
 import MyHeader from '../_shared_components/MyHeader';
@@ -38,9 +42,10 @@ class ItemDetailsScreen extends PureComponent {
 
         this.state = {
             item: {},
+            values: [],
             isVisible: false,
             itemUser: {},
-            itemValue: '0000'
+            itemValue: null
         }
     }
 
@@ -48,6 +53,7 @@ class ItemDetailsScreen extends PureComponent {
         const item = this.props.navigation.getParam('item', {})
         this.setState({ item })
         this.fetchItemUserData(item.usuario.id)
+        this.fetchValues()
     }
 
     fetchItemUserData = (id) => {
@@ -63,8 +69,8 @@ class ItemDetailsScreen extends PureComponent {
             .then((data) => {
                 this.setState({ itemUser: data })
             })
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
                 console.log('erro:', err);
             })
     }
@@ -77,14 +83,30 @@ class ItemDetailsScreen extends PureComponent {
         this.setState({ isVisible: true })
     }
 
+    fetchValues = () =>
+        fetch(`${global.BASE_API_V1}/item/valor-faixa`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `bearer ${this.props.token}`,
+            },
+        })
+            .then(res => res.json())
+            .then(val => {
+                console.log(val)
+                return val
+            })
+            .then(values => this.setState({ values }))
+            .catch(err => {
+                Session.logout(this.props);
+            })
+
     handleMatch = () => {
         let { itemValue, item: { id, tipoItem } } = this.state
-        itemValue = Number(itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
 
-        if ((!id || !itemValue || itemValue <= 0) && tipoItem != 'Necessidade')
+        if (!itemValue && tipoItem != 'Necessidade')
             return Toast.toastTop('O valor deve ser informado para efetuar a solicitação.')
 
-        fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valor=${itemValue}` : ''}`,
+        fetch(`${global.BASE_API_V1}/item/match/${id}${tipoItem != 'Necessidade' ? `?valorFaixaId=${itemValue}` : ''}`,
             {
                 method: 'POST',
                 headers: {
@@ -101,15 +123,15 @@ class ItemDetailsScreen extends PureComponent {
                 }
                 else Toast.toastTop(data.mensagem)
             })
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
                 console.log('erro:', err);
             })
     }
 
     render() {
         const { height, width } = Dimensions.get('window');
-        const { titulo, descricao, categoria, imagens, tipoItem, usuario, anonimo } = this.state.item
+        const { values, itemValue, item: { titulo, descricao, categoria, imagens, tipoItem, usuario, anonimo } } = this.state
         const isNeed = tipoItem === 'Necessidade'
         const isAnonymous = anonimo
         const viewerCPF = this.props.navigation.getParam('viewerCPF', {})
@@ -215,16 +237,24 @@ class ItemDetailsScreen extends PureComponent {
                                 {
                                     !isNeed
                                     &&
-                                    <KeyboardAvoidingView style={styles.inputContainer}>
-                                        <Text style={styles.label}>Valor financeiro do item</Text>
-                                        <TextInputMask
-                                            style={styles.input}
-                                            type='money'
-                                            value={this.state.itemValue}
-                                            maxLength={20}
-                                            onChangeText={(itemValue) => this.setState({ itemValue })} />
-
-                                    </KeyboardAvoidingView>
+                                    <Item style={styles.item}>
+                                        <Left>
+                                            <Text style={styles.label}>Valor</Text>
+                                        </Left>
+                                        <Right>
+                                            <Picker
+                                                mode="dropdown"
+                                                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                                placeholderStyle={{ color: "#bfc6ea" }}
+                                                placeholderIconColor="#007aff"
+                                                style={styles.picker}
+                                                selectedValue={itemValue}
+                                                onValueChange={(itemValue) => this.setState({ itemValue })}>
+                                                <Picker.Item key='0' label='Selecione' value={null} />
+                                                {values.map(item => <Picker.Item key={item.id} label={item.descricao} value={item.id} />)}
+                                            </Picker>
+                                        </Right>
+                                    </Item>
                                 }
 
                                 <View style={styles.buttonContainer}>
@@ -290,6 +320,9 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     cardsContainer: {
+        minWidth: '90%',
+    },
+    item: {
         minWidth: '90%',
     },
     inputContainer: {

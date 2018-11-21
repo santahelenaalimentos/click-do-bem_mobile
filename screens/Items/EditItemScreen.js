@@ -40,9 +40,10 @@ class EditItemScreen extends React.Component {
         this.state = {
             id: '',
             categorias: [],
+            values: [],
             titulo: '',
             descricao: '',
-            itemValue: '000',
+            itemValue: null,
             tipoItem: 0, //doação???
             categoria: null,
             anonimo: false,
@@ -66,17 +67,17 @@ class EditItemScreen extends React.Component {
             titulo: item.titulo,
             descricao: item.descricao,
             tipoItem: item.tipoItem === 'Necessidade' ? 1 : 2, //doação???
-            categoria: item.categoria.descricao,
+            categoria: item.categoria.id,
             anonimo: item.anonimo,
-            images: item.imagens.map(img => ({id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
-            itemValue: item.valor+'00',
-            //adicionar imagens excluidas (que contenham id) num array de strings
+            images: item.imagens.map(img => ({ id: img.id, uri: `${global.BASE_IMAGES}${img.arquivo}`, base64: null })),
+            itemValue: item.valorFaixa ? item.valorFaixa.id : null,
         })
 
-        this.fetchCategorias()
+        this.fetchCategories()
+        this.fetchValues()
     }
 
-    fetchCategorias = () => {
+    fetchCategories = () => {
         fetch(`${global.BASE_API_V1}/categoria`, {
             method: 'GET',
             headers: {
@@ -85,24 +86,36 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(categorias => this.setState({ categorias }))
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
             })
     }
 
+    fetchValues = () =>
+        fetch(`${global.BASE_API_V1}/item/valor-faixa`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `bearer ${this.token}`,
+            },
+        })
+            .then(res => res.json())
+            .then(val => {
+                console.log(val)
+                return val
+            })
+            .then(values => this.setState({ values }))
+            .catch(err => {
+                Session.logout(this.props);
+            })
+
     handleEditItem = () => {
-        const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir } = this.state
-        const itemValue = tipoItem === 1 
-                            ? Number(this.state.itemValue.replace('R$', '').replace(/\./g, '').replace(',', '.'))
-                            : null
+        const { id, titulo, descricao, tipoItem, categoria, anonimo, images, imgExcluir, itemValue } = this.state
 
         const imagens = images
-                        .filter(img => img.id === null) //before sending, remove the images already saved
-                        .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
+            .filter(img => img.id === null) //before sending, remove the images already saved
+            .map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
 
-        const data = { id, titulo, descricao, tipoItem, categoria, anonimo, imagens, imgExcluir, valor: itemValue }
-
-        // if((!data.itemValue || data.itemValue < 0) && !this.donation) return toastTop('Deve ser preenchido o valor financeiro da necessidade')
+        const data = { id, titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, imgExcluir, valorFaixaId: itemValue }
 
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
@@ -121,8 +134,8 @@ class EditItemScreen extends React.Component {
                     Utils.toast(body.mensagem.map(msg => `${msg}\n`))
                 }
             })
-            .catch(err => { 
-                Session.logout(this.props); 
+            .catch(err => {
+                Session.logout(this.props);
             })
     }
 
@@ -163,16 +176,16 @@ class EditItemScreen extends React.Component {
     removeImage = (uri) => {
         const { images, imgExcluir } = this.state;
         const removedItem = images.filter(item => item.uri === uri)[0]
-        if(removedItem.id) {
-            this.setState({ images: images.filter((item) => item.uri != uri), imgExcluir: [...imgExcluir, removedItem.id]})
+        if (removedItem.id) {
+            this.setState({ images: images.filter((item) => item.uri != uri), imgExcluir: [...imgExcluir, removedItem.id] })
         }
-        else{
+        else {
             this.setState({ images: images.filter((item) => item.uri != uri) })
         }
     }
 
-    render() {        
-        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images, itemValue } = this.state
+    render() {
+        const { categorias, titulo, descricao, categoria, anonimo, tipoItem, images, itemValue, values } = this.state
         const isNeed = tipoItem === 1
 
         return (
@@ -203,20 +216,6 @@ class EditItemScreen extends React.Component {
                                 multiline={true}
                                 numberOfLines={6} />
                         </Item>
-                        {
-                            isNeed
-                            &&
-                            <Item stackedLabel>
-                                <Label style={styles.label}>Valor financeiro do item</Label>
-                                <TextInputMask
-                                    style={styles.maskedInput}
-                                    underlineColorAndroid='transparent'
-                                    type='money'
-                                    value={itemValue}
-                                    maxLength={20}
-                                    onChangeText={(itemValue) => this.setState({ itemValue })} />
-                            </Item>
-                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Fotos</Text>
@@ -261,10 +260,32 @@ class EditItemScreen extends React.Component {
                                     selectedValue={categoria}
                                     onValueChange={(cat) => this.setState({ categoria: cat })}>
                                     <Picker.Item key='0' label='Selecione' value={null} />
-                                    {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.descricao} />)}
+                                    {categorias.map(categoria => <Picker.Item key={categoria.id} label={categoria.descricao} value={categoria.id} />)}
                                 </Picker>
                             </Right>
                         </Item>
+                        {
+                            isNeed
+                            &&
+                            <Item style={styles.item}>
+                                <Left>
+                                    <Text style={styles.label}>Valor</Text>
+                                </Left>
+                                <Right>
+                                    <Picker
+                                        mode="dropdown"
+                                        iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                        placeholderStyle={{ color: "#bfc6ea" }}
+                                        placeholderIconColor="#007aff"
+                                        style={styles.picker}
+                                        selectedValue={itemValue}
+                                        onValueChange={(itemValue) => this.setState({ itemValue })}>
+                                        <Picker.Item key='0' label='Selecione' value={null} />
+                                        {values.map(item => <Picker.Item key={item.id} label={item.descricao} value={item.id} />)}
+                                    </Picker>
+                                </Right>
+                            </Item>
+                        }
                         <Item style={styles.item}>
                             <Left>
                                 <Text style={styles.label}>Anônimo</Text>
@@ -337,7 +358,7 @@ const styles = StyleSheet.create({
     regularInput: {
         maxWidth: '100%',
     },
-    maskedInput:{
+    maskedInput: {
         minWidth: '100%',
         flex: 1,
         justifyContent: 'flex-end',

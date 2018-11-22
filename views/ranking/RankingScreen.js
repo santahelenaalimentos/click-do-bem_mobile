@@ -22,65 +22,120 @@ const mock = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 class RankingScreen extends Component {
     state = {
+        selected: 1,
         individual: null,
-        grupos: null,
+        campaigns: null,
     }
 
-    componentDidMount(){
+    componentDidMount() {
+        this.fetchRanking()
+        this.fetchCampaignRanking()
+    }
+
+    selectIndividual = () => {
+        this.setState({ selected: 1, individual: null })
         this.fetchRanking()
     }
 
-    fetchRanking = () => 
-        fetch(`${global.BASE_API_V1}/item/ranking/individual`,{
+    selectCampaigns = () => {
+        this.setState({ selected: 2, campaigns: null })
+        this.fetchCampaignRanking()
+    }
+
+
+    fetchRanking = () =>
+        fetch(`${global.BASE_API_V1}/item/ranking/individual`, {
             method: 'GET',
             headers: {
                 'Authorization': `bearer ${this.props.token}`,
                 'Content-Type': 'application/json,'
             }
         })
-        .then(res => res.json())
-        .then(individual => {
-            this.setState({ individual })
+            .then(res => res.json())
+            .then(individual => {
+                this.setState({ individual })
+            })
+            .catch(err => {
+                Session.logout(this.props);
+                console.log('erro:', err);
+            })
+
+    fetchCampaignRanking = () =>
+        fetch(`${global.BASE_API_V1}/item/ranking/campanha`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `bearer ${this.props.token}`,
+                'Content-Type': 'application/json,'
+            }
         })
-        .catch(err => { 
-            Session.logout(this.props); 
-            console.log('erro:', err);
-        })
+            .then(res => res.json())
+            .then(campaigns => {
+                this.setState({ campaigns })
+            })
+            .catch(err => {
+                Session.logout(this.props);
+                console.log('erro:', err);
+            })
 
     render() {
-        const { individual, grupos } = this.state
+        const { individual, campaigns, selected } = this.state
+        const isIndividualRanking = selected === 1
+
         return (
             <Container>
-                <MyHeader 
-                    title='Ranking' 
-                    goBack={() => this.props.navigation.goBack()}/>
+                <MyHeader
+                    title='Ranking'
+                    goBack={() => this.props.navigation.goBack()} />
                 <Content>
                     <View style={styles.buttonContainer}>
-                        <Button style={styles.button}>
+                        <Button style={styles.button} onPress={() => this.selectIndividual()}>
                             <Text style={styles.buttonText}>Colaboradores</Text>
                         </Button>
-                        <Button style={styles.button}>
+                        <Button style={styles.button} onPress={() => this.selectCampaigns()}>
                             <Text style={styles.buttonText}>Campanhas</Text>
                         </Button>
                     </View>
                     <View>
                         {
-                            individual
+                            isIndividualRanking
                             ?
-                            individual.map((item, index) =>
-                                <View key={index} style={styles.itemContainer}>
-                                    <Item style={styles.item}>
-                                        <Left style={styles.textContainer}>
-                                            <Text style={{color: Colors.grey}}> {formatName(item.nome)} </Text>
-                                        </Left>
-                                        <Right style={styles.textContainer}>
-                                            <Text style={{color: Colors.grey}}> {item.pontuacao} pontos </Text>
-                                        </Right>
-                                    </Item>
-                                </View>
+                            (
+                                individual
+                                ?
+                                individual.map((item, index) =>
+                                    <View key={index} style={styles.itemContainer}>
+                                        <Item style={styles.item}>
+                                            <Left style={styles.textContainer}>
+                                                <Text style={{ color: Colors.grey }}> {formatName(item.nome)} </Text>
+                                            </Left>
+                                            <Right style={styles.textContainer}>
+                                                <Text style={{ color: Colors.grey }}> {item.pontuacao} pontos </Text>
+                                            </Right>
+                                        </Item>
+                                    </View>
+                                )
+                                :
+                                <Spinner color={Colors.purple} />
                             )
                             :
-                            <Spinner color={Colors.purple} />
+                            (
+                                campaigns
+                                ?
+                                campaigns.map((item, index) =>
+                                    <View key={index} style={styles.itemContainer}>
+                                        <Item style={styles.item}>
+                                            <Left style={styles.textContainer}>
+                                                <Text style={{ color: Colors.grey }}> {formatName(item.descricao)} </Text>
+                                            </Left>
+                                            <Right style={styles.textContainer}>
+                                                <Text style={{ color: Colors.grey }}> {item.pontuacao} pontos </Text>
+                                            </Right>
+                                        </Item>
+                                    </View>
+                                )
+                                :
+                                <Spinner color={Colors.purple} />
+                            )
                         }
                     </View>
                 </Content>
@@ -93,33 +148,33 @@ const styles = StyleSheet.create({
     itemContainer: {
         minHeight: 50,
     },
-    item:{
+    item: {
         paddingHorizontal: 10
     },
-    textContainer:{
-        height: 50, 
+    textContainer: {
+        height: 50,
         justifyContent: 'center'
     },
-    buttonContainer:{
+    buttonContainer: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
         paddingHorizontal: 10,
         height: 70,
     },
-    button:{
+    button: {
         alignSelf: 'center',
         backgroundColor: Colors.evenLighterPurple,
         height: 30,
         paddingHorizontal: 10,
         marginRight: 10,
     },
-    buttonText:{
+    buttonText: {
         color: Colors.white,
     }
 
 })
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         token: state.token,
     }

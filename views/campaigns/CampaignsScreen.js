@@ -124,7 +124,7 @@ class CampaignsScreen extends Component {
                                 <TouchableWithoutFeedback onPress={() => this.handleSelectCampaign(item)}>
                                     <Card>
                                         <CardItem cardBody>
-                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1, margin: 5, resizeMode: 'cover' }} />
+                                            <Image source={item.imagem ? {uri: `${global.BASE_IMAGES}${item.imagem}`} : require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 150, width: null, flex: 1, margin: 5, resizeMode: 'cover' }} />
                                         </CardItem>
                                         <CardItem>
                                             <Body>

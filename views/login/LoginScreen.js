@@ -29,7 +29,8 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
-            nome: '11618050877', //91183200900
+            // nome: '11618050877', 
+            nome: '91183200900',
             senha: 'a1b2c3d4',
         }
     }

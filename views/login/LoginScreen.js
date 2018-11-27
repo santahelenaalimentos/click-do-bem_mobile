@@ -29,8 +29,8 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
-            // nome: '11618050877', 
-            nome: '91183200900',
+            nome: '11618050877', 
+            // nome: '91183200900',
             senha: 'a1b2c3d4',
         }
     }
@@ -130,7 +130,7 @@ class LoginScreen extends React.Component {
                             <View>
                                 <Button transparent
                                     onPress={() => this.onPressRecoverPassword()}
-                                    style={{ height: 25 }}>
+                                    style={{ height: 27 }}>
                                     <Text style={{ color: Colors.evenLighterPurple }}>Esqueci minha senha</Text>
                                 </Button>
                             </View>

@@ -23,6 +23,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Colors from '../../utils/Colors'
 import MyHeader from '../_shared_components/MyHeader';
 import Session from '../../utils/Session'
+import Strings from '../../utils/Strings'
 
 const ios = Platform.OS === 'ios'
 
@@ -81,6 +82,8 @@ class CampaignsScreen extends Component {
     render() {
         const { selectedCampaign, campaigns, isLoading, refreshing } = this.state
 
+        console.log(selectedCampaign)
+
         if (isLoading)
             return (
                 <View style={{ flex: 1, backgroundColor: Colors.white }}>
@@ -111,6 +114,7 @@ class CampaignsScreen extends Component {
                 <View style={styles.listContainer}>
                     <FlatList
                         data={campaigns}
+                        showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.id}
                         refreshControl={
                             <RefreshControl
@@ -129,6 +133,7 @@ class CampaignsScreen extends Component {
                                         <CardItem>
                                             <Body>
                                                 <Text style={styles.cardTitle}>{item.descricao}</Text>
+                                                <Text style={styles.info}>Vigência: {Strings.formatPeriod(item.dataInicial, item.dataFinal)}</Text>
                                             </Body>
                                         </CardItem>
                                     </Card>
@@ -138,7 +143,7 @@ class CampaignsScreen extends Component {
                     />
                 </View>
 
-                <Modal
+                {/* <Modal
                     transparent={true}
                     visible={this.state.modalVisible}
                     animationType={'slide'}
@@ -167,7 +172,7 @@ class CampaignsScreen extends Component {
                                 <ScrollView>
                                     <Card>
                                         <CardItem>
-                                            <Image source={require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 250, width: null, flex: 1 }} />
+                                            <Image source={selectedCampaign.imagem ? {uri: `${global.BASE_IMAGES}${selectedCampaign.imagem}`} : require('../../assets/images/tb-placeholder-gray.png')} style={{ height: 250, width: null, flex: 1 }} />
                                         </CardItem>
                                         <CardItem>
                                             <Text style={styles.cardTitle}>{selectedCampaign.titulo}</Text>
@@ -180,7 +185,7 @@ class CampaignsScreen extends Component {
                             }
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
             </View>
         )
     }

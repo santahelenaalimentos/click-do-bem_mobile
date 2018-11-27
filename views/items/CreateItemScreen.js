@@ -48,7 +48,10 @@ class CreateItemScreen extends React.Component {
         images: [],
         campaigns: [],
         campaign: null,
+        creating: false,
     }
+
+    disabled = false
 
     token = this.props.token
 
@@ -117,6 +120,8 @@ class CreateItemScreen extends React.Component {
             })
 
     handleCreateItem = () => {
+        this.disabled = true
+
         const { titulo, descricao, tipoItem, categoria, anonimo, images, itemValue, campaign } = this.state
 
         const imagens = images.map((image, index) => ({ nomeImagem: `${index}.jpg`, imagemBase64: image.base64 }))
@@ -144,6 +149,7 @@ class CreateItemScreen extends React.Component {
             .catch(err => {
                 Session.logout(this.props);
             })
+            .then(() => this.disabled = false)
     }
 
     _pickImage = async (camera) => {
@@ -318,7 +324,7 @@ class CreateItemScreen extends React.Component {
                     <View style={styles.buttonContainer}>
                         <Button
                             style={styles.button}
-                            onPress={this.handleCreateItem}>
+                            onPress={() => !this.disabled && this.handleCreateItem()}>
                             <Text style={styles.buttonText}>Salvar</Text>
                         </Button>
                     </View>

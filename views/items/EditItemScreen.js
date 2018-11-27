@@ -137,6 +137,8 @@ class EditItemScreen extends React.Component {
 
         const data = { id, titulo, descricao, tipoItem, categoriaId: categoria, anonimo, imagens, imgExcluir, valorFaixaId: itemValue, campanhaId: campaign }
 
+        console.log('data', data)
+
         fetch(`${global.BASE_API_V1}/item`, {
             method: 'PUT',
             headers: {
@@ -147,14 +149,16 @@ class EditItemScreen extends React.Component {
         })
             .then(res => res.json())
             .then(body => {
+                console.log('body', body)
                 if (body.sucesso) {
                     Utils.toast('Item editado com sucesso')
                     this.props.navigation.navigate(tipoItem === 1 ? 'Needs' : 'Donations')
                 } else {
-                    Utils.toast(body.mensagem.map(msg => `${msg}\n`))
+                    Utils.toast(body.mensagem instanceof Array ? body.mensagem.map(msg => `${msg}\n`) : body.mensagem)
                 }
             })
             .catch(err => {
+                console.log('err', err)
                 Session.logout(this.props);
             })
     }

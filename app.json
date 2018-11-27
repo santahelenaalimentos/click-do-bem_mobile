@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "[Beta] Teste 103",
-    "description": "- Melhorias de layout\n- Correção de bugs encontrados",
-    "slug": "beta-103",
-    "privacy": "public",
+    "name": "Click do Bem",
+    "description": "- Corrige botão de esqueci a senha\n- Remove indicador de scrolling de telas principais",
+    "slug": "build-001",
+    "privacy": "unlisted",
     "sdkVersion": "30.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "0.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -18,17 +18,19 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
+      "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.santahelena.clickdobem"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.invillia.clickdobem",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.santahelena.clickdobem"
+      "package": "com.invillia.clickdobem"
     },
     "androidStatusBar": {
       "backgroundColor": "#cccccc"

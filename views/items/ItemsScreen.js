@@ -259,6 +259,7 @@ class ItemsScreen extends Component {
                 <View style={{ flex: 1 }}>
                     <FlatList
                         data={filteredItems}
+                        showsVerticalScrollIndicator={false}
                         onScroll={
                             Animated.event([
                                 { nativeEvent: { contentOffset: { y: this.scrollY } } }

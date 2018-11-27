@@ -70,7 +70,7 @@ class MenuScreen extends React.Component {
                         </ListItem>
                         <ListItem
                             style={styles.menuItem}
-                            onPress={() => this.props.navigation.navigate('Ranking')}>
+                            onPress={() => this.props.navigation.navigate('Entities')}>
                             <Left>
                                 <MaterialCommunityIcons name='city' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Entidades Parceiras</Text>

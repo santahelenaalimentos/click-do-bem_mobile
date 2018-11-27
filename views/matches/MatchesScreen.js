@@ -104,6 +104,7 @@ class MatchesScreen extends Component {
                 <View style={styles.listContainer}>
                     <FlatList
                         data={matches}
+                        showsVerticalScrollIndicator={false}
                         keyExtractor={(item) => item.id}
                         refreshControl={
                             <RefreshControl
@@ -131,7 +132,7 @@ class MatchesScreen extends Component {
                                             <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
                                             <Text style={styles.info}>Categoria: {item.categoria}</Text>
                                             {/* <Text style={styles.info}>Campanha: {item.campanha ? item.campanha.descricao : '(Não informado)'}</Text> */}
-                                            <Text style={styles.info}>Valor Estimado: {item.valorFaixa}</Text>
+                                            {/* <Text style={styles.info}>Valor Estimado: {item.valorFaixa}</Text> */}
                                         </Body>
                                     </CardItem>
                                 </Card>

@@ -357,5 +357,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: Colors.grey,
         marginBottom: -5,
-    }
+    },
+    picker: {
+        width: Platform.OS === 'android' ? '150%' : undefined
+    },
 })

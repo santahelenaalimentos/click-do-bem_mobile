@@ -14,7 +14,14 @@ formatCurrency = (value) => {
     
     return `R$${value.replace('.',',')}`
 }
-    
 
+formatPeriod = (start, finish) => `${formatDate(start)} até ${formatDate(finish)}`
 
-export default { formatName, formatCPF, formatCurrency }
+formatDate = (date) => {
+    let newDate = date.replace(/-/g,"/").split('T')[0]
+    return `${newDate.split('/')[2]}/${newDate.split('/')[1]}/${newDate.split('/')[0]}`
+    // date = Date.parse(date.split('T')[0])
+    // return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+}
+
+export default { formatName, formatCPF, formatCurrency, formatDate, formatPeriod }

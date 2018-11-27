@@ -1,0 +1,53 @@
+[
+    {
+        "name": "Programa Kabuki de Cultura ",
+        "image": "images/generic/projeto-kabuki.png",
+        "data": "Rua Inácio Luiz Salomão, 464 \nBairro: Parque Industrial Tanquinho \nTelefone: (16) 3628-6162 \nFoco do Trabalho: Musicalização de Jovens"
+    },
+    {
+        "name": "Lar Irmã Izolina",
+        "image": "images/generic/irma-izolina.png",
+        "data": "Rua Sabatino Del Lama, 75  \nBairro: Vila Elisa \nTelefone: (16) 3636-8528 \nFoco do Trabalho: Creche /  Centro de Educação Infantil"
+    },
+    {
+        "name": "Casa Reluz",
+        "image": "images/generic/casa-reluz.jfif",
+        "data": "Rua Appa, 480 \nBairro: Monte Alegre \nTelefone: (16) 3236-8324 \nFoco: Famílias"
+    },
+    {
+        "name": "Lar do Vovô Albano",
+        "image": "images/generic/lar-do-vovo-albano.png",
+        "data": "Rua Mario Soares de Souza  \nBairro: Planalto Verde \nTelefone: (16) 3969-1819 \nFoco do Trabalho: Atendimento com idoso"
+    },
+    {
+        "name": "APAE",
+        "image": "images/generic/apae-ribeirao.jfif",
+        "data": "Rua Coracy de Tolêdo Piza, 571  \nBairro:  Ribeirânia,  \nTelefone: (16) 3512-5200 \nFoco do Trabalho: Pessoas com Deficiência"
+    },
+    {
+        "name": "Semeadores do Bem",
+        "image": null,
+        "data": "Rua Mato Grosso, 1147 \nBairro: Ipiranga \nTelefone: (16) 99265-0151 \nFoco do trabalho: Familias Carentes"
+    },
+    {
+        "name": "Lar Dona Nair",
+        "image": "images/generic/lar-dona-nair.png",
+        "data": "Rua General Osório, 1090 \nBairro: Centro \nTelefone: (16) 3632-2400 / (16) 3625-2113 \nFoco do Trabalho: Atendimento com Jovens /  Famílias /  Fortalecimento de vínculo"
+    },
+    {
+        "name": "Abraccia",
+        "image": "images/generic/abraccia.jfif",
+        "data": "Rua Visconde de Inhaúma, 1279  \nBairro: Centro \nTelefone: (16) 3611-1814  \nFoco do trabalho: Atendimento de combate ao câncer"
+    },
+    {
+        "name": "Corassol",
+        "image": "images/generic/corassol.jfif",
+        "data": "Rua Legionário Maurício, 69  \nBairro: Ipiranga \nTelefone: (16) 3934-9998 \nFoco do trabalho: Necessidades da comunidade"
+    },
+
+    {
+        "name": "Fundação Abrinq",
+        "image": "images/generic/abrinq.png",
+        "data": "Av. Santo Amaro, 1386 \nBairro: Vila Nova Conceição \nTelefone: (11) 3848-8799 \nFoco do trabalho: Direitos da Criança e do Adolescente"
+    },
+]

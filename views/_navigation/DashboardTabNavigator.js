@@ -19,6 +19,7 @@ import ChangePasswordScreen from '../password/ChangePasswordScreen'
 import RankingScreen from '../ranking/RankingScreen';
 import MenuScreen from '../menu/MenuScreen';
 import CampaignsScreen from '../campaigns/CampaignsScreen'
+import FeaturedEntitiesScreen from '../featured_entities/FeaturedEntitiesScreen'
 
 const ios = Platform.OS === 'ios'
 
@@ -67,6 +68,7 @@ const MenuStack = createStackNavigator({
   ChangePassword: ChangePasswordScreen,
   EditInfo: EditInfoScreen,
   Ranking: RankingScreen,
+  Entities: FeaturedEntitiesScreen,
 },
 {
   navigationOptions: {header: null}

@@ -106,6 +106,7 @@ export default class RecoverPasswordScreen extends Component {
                         <TextInput
                             maxLength={8}
                             secureTextEntry={true}
+                            autoCapitalize='none'
                             style={styles.input}
                             value={this.state.novaSenha}
                             onChangeText={(novaSenha) => this.setState({ novaSenha })} />
@@ -114,6 +115,7 @@ export default class RecoverPasswordScreen extends Component {
                         <TextInput
                             maxLength={8}
                             secureTextEntry={true}
+                            autoCapitalize='none'
                             style={styles.input}
                             value={this.state.confirmarSenha}
                             onChangeText={(confirmarSenha) => this.setState({ confirmarSenha })} />

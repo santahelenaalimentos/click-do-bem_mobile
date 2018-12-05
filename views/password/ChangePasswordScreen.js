@@ -80,6 +80,7 @@ class ChangePasswordScreen extends React.Component {
                         <TextInput
                             maxLength={8}
                             secureTextEntry={true}
+                            autoCapitalize='none'
                             style={styles.input}
                             value={senhaAtual}
                             onChangeText={(senhaAtual) => this.setState({ senhaAtual })} />
@@ -88,6 +89,7 @@ class ChangePasswordScreen extends React.Component {
                         <TextInput
                             maxLength={8}
                             secureTextEntry={true}
+                            autoCapitalize='none'
                             style={styles.input}
                             value={novaSenha}
                             onChangeText={(novaSenha) => this.setState({ novaSenha })} />
@@ -96,6 +98,7 @@ class ChangePasswordScreen extends React.Component {
                         <TextInput
                             maxLength={8}
                             secureTextEntry={true}
+                            autoCapitalize='none'
                             style={styles.input}
                             value={confirmarSenha}
                             onChangeText={(confirmarSenha) => this.setState({ confirmarSenha })} />

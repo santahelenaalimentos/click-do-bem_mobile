@@ -1,15 +1,15 @@
 {
   "expo": {
     "name": "Click do Bem",
-    "description": "- Corrige botão de esqueci a senha\n- Remove indicador de scrolling de telas principais",
-    "slug": "build-001",
+    "description": "-Removes fixed login data",
+    "slug": "release-001",
     "privacy": "unlisted",
     "sdkVersion": "30.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -26,11 +26,14 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.invillia.clickdobem",
-      "buildNumber": "1.0.0"
+      "bundleIdentifier": "com.santahelena.clickdobem",
+      "buildNumber": "1.0.1",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
-      "package": "com.invillia.clickdobem"
+      "package": "com.santahelena.clickdobem"
     },
     "androidStatusBar": {
       "backgroundColor": "#cccccc"

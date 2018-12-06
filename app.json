@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Click do Bem",
-    "description": "-Removes fixed login data",
+    "description": "-Correção na tela de campanhas",
     "slug": "release-001",
     "privacy": "unlisted",
     "sdkVersion": "30.0.0",

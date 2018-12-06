@@ -72,7 +72,7 @@ class CampaignsScreen extends Component {
 
     retryFetchCampaigns = () => {
         this.setState({ isLoading: true })
-        this.fetchC()
+        this.fetchCampaigns()
     }
 
     handleCloseModal = () => this.setState({ modalVisible: false })

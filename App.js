@@ -11,12 +11,12 @@ export default class App extends React.Component {
     super()
     
     //DEV
-    global.BASE_API_V1 = 'http://dev-clickdobemapi.santahelena.com/api/v1'
-    global.BASE_IMAGES = 'http://dev-clickdobemapi.santahelena.com/'
+    // global.BASE_API_V1 = 'http://dev-clickdobemapi.santahelena.com/api/v1'
+    // global.BASE_IMAGES = 'http://dev-clickdobemapi.santahelena.com/'
     
     //HOMOLOG
-    // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
-    // global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
+    global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
+    global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
     
     //PROD
     // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'

@@ -15,12 +15,12 @@ export default class App extends React.Component {
     // global.BASE_IMAGES = 'http://dev-clickdobemapi.santahelena.com/'
     
     //HOMOLOG
-    global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
-    global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
-    
-    //PROD
     // global.BASE_API_V1 = 'http://hml-clickdobemapi.santahelena.com/api/v1'
     // global.BASE_IMAGES = 'http://hml-clickdobemapi.santahelena.com/'
+    
+    //PROD
+    global.BASE_API_V1 = 'http://clickdobemapi.santahelena.com/api/v1'
+    global.BASE_IMAGES = 'http://clickdobemapi.santahelena.com/'
     
     this.state = {
       isLoadingComplete: false,

@@ -29,8 +29,9 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
-            nome: '', 
             // nome: '91183200900',
+            // senha: 'q1w2e3',
+            nome: '', 
             senha: '',
         }
     }
@@ -174,9 +175,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     welcomeImage: {
-        height: 250,
+        height: 220,
         resizeMode: 'contain',
-        marginTop: Platform.OS === 'ios' ? '10%' : '0%',
+        marginTop: Platform.OS === 'ios' ? '20%' : '10%',
     },
     credentialsContainer: {
         minWidth: '85%',

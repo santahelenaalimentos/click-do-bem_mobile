@@ -4,8 +4,8 @@ export default {
   tintColor,
 
   blue: '#00BCD4',
-  purple: '#673AB7',
-  evenLighterPurple: '#8364ba',
+  purple: '#004790',
+  evenLighterPurple: '#3a559c',
   iosGrey: '#f7f7f7',
   grey: '#424242',
   lighterGrey: '#a1a1a1',

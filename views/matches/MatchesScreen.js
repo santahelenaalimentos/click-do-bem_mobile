@@ -14,6 +14,7 @@ import {
     Body,
     Spinner,
     Button,
+    Container,
 } from 'native-base'
 import { connect } from 'react-redux'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -32,6 +33,8 @@ class MatchesScreen extends Component {
         }
     }
 
+    user = this.props.user
+
     componentWillMount() {
         this.fetchMatches()
     }
@@ -46,9 +49,11 @@ class MatchesScreen extends Component {
         })
             .then(res => res.json())
             .then((data) => {
-                console.log(data)
+                //console.log(data)
                 if (data.sucesso) {
                     this.setState({ matches: data.mensagem })
+                    console.log(data.mensagem)
+                    console.log(this.user)
                 }
                 this.setState({ isLoading: false })
             })
@@ -86,18 +91,20 @@ class MatchesScreen extends Component {
 
         if (!matches.length && !isLoading)
             return (
-                <View style={{ flex: 1, backgroundColor: Colors.white }}>
-                    <MyHeader title='Matches' />
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: Colors.purple }}>Você ainda não efetuou nenhum match.</Text>
-                        <Button transparent onPress={() => this.retryFetchMatches()} style={{alignSelf: 'center'}}>
-                            <MaterialCommunityIcons name='refresh' color={Colors.purple} size={32}/>
-                        </Button>
+                <Container>
+                    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+                        <MyHeader title='Matches' />
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ color: Colors.purple }}>Você ainda não efetuou nenhum match.</Text>
+                            <Button transparent onPress={() => this.retryFetchMatches()} style={{alignSelf: 'center'}}>
+                                <MaterialCommunityIcons name='refresh' color={Colors.purple} size={32}/>
+                            </Button>
+                        </View>
                     </View>
-                </View>
+                </Container>
             )
 
-        return (
+        return (            
             <View style={{ flex: 1, backgroundColor: Colors.white }}>
                 <MyHeader title='Matches' />
 
@@ -112,8 +119,10 @@ class MatchesScreen extends Component {
                                 refreshing={refreshing}
                                 colors={[Colors.purple, Colors.blue]}
                             />
-                        }
-                        renderItem={({item}) =>
+                        }                        
+                        renderItem={({item, isSameUser = item.nomeDoador === this.user.nome } ) =>                            
+                            // Crio uma constante para verificar quais contatos serão exibidos
+                            
                             <View>
                                 <Card>
                                     <CardItem header bordered>
@@ -130,7 +139,11 @@ class MatchesScreen extends Component {
                                         <Body>
                                             <Text style={styles.info}>Doador: {Strings.formatName(item.nomeDoador)}</Text>
                                             <Text style={styles.info}>Receptor: {Strings.formatName(item.nomeReceptor)}</Text>
+                                            <Text style={styles.info}>Telefone: {isSameUser ? item.telefoneReceptor : item.telefoneDoador} </Text>
+                                            <Text style={styles.info}>Celular: {isSameUser ? item.celularReceptor : item.celularDoador}</Text>
+                                            <Text style={styles.info}>E-mail: {isSameUser ? item.emailReceptor : item.emailDoador}</Text>
                                             <Text style={styles.info}>Categoria: {item.categoria}</Text>
+                                            <Text style={styles.info}>Data: {Strings.formatDate(item.data)}</Text>
                                             {/* <Text style={styles.info}>Campanha: {item.campanha ? item.campanha.descricao : '(Não informado)'}</Text> */}
                                             {/* <Text style={styles.info}>Valor Estimado: {item.valorFaixa}</Text> */}
                                         </Body>
@@ -148,6 +161,7 @@ class MatchesScreen extends Component {
 function mapStateToProps(state) {
     return {
         token: state.token,
+        user: state.user
     }
 }
 

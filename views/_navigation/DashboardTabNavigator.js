@@ -20,6 +20,7 @@ import RankingScreen from '../ranking/RankingScreen';
 import MenuScreen from '../menu/MenuScreen';
 import CampaignsScreen from '../campaigns/CampaignsScreen'
 import FeaturedEntitiesScreen from '../featured_entities/FeaturedEntitiesScreen'
+import NotificationScreen from '../notification/NotificationScreen';
 
 const ios = Platform.OS === 'ios'
 
@@ -28,7 +29,8 @@ const CampaignStack = createStackNavigator({
   Campaigns: CampaignsScreen,
 },
 {
-  navigationOptions: {header: null}
+  navigationOptions: {header: null},
+  headerMode: 'none',
 })
 
 CampaignStack.navigationOptions = {
@@ -46,7 +48,8 @@ const ProfileStack = createStackNavigator({
   Matches: MatchesScreen,
 },
 {
-  navigationOptions: {header: null}
+  navigationOptions: {header: null},
+  headerMode: 'none',
 })
 
 ProfileStack.navigationOptions = {
@@ -69,9 +72,11 @@ const MenuStack = createStackNavigator({
   EditInfo: EditInfoScreen,
   Ranking: RankingScreen,
   Entities: FeaturedEntitiesScreen,
+  NotificationScreen: NotificationScreen,
 },
 {
-  navigationOptions: {header: null}
+  navigationOptions: {header: null},
+  headerMode: 'none',
 })
 
 MenuStack.navigationOptions = {
@@ -91,7 +96,8 @@ const NeedsStack = createStackNavigator({
   EditNeed: EditItemScreen,
 },
 {
-  navigationOptions: {header: null}
+  navigationOptions: {header: null},
+  headerMode: 'none',
 })
 
 NeedsStack.navigationOptions = {
@@ -111,7 +117,8 @@ const DonationsStack = createStackNavigator({
   EditDonation: EditItemScreen,
 },
 {
-  navigationOptions: {header: null}
+  navigationOptions: {header: null},
+  headerMode: 'none',
 })
 
 DonationsStack.navigationOptions = {

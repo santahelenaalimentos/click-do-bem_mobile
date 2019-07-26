@@ -20,6 +20,9 @@ import Colors from '../../utils/Colors';
 import NoHeader from '../_shared_components/NoHeader'
 import Storage from '../../utils/Storage'
 
+import * as firebase from 'firebase';
+import {Permissions,Notifications} from 'expo';
+
 class LoginScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -29,8 +32,8 @@ class LoginScreen extends React.Component {
         super(props);
 
         this.state = {
-            // nome: '91183200900',
-            // senha: 'q1w2e3',
+            //nome: '39401794855',
+            //senha: 'a1b2c3',
             nome: '', 
             senha: '',
         }
@@ -69,6 +72,9 @@ class LoginScreen extends React.Component {
                 if (data.sucesso) {
                     console.log(data.token)
                     const user = this.formatData(data.usuario)
+                    // Salvo o ID do usuario com o Token para utilizar no PushNotification
+                    this.registerForPushNotificationsAsync(data.usuario.id)
+                    
                     this.props.dispatch(signIn(data.token, user))
                     Storage._storeUser(user, data.token)
                     this.navigateHome()
@@ -94,6 +100,37 @@ class LoginScreen extends React.Component {
     navigateSignUp = () => this.props.navigation.navigate('SignUp')
 
     navigateHome = () => this.props.navigation.navigate('Home')
+
+    registerForPushNotificationsAsync = async (usuarioid) =>{
+      
+        const { status: existingStatus } = await Permissions.getAsync(
+          Permissions.NOTIFICATIONS
+        );
+        let finalStatus = existingStatus;
+      
+        // only ask if permissions have not already been determined, because
+        // iOS won't necessarily prompt the user a second time.
+        if (existingStatus !== 'granted') {
+          // Android remote notification permissions are granted during the app
+          // install, so this will only ask on iOS
+          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+          finalStatus = status;
+        }
+      
+        // Stop here if the user did not grant permissions
+        if (finalStatus !== 'granted') {
+          return;
+        }
+      
+        // Get the token that uniquely identifies this device
+        let expoToken = await Notifications.getExpoPushTokenAsync();
+        //this.setState({ token: expoToken });
+        console.log(expoToken)
+        console.log(usuarioid)
+
+        firebase.database().ref('/users').child(usuarioid)
+        .set({ expoToken: expoToken })
+      }
 
     render() {
         return (

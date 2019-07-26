@@ -29,7 +29,7 @@ import MyHeader from '../_shared_components/MyHeader'
 import Colors from '../../utils/Colors'
 import ThumbnailWithIcon from '../_shared_components/ThumbnailWithIcon'
 import Session from '../../utils/Session'
-
+import * as Permissions from 'expo-permissions';
 
 class EditItemScreen extends React.Component {
 
@@ -57,7 +57,7 @@ class EditItemScreen extends React.Component {
     }
 
     componentWillMount() {
-        const { Permissions } = Expo
+        //const { Permissions } = Expo
         const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 

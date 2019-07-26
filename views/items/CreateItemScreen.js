@@ -30,6 +30,8 @@ import MyHeader from '../_shared_components/MyHeader'
 import Colors from '../../utils/Colors'
 import ThumbnailWithIcon from '../_shared_components/ThumbnailWithIcon'
 import Session from '../../utils/Session'
+import * as firebase from 'firebase'
+import * as Permissions from 'expo-permissions';
 
 const ios = Platform.OS === 'ios'
 
@@ -54,12 +56,13 @@ class CreateItemScreen extends React.Component {
     disabled = false
 
     token = this.props.token
+    user = this.props.user
 
     componentWillMount() {
         this.donation = this.props.donation
         this.setState({ tipoItem: this.donation ? 2 : 1 })
 
-        const { Permissions } = Expo
+        //const { Permissions } = Expo
         const { status } = Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
         if (!status) Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA)
 
@@ -93,10 +96,10 @@ class CreateItemScreen extends React.Component {
             },
         })
             .then(res => res.json())
-            .then(val => {
-                console.log(val)
-                return val
-            })
+            // .then(val => {
+            //     console.log(val)
+            //     return val
+            // })
             .then(values => this.setState({ values }))
             .catch(err => {
                 Session.logout(this.props);
@@ -140,6 +143,17 @@ class CreateItemScreen extends React.Component {
             .then(res => res.json())
             .then(body => {
                 if (body.sucesso) {
+                    // Salvo o ID do item criado para utilizar no PushNotification
+                    console.log(body)
+                    console.log(this.user)
+                    console.log(this.user.id)
+                    try {
+                        firebase.database().ref('/itens').child(body.mensagem.id)
+                    .set({ doacao: this.donation, userId: this.user.id })
+                    } catch (error) {
+                        console.log(error)
+                    }
+
                     Utils.toast('Sua ' + (this.donation ? 'doação' : 'necessidade') + ' foi criada com sucesso', 0)
                     this.props.navigation.navigate('Menu')
                 } else {
@@ -147,6 +161,7 @@ class CreateItemScreen extends React.Component {
                 }
             })
             .catch(err => {
+                console.log(err)
                 Session.logout(this.props);
             })
             .then(() => this.disabled = false)
@@ -258,7 +273,7 @@ class CreateItemScreen extends React.Component {
                             <Right>
                                 <Picker
                                     mode="dropdown"
-                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                    iosIcon={<Icon name="arrow-down" />}
                                     placeholderStyle={{ color: "#bfc6ea" }}
                                     placeholderIconColor="#007aff"
                                     style={styles.picker}
@@ -279,7 +294,7 @@ class CreateItemScreen extends React.Component {
                                 <Right>
                                     <Picker
                                         mode="dropdown"
-                                        iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                        iosIcon={<Icon name="arrow-down" />}
                                         placeholderStyle={{ color: "#bfc6ea" }}
                                         placeholderIconColor="#007aff"
                                         style={styles.picker}
@@ -298,7 +313,7 @@ class CreateItemScreen extends React.Component {
                             <Right>
                                 <Picker
                                     mode="dropdown"
-                                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                    iosIcon={<Icon name="arrow-down" />}
                                     placeholderStyle={{ color: "#bfc6ea" }}
                                     placeholderIconColor="#007aff"
                                     style={styles.picker}
@@ -337,7 +352,7 @@ class CreateItemScreen extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return { token: state.token }
+    return { token: state.token, user: state.user }
 }
 
 export default connect(mapStateToProps, null)(CreateItemScreen)
@@ -391,7 +406,7 @@ const styles = StyleSheet.create({
         color: '#666666'
     },
     picker: {
-        width: Platform.OS === 'android' ? '150%' : undefined
+        width: Platform.OS === 'android' ? '150%' : '150%'
     },
     thumbnailsContainer: {
         flexDirection: 'row',

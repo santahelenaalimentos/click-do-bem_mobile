@@ -28,11 +28,17 @@ class MenuScreen extends React.Component {
 
     }
 
+    user = this.props.user
+
     render() {
+
+        const isAdmin = this.user.usuarioPerfil[0] === 'Admin'
+        console.log('isAdmin',isAdmin)
+
         return (
             <Container>
                 <MyHeader title='Menu' />
-
+                
                 <Content>
                     <List>
                         <ListItem
@@ -61,7 +67,7 @@ class MenuScreen extends React.Component {
                             style={styles.menuItem}
                             onPress={() => this.props.navigation.navigate('Ranking')}>
                             <Left>
-                                <MaterialCommunityIcons name='format-list-numbers' size={20} color={Colors.purple} />
+                                <MaterialCommunityIcons name='format-list-numbered' size={20} color={Colors.purple} />
                                 <Text style={styles.buttonText}>Ranking de Doações</Text>
                             </Left>
                             <Right>
@@ -90,6 +96,23 @@ class MenuScreen extends React.Component {
                                 <Icon name='arrow-forward' />
                             </Right>
                         </ListItem>
+                        
+                        {
+                            isAdmin
+                            &&
+                            <ListItem
+                                style={styles.menuItem}
+                                onPress={() => this.props.navigation.navigate('NotificationScreen')}>
+                                <Left>
+                                    <MaterialCommunityIcons name='bullhorn' size={20} color={Colors.purple} />
+                                    <Text style={styles.buttonText}>Enviar Push Notification</Text>
+                                </Left>
+                                <Right>
+                                    <Icon name='arrow-forward' />
+                                </Right>
+                            </ListItem>
+                        }
+
                     </List>
                 </Content>
             </Container>

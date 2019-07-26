@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
     FlatList,
     View,
@@ -7,7 +7,8 @@ import {
     Modal,
     Platform,
     Animated,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    SafeAreaView
 } from 'react-native'
 import {
     Container,
@@ -159,7 +160,7 @@ class ItemsScreen extends Component {
         }
 
         return (
-            <View style={{ backgroundColor: 'white', flex: 1 }}>
+            <View style={{ backgroundColor: 'white', flex: 1 }}> 
 
                 <MyHeader title={this.isDonation ? 'Doações' : 'Necessidades'} />
 
@@ -173,7 +174,7 @@ class ItemsScreen extends Component {
                                 <Text style={{ color: Colors.white, fontSize: 12, fontWeight: '600', paddingHorizontal: 5 }}>Filtros</Text>
                             </Button>
                             :
-                            <Button
+                            <Button 
                                 transparent
                                 style={{ backgroundColor: Colors.evenLighterPurple, height: 25, alignSelf: 'flex-start' }}
                                 onPress={() => this.openModal()}>
@@ -182,7 +183,6 @@ class ItemsScreen extends Component {
 
                     }
                 </Animated.View>
-
 
 
                 <Modal

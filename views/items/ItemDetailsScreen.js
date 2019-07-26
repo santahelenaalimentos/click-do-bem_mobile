@@ -10,6 +10,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
+    Alert,
 } from 'react-native'
 import {
     Container,
@@ -30,6 +31,8 @@ import MyHeader from '../_shared_components/MyHeader';
 import Colors from '../../utils/Colors';
 import { connect } from 'react-redux'
 import Toast from '../../utils/Toast'
+import Session from '../../utils/Session'
+import * as firebase from 'firebase'
 
 class ItemDetailsScreen extends PureComponent {
     static navigationOptions = {
@@ -49,6 +52,8 @@ class ItemDetailsScreen extends PureComponent {
         }
     }
 
+    user = this.props.user
+
     componentWillMount() {
         const item = this.props.navigation.getParam('item', {})
         this.setState({ item })
@@ -67,7 +72,8 @@ class ItemDetailsScreen extends PureComponent {
             })
             .then(res => res.json())
             .then((data) => {
-                this.setState({ itemUser: data })
+                console.log(data)
+                this.setState({ itemUser: data })                
             })
             .catch(err => {
                 Session.logout(this.props);
@@ -92,7 +98,7 @@ class ItemDetailsScreen extends PureComponent {
         })
             .then(res => res.json())
             .then(val => {
-                console.log(val)
+                //console.log(val)
                 return val
             })
             .then(values => this.setState({ values }))
@@ -117,6 +123,16 @@ class ItemDetailsScreen extends PureComponent {
             .then(res => res.json())
             .then((data) => {
                 if (data.sucesso) {
+                    // Salvo o ID do usuário e do item que foi feito o Matche utilizar no PushNotificationMatches
+                    // console.log('UserItem',this.state.itemUser.id)
+                    // console.log('This',this.user.id)
+                    try {
+                        firebase.database().ref('/matches').child(id)
+                    .set({ userNotified: this.state.itemUser.id, userAction: this.user.id})
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    
                     this.handleCloseModal()
                     this.props.navigation.goBack()
                     Toast.toastTop('Combinação realizada. Entre em contato com sua contraparte.')
@@ -127,6 +143,33 @@ class ItemDetailsScreen extends PureComponent {
                 Session.logout(this.props);
                 console.log('erro:', err);
             })
+    }
+
+    handleDelete = () => {
+        let { item: { id, tipoItem } } = this.state
+
+        fetch(`${global.BASE_API_V1}/item/${id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${this.props.token}`
+            }
+        })
+        .then(res => res.json())
+        .then((data) => {
+            if(data.sucesso){
+                this.props.navigation.goBack()
+                Toast.toast(`${tipoItem} excluída com sucesso.`)
+            }
+            else{
+                Toast.toastTop(data.mensagem)
+            }
+        })
+        .catch(err => {
+            console.log('erro:', err)
+            Session.logout(this.props);
+        })
     }
 
     render() {
@@ -177,15 +220,29 @@ class ItemDetailsScreen extends PureComponent {
                                 <Text style={{ fontSize: 14, fontWeight: '300', color: Colors.grey }}>{descricao}</Text>
                             </View>
 
-                            <View style={{ marginVertical: 30 }}>
+                            <View style={{ marginVertical: 20 }}>
                                 {
                                     viewerCPF === usuario.cpfCnpj
                                         ?
-                                        <Button transparent
-                                            style={{ alignSelf: 'center', backgroundColor: Colors.evenLighterPurple, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
-                                            onPress={() => this.props.navigation.navigate(isNeed ? 'EditNeed' : 'EditDonation', { item: this.state.item })}>
-                                            <Text style={{ color: Colors.white }}>{isNeed ? 'Editar Necessidade' : 'Editar Doação'}</Text>
-                                        </Button>
+                                        <View>
+                                            <Button transparent
+                                                style={{ margin: 5, alignSelf: 'center', backgroundColor: Colors.evenLighterPurple, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
+                                                onPress={() => this.props.navigation.navigate(isNeed ? 'EditNeed' : 'EditDonation', { item: this.state.item })}>
+                                                <Text style={{ color: Colors.white }}>{isNeed ? 'Editar Necessidade' : 'Editar Doação'}</Text>
+                                            </Button>
+
+                                            <Button transparent
+                                                style={{ margin: 5, alignSelf: 'center', backgroundColor: Colors.evenLighterPurple, justifyContent: 'center', minWidth: '60%', maxHeight: 35 }}
+                                                onPress={() =>  Alert.alert(
+                                                                    'Confirmar exclusão',
+                                                                    'Deseja realmente excluir o item selecionado?',
+                                                                    [ { text: 'Não', onPress: () => null, style: 'cancel'},
+                                                                      { text: 'Sim', onPress: () => this.handleDelete()},
+                                                                    ]
+                                                                )}>
+                                                <Text style={{ color: Colors.white }}>{isNeed ? 'Apagar Necessidade' : 'Apagar Doação'}</Text>
+                                            </Button>
+                                        </View>
                                         :
                                         <Button
                                             style={{ alignSelf: 'center', backgroundColor: Colors.purple, justifyContent: 'center', minWidth: '60%', height: 45 }}
@@ -277,6 +334,7 @@ class ItemDetailsScreen extends PureComponent {
 function mapStateToProps(state) {
     return {
         token: state.token,
+        user:  state.user,
     }
 }
 
